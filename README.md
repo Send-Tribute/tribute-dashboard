@@ -1,7 +1,7 @@
-Getting set up
+## Getting setup
 
-clone repo
-run `yarn` or `npm install` for dependencies
-run `yarn start` to start the application
-dashboard and widget should be at localhost:1234/dashboard.html and localhost:1234/widget.html respectively
+1. clone repo
+2. run `yarn` or `npm install` for dependencies
+3. run `yarn start` to start the application
+4. dashboard and widget should be at localhost:1234/dashboard.html and localhost:1234/widget.html respectively
 
