@@ -1,4 +1,5 @@
 import React from 'react';
+import './css/outline.css';
 
 export default function Header(props) {
   return (
@@ -7,7 +8,7 @@ export default function Header(props) {
       { props.account_address }
       <img src={ props.wallet_icon }/>
       { props.account_available_amt }
-      tab
+      HEADER
     </div>
   );
 }
