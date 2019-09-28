@@ -4,7 +4,7 @@ import ReactDOM from "react-dom";
 const View = () => {
     return (
         <div>
-            <h1>Hello world</h1>
+            <h1>Widget</h1>
         </div>
     )
 }
