@@ -1,5 +1,11 @@
 div {
-  border-style: solid;
+  border: 1px solid;
+  padding: 5px;
+  margin: 5px;
+}
+
+img {
+  border: 1px solid;
   padding: 5px;
   margin: 5px;
 }
