@@ -1,4 +1,8 @@
 import React from 'react';
 
-function Table() {
+export default function Table() {
+  return (
+    <div>
+    </div>
+  );
 }

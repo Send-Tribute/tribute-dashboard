@@ -4,7 +4,7 @@ import Footer from './Footer.js';
 import Header from './Header.js';
 import Table from './Table.js';
 
-function Dashbaord() {
+export default function Dashbaord() {
   return (
     <div>
       <Header/>
