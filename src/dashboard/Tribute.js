@@ -1,12 +1,11 @@
-import React from 'react';
 
-export default function Tribute() {
+export default function Tribute(contract, provider) {
 
-  constructor(props) {
-    this.state = { contract: props.contract };
-  }
+  this.contract = contract;
+  this.provider = provider;
+  this.signer = provider.getSigner();
 
-  async function generateTribute(){
+  async function generateTribute() {
   }
 
   async function disableTribute() {
