@@ -4,7 +4,7 @@ export default function Tribute() {
 
   constructor(props) {
     //connector is what allows us to talk to the blockchain. i.e ethers.js or web3.js
-    this.state = { connector: props.connector };
+    this.state = { contract: props.contract };
   }
 
   async function generateTribute(){
