@@ -12,6 +12,8 @@ export default function Dashbaord() {
 
   let [selectedTab, setSelectedTab] = useState();
 
+  //use state, context or redux. We plan on using state since it's not necessary to use context
+
   //function here that renders Wallet, Sending, Receiving, and Settings based on state
   //pass the setSelectedTab Header
   //
