@@ -1,49 +1,46 @@
-import React from 'react';
 
-class Tribute {
+export default function Tribute(contract, provider) {
 
-  constructor(contract, provider) {
-    this.contract = contract;
-    this.provider = provider;
-    this.signer = provider.getSigner();
+  this.contract = contract;
+  this.provider = provider;
+  this.signer = provider.getSigner();
+
+  async function generateTribute() {
   }
 
-  async generateTribute(){
+  async function disableTribute() {
   }
 
-  async disableTribute() {
+  async function removeRecipient() {
   }
 
-  async removeRecipient() {
+  async function addRecipient() {
   }
 
-  async addRecipient() {
+  async function modifyRecipient() {
   }
 
-  async modifyRecipient() {
+  async function setTribute() {
   }
 
-  async setTribute() {
+  async function getInterestPayable() {
   }
 
-  async getInterestPayable() {
+  async function claimTribute() {
   }
 
-  async claimTribute() {
+  async function isTributeFlowing(){
   }
 
-  async isTributeFlowing(){
+  function convertDaiRateToAllocation() {
   }
 
-  convertDaiRateToAllocation() {
+  function convertRateToAllocation() {
   }
 
-  convertRateToAllocation() {
+  function getLendingRate() {
   }
 
-  getLendingRate() {
-  }
-
-  async generateReport() {
+  async function generateReport() {
   }
 }
