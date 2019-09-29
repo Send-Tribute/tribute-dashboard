@@ -3,7 +3,11 @@ import React from 'react';
 export default function Tribute() {
 
   constructor(props) {
-    this.state = { contract: props.contract };
+    this.state = { 
+      contract: props.contract,
+      provider: props.provider,
+      signer: props.provider.getSigner();
+    };
   }
 
   async function generateTribute(){
