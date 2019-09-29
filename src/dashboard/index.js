@@ -5,7 +5,7 @@ import Dashboard from "./Dashboard";
 //Create Default Values for Context and set Injection Bindings
 let Context = createContext({
   tribute: null,
-  isConnected: false
+  isConnected: false //this is in reference to Tribute
   // set injection Views
   // set injection Controllers
 });

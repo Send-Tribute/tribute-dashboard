@@ -1,4 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
+import { ethers } from 'ethers';
+import Tribute from './Tribute';
+
 import Footer from './Footer.js';
 import Header from './Header.js';
 import Table from './Table.js';
@@ -9,6 +12,27 @@ import Settings from './settings/Settings.js';
 import './css/outline.css';
 
 export default function Dashbaord() {
+
+  const [context, setContext] = useContext();
+
+  useEffect(() => {
+    try {
+      if (typeof window.ethereum !== 'undefined'
+        || (typeof window.web3 !== 'undefined')) {
+        console.log(window.web3.version);
+        // Web3 browser user detected. You can now use the provider.
+        const walletProvider = window['ethereum'] || window.web3.currentProvider;
+        walletProvider = new ethers.providers.Web3Provider(walletProvider);
+        const contactAddress = ""; //READ FROM FILE
+        const rDAIContract = new ethers.ContractFactory(contractAddress, abi, walletProvider);
+        const tribute = new Tribute(rDAIContract, walletProvider);
+        const isConnected = true;
+        setContext(state => ({ ...context, tribute, isConnected }));
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }, []);
 
   let [selectedTab, setSelectedTab] = useState();
 
