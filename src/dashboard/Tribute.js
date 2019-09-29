@@ -3,7 +3,6 @@ import React from 'react';
 export default function Tribute() {
 
   constructor(props) {
-    //connector is what allows us to talk to the blockchain. i.e ethers.js or web3.js
     this.state = { contract: props.contract };
   }
 
