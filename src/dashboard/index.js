@@ -1,7 +1,22 @@
 import React from 'react';
 import ReactDOM from "react-dom";
+import { ethers } from 'ethers';
+import { Provider } from './context';
 import Dashboard from "./Dashboard.js";
 
-let App = document.getElementById('app');
+//Set Injection Bindings Here:
 
-ReactDOM.render(<Dashboard/>, App);
+//create the contract here using ethers
+
+//Views
+//Controllers
+//Tribute.js
+const context = { }
+
+let App = document.getElementById('app');
+ReactDOM.render(
+  <Provider>
+    <Dashboard/>
+  </Provider>,
+  App
+);
