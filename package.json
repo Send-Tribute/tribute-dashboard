@@ -21,6 +21,7 @@
     "build-storybook": "build-storybook"
   },
   "dependencies": {
+    "context": "^0.0.1",
     "ethers": "^4.0.37",
     "react": "^16.9.0",
     "react-dom": "^16.9.0"

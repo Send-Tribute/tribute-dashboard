@@ -1,20 +1,11 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import ReactDOM from "react-dom";
+import { Provider } from './context';
 import Dashboard from "./Dashboard";
 
-//Create Default Values for Context and set Injection Bindings
-let Context = createContext({
-  tribute: null,
-  isConnected: false //this is in reference to Tribute
-  // set injection Views
-  // set injection Controllers
-});
-const Provider = Context.Provider;
-
-let App = document.getElementById('app');
 ReactDOM.render(
   <Provider>
     <Dashboard/>
   </Provider>,
-  App
+  document.getElementById('app')
 );
