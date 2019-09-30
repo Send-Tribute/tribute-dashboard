@@ -1,10 +1,12 @@
 
-export default function HeaderController() {
+export default class HeaderController {
 
-  this.testing = "testing";
+  constructor() {
+    this.testing = "testing";
+  }
 
   //logic that needs to be called against Tribute
-  function test() {
+  test() {
     return "TACOOOOO";
   }
 }

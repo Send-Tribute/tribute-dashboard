@@ -24,6 +24,7 @@ export default function Dashboard() {
   }
 
   function getControllers() {
+    console.log(new HeaderController());
     return Object.assign({},
       { HeaderController: new HeaderController() },
     )

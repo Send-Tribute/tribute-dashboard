@@ -11,7 +11,7 @@ export default function Header() {
     let currentContext = context;
     if(currentContext.controllers) {
       console.log(currentContext.controllers.HeaderController.testing);
-      //console.log(currentContext.controllers.HeaderController.test());
+      console.log(currentContext.controllers.HeaderController.test());
       setAccountAddress(currentContext.controllers.HeaderController.testing)
     }
   }, [context])
