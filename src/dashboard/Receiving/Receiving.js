@@ -29,15 +29,13 @@ const useStyles = createUseStyles({
     top: 3,
     height: 20
   },
-  cachedIcon: {
-    height: 30
-  },
+
   divider: {
     marginTop: 20
   },
   unclaimedTributeContainer: {
     alignItems: 'center',
-    alignContent: 'space-between',
+    justifyContent: 'space-between',
     display: 'flex',
     margin: 20,
     padding: 20,
