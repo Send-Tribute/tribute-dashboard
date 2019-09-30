@@ -19,13 +19,19 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "parcel build public/dashboard.html public/widget.html --out-dir dist",
     "storybook": "start-storybook -p 6006",
-    "build-storybook": "build-storybook"
+    "build-storybook": "build-storybook",
+    "update-contracts": "npm run compile:contracts && npm run import:contracts",
+    "compile:contracts": "cd rtoken-contracts && npm run build",
+    "import:contracts": "rm -f src/contracts/* && mv rtoken-contracts/build/contracts/* src/contracts"
   },
   "dependencies": {
+    "@material-ui/core": "^4.0.0",
+    "@material-ui/icons": "^4.4.3",
     "context": "^0.0.1",
     "ethers": "^4.0.37",
-    "react": "^16.9.0",
-    "react-dom": "^16.9.0"
+    "react": "^16.8.0",
+    "react-dom": "^16.8.0",
+    "react-jss": "^10.0.0"
   },
   "devDependencies": {
     "@storybook/addon-actions": "^5.2.1",

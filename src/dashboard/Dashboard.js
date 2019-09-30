@@ -4,15 +4,14 @@ import { ethers } from 'ethers';
 import Tribute from './Tribute';
 
 import Footer from './Footer.js';
-import Header from './Header.js';
+import Header from './Header/Header.js';
 import Sending from './sending/Sending.js';
 import Wallet from './wallet/Wallet.js';
 import Receiving from './receiving/Receiving.js';
 import Settings from './settings/Settings.js';
-//import Table from './Table.js';
-//import './css/outline.css';
+import rToken from '../contracts/RToken';
 
-import { TABS } from './helpers/general';
+import { TABS, CONTRACTS } from './helpers/general';
 
 const Dashboard = () => {
   const [context, setContext] = useContext(Context);
@@ -28,16 +27,29 @@ const Dashboard = () => {
         let walletProvider = window['ethereum'] || window.web3.currentProvider;
         walletProvider = new ethers.providers.Web3Provider(walletProvider);
         let tribute = null;
-        //const contactAddress = ""; //READ FROM FILE
-        //const rDAIContract = new ethers.ContractFactory(contractAddress, abi, walletProvider);
-        //const tribute = new Tribute(rDAIContract, walletProvider);
+        const contractAddress = CONTRACTS.rtoken.kovan;
+        // const rDAIContract = new ethers.ContractFactory(
+        //   contractAddress,
+        //   rToken.abi,
+        //   walletProvider
+        // );
+        // tribute = new Tribute(rDAIContract, walletProvider);
+        const userAddress = '0xbF7A7169562078c96f0eC1A8aFD6aE50f12e5A99'; // TODO: replace dummy address
+        const userDetails = {
+          address: userAddress
+        };
         const isConnected = true;
         setContext(state => {
-          return Object.assign({}, { tribute }, { isConnected });
+          return Object.assign(
+            {},
+            { tribute },
+            { isConnected },
+            { userDetails }
+          );
         });
       }
     } catch (error) {
-      console.log(error);
+      console.log('Web3 Loading Error: ', error.message);
     }
   }, []);
 
