@@ -5,6 +5,7 @@ import Tribute from './Tribute';
 
 import Footer from './Footer.js';
 import Header from './Header.js';
+import HeaderController from './HeaderController.js';
 //import Table from './Table.js';
 //import Sending from './sending/Sending.js';
 //import Wallet from './wallet/Wallet.js';
@@ -18,15 +19,13 @@ export default function Dashboard() {
 
   function getViews() {
     return Object.assign({},
-      { Footer },
       { Header },
     )
   }
 
   function getControllers() {
     return Object.assign({},
-      { Footer },
-      { Header },
+      { HeaderController: new HeaderController() },
     )
   }
 
@@ -57,7 +56,7 @@ export default function Dashboard() {
           { views },
           { controllers },
           { tribute },
-          { isConnected},
+          { isConnected },
         )
       });
     } catch (error) {

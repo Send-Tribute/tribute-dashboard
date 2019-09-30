@@ -1,16 +1,30 @@
-import React from 'react';
 import './css/outline.css';
+import React, { useContext, useState, useEffect } from 'react';
+import { Context } from './context';
 
-export default function Header(props) {
+export default function Header() {
+
+  const [context] = useContext(Context);
+
+  const [accountAddress, setAccountAddress] = useState("nothing");
+  useEffect(() => {
+    let currentContext = context;
+    if(currentContext.controllers) {
+      console.log(currentContext.controllers.HeaderController.testing);
+      //console.log(currentContext.controllers.HeaderController.test());
+      setAccountAddress(currentContext.controllers.HeaderController.testing)
+    }
+  }, [context])
+
   return (
     <div>
       HEADER
       <br/>
-      <img src={ props.tribute_icon }/>
-      Account: { props.account_address }
-      <img src={ props.wallet_icon }/>
+      <img src={ null }/>
+      Account: { accountAddress }
+      <img src={ null }/>
       <br/>
-      Available Amt: { props.account_available_amt }
+      Available Amt: { null }
       <br/>
       Wallet
       Sending
