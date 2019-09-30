@@ -1,11 +1,11 @@
 import React from 'react';
 
 export default function Receiving(props) {
-  return(
+  return (
     <div>
-      RECEIVING
-      <br/>
-      { props.children }
+      Sending
+      <br />
+      {props.children}
     </div>
   );
 }

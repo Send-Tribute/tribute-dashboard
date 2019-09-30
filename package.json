@@ -15,7 +15,7 @@
     "url": "https://github.com/Send-Tribute/tribute-rDAI/issues"
   },
   "scripts": {
-    "start": "parcel public/dashboard.html",
+    "start": "parcel public/dashboard.html public/widget.html",
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "parcel build public/dashboard.html public/widget.html --out-dir dist",
     "storybook": "start-storybook -p 6006",
@@ -29,6 +29,7 @@
     "@material-ui/icons": "^4.4.3",
     "context": "^0.0.1",
     "ethers": "^4.0.37",
+    "prop-types": "^15.7.2",
     "react": "^16.8.0",
     "react-dom": "^16.8.0",
     "react-jss": "^10.0.0"
