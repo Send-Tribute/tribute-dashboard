@@ -23,7 +23,7 @@
     "update-contracts": "npm run compile:contracts && npm run import:contracts",
     "compile:contracts": "cd rtoken-contracts && npm run build",
     "import:contracts": "rm -f src/contracts/* && mv rtoken-contracts/build/contracts/* src/contracts",
-    "deploy": "parcel build && surge ./dist tribute-dashboard1.surge.sh"
+    "deploy": "parcel build && surge ./dist tribute-dash1.surge.sh"
   },
   "dependencies": {
     "@material-ui/core": "^4.0.0",
