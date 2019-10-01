@@ -8,7 +8,7 @@ import {
   Button
 } from '@material-ui/core';
 import { createUseStyles } from 'react-jss';
-import { Icon, CustomTable } from '../general';
+import { Icon, CustomTable, SectionHeader } from '../general';
 
 const useStyles = createUseStyles({
   container: {
@@ -16,14 +16,6 @@ const useStyles = createUseStyles({
   },
   contentContainer: {
     paddingTop: 10
-  },
-  headerImage: {
-    width: 30,
-    paddingRight: 5
-  },
-  headerContainer: {
-    display: 'flex',
-    alignItems: 'center'
   },
   baseCurrencyIcon: {
     top: 3,
@@ -60,10 +52,7 @@ const Receiving = () => {
   const getSelfTribute = () => {
     return (
       <Container className={classes.container}>
-        <div className={classes.headerContainer}>
-          <Icon name="cached" className={classes.cachedIcon} />
-          <Typography variant="h4">Self-Tribute</Typography>
-        </div>
+        <SectionHeader text="Self Tribute" icon="cached" />
         <Container className={classes.contentContainer}>
           <Paper elevation={5} className={classes.unclaimedTributeContainer}>
             <Typography variant="body1">
@@ -81,10 +70,7 @@ const Receiving = () => {
   const getActiveInflows = () => {
     return (
       <Container className={classes.container}>
-        <div className={classes.headerContainer}>
-          <Icon name="faucetOn" className={classes.headerImage} />
-          <Typography variant="h4">Active Tributes</Typography>
-        </div>
+        <SectionHeader text="Active Tributes" icon="faucetOn" />
         <Container className={classes.contentContainer}>
           <CustomTable
             headings={[
@@ -102,6 +88,7 @@ const Receiving = () => {
               Ready to redeem: <b>344</b>{' '}
               <Icon name="baseCurrency" className={classes.baseCurrencyIcon} />
             </Typography>
+
             <div>
               <Button
                 onClick={redeemTribute()}
@@ -123,10 +110,7 @@ const Receiving = () => {
   const getInactiveInflows = () => {
     return (
       <Container className={classes.container}>
-        <div className={classes.headerContainer}>
-          <Icon name="faucetOff" className={classes.headerImage} />
-          <Typography variant="h4">Inactive Tributes</Typography>
-        </div>
+        <SectionHeader text="Inactive Tributes" icon="faucetOff" />
         <Container className={classes.contentContainer}>
           <CustomTable
             headings={[

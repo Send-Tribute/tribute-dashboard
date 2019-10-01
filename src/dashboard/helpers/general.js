@@ -1,6 +1,6 @@
 export const TABS = {
   ordering: ['wallet', 'sending', 'receiving', 'settings'],
-  default: 'sending',
+  default: 'wallet',
   displayNames: {
     wallet: 'Wallet',
     sending: 'Sending',
@@ -55,3 +55,23 @@ export const NETWORKS = {
     etherscan: 'https://kovan.etherscan.io/address/'
   }
 };
+
+export const FIAT_GATEWAYS = {
+  coinbase: {
+    name: 'Coinbase',
+    website: '',
+    image: 'coinbase'
+  },
+  kyber: {
+    name: 'Kyber Network',
+    website: '',
+    image: 'kyber'
+  },
+  wyre: {
+    name: 'Wyre',
+    website: '',
+    image: 'wyre'
+  }
+};
+
+export const CRYPTO_EXCHANGES = {};
