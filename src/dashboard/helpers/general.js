@@ -1,6 +1,6 @@
 export const TABS = {
   ordering: ['wallet', 'sending', 'receiving', 'settings'],
-  default: 'wallet',
+  default: 'sending',
   displayNames: {
     wallet: 'Wallet',
     sending: 'Sending',
