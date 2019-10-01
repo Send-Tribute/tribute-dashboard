@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import { Context } from '../../context';
-import { TABS } from '../../helpers/general';
+import { TABS } from '../../helpers/constants';
 import { Button } from '@material-ui/core';
 
 export default function EnableWeb3Button() {

@@ -12,7 +12,7 @@ import { createUseStyles } from 'react-jss';
 import { Icon, CustomTable, ProviderCard } from '../general';
 import { getEtherscanLink } from '../helpers/utils';
 
-import { DISCOVERABLE_PROVIDERS } from '../helpers/general';
+import { DISCOVERABLE_PROVIDERS } from '../helpers/constants';
 
 const useStyles = createUseStyles({
   container: {
