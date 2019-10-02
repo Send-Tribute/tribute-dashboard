@@ -28,7 +28,7 @@
   },
   "contracts": {
     "kovan": {
-      "dai": "0xbF7A7169562078c96f0eC1A8aFD6aE50f12e5A99",
+      "dai": "0xC4375B7De8af5a38a93548eb8453a498222C4fF2",
       "cDai": "0x0a1e4d0b5c71b955c0a5993023fc48ba6e380496",
       "daiCompoundAllocationStrategy": "0xb4377efc05bd28be8e6510629538e54eba2d74e3",
       "rDai": "0xea718e4602125407fafcb721b7d760ad9652dfe7"
