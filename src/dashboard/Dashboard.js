@@ -11,7 +11,7 @@ import Receiving from './Receiving/Receiving.js';
 import Settings from './Settings/Settings.js';
 import rToken from '../contracts/RToken';
 
-import { TABS, CONTRACTS } from './helpers/general';
+import { TABS, CONTRACTS } from './helpers/constants';
 
 const Dashboard = () => {
   const [context, setContext] = useContext(Context);
