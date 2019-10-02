@@ -1,4 +1,6 @@
 .cache/
 dist/
 node_modules/
+src/contracts/
 *.swp
+yarn-error.log
