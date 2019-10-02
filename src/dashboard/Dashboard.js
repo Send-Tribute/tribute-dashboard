@@ -23,21 +23,17 @@ export default function Dashboard() {
     )
   }
 
-  function getControllers() {
-    console.log(new HeaderController());
+  function getControllers(tribute) {
     return Object.assign({},
-      { HeaderController: new HeaderController() },
+      { HeaderController: new HeaderController(tribute) },
     )
   }
 
   useEffect(() => {
-
     let views = getViews();
-    let controllers = getControllers();
+    let controllers = null;
     let tribute = null;
     let isConnected = false;
-
-    console.log(context);
 
     try {
       if (typeof window.ethereum !== 'undefined'
@@ -50,6 +46,8 @@ export default function Dashboard() {
         //const rDAIContract = new ethers.ContractFactory(contractAddress, abi, walletProvider);
         tribute = new Tribute("", walletProvider);
         isConnected = true;
+
+        controllers = getControllers(tribute); 
       }
 
       setContext(state => {
@@ -63,7 +61,7 @@ export default function Dashboard() {
     } catch (error) {
       console.log(error);
     }
-  }, [context.isConnected]);
+  }, []);
 
 
   return (

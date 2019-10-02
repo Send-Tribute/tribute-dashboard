@@ -6,15 +6,13 @@ export default function Header() {
 
   const [context] = useContext(Context);
 
-  const [accountAddress, setAccountAddress] = useState("nothing");
+  const [accountAddress, setAccountAddress] = useState();
   useEffect(() => {
     let currentContext = context;
     if(currentContext.controllers) {
-      console.log(currentContext.controllers.HeaderController.testing);
-      console.log(currentContext.controllers.HeaderController.test());
-      setAccountAddress(currentContext.controllers.HeaderController.testing)
+      setAccountAddress(currentContext.controllers.HeaderController.test())
     }
-  }, [context])
+  }, [context.controllers])
 
   return (
     <div>

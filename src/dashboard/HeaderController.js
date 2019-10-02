@@ -1,11 +1,10 @@
 
 export default class HeaderController {
 
-  constructor() {
-    this.testing = "testing";
+  constructor(tribute) {
+    this.tribute = tribute;
   }
 
-  //logic that needs to be called against Tribute
   test() {
     return "TACOOOOO";
   }
