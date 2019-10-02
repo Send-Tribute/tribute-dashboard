@@ -34,16 +34,15 @@ export default function Dashboard() {
         // connect to contracts on the network
         const rDAIContract = new ethers.Contract(rDAIAddress, rDAIabi, walletProvider);
         const DAIContract = new ethers.Contract(DAIAddress, DAIabi, walletProvider);
-        
         const tribute = new Tribute(DAIContract, rDAIContract, walletProvider);
 
-        // const isConnected = true;
+        const isConnected = true;
         setContext(state => {
           return Object.assign(
             {},
             { tribute },
-            { isConnected },
-            { userDetails }
+            { isConnected }
+            //{ userDetails }
           );
         });
       }
@@ -52,12 +51,14 @@ export default function Dashboard() {
     }
   }, []);
 
-  //let [selectedTab, setSelectedTab] = useState();
+  function getContent() {
+    //let [selectedTab, setSelectedTab] = useState();
     const tabName = context.selectedTab ? context.selectedTab : TABS.default;
     if (tabName === 'sending') return <Sending />;
     if (tabName === 'receiving') return <Receiving />;
     if (tabName === 'settings') return <Settings />;
     return <Wallet />;
+  }
 
   return (
     <div>
