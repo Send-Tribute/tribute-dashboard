@@ -17,15 +17,34 @@
   "scripts": {
     "start": "parcel public/dashboard.html public/widget.html",
     "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "parcel build public/dashboard.html public/widget.html --out-dir dist",
     "storybook": "start-storybook -p 6006",
-    "build-storybook": "build-storybook"
+    "build-storybook": "build-storybook",
+    "update-rdai-abi": "curl -s -X GET \"https://api-kovan.etherscan.io/api?module=contract&action=getabi&address=$npm_package_contracts_kovan_rDai\" | ./node_modules/node-jq/bin/jq -r \"[.result][0]\" > src/contracts/rDai.json",
+    "update-cdai-abi": "curl -s -X GET \"https://api-kovan.etherscan.io/api?module=contract&action=getabi&address=$npm_package_contracts_kovan_cDai\" | ./node_modules/node-jq/bin/jq -r \"[.result][0]\" > src/contracts/cDai.json",
+    "update-dai-abi": "curl -s -X GET \"https://api-kovan.etherscan.io/api?module=contract&action=getabi&address=$npm_package_contracts_kovan_dai\" | ./node_modules/node-jq/bin/jq -r \"[.result][0]\" > src/contracts/dai.json",
+    "update-dai-strat-abi": "curl -s -X GET \"https://api-kovan.etherscan.io/api?module=contract&action=getabi&address=$npm_package_contracts_kovan_dai\" | ./node_modules/node-jq/bin/jq -r \"[.result][0]\" > src/contracts/dai-strat.json",
+    "update-abis": "yarn update-rdai-abi; yarn update-cdai-abi; yarn update-dai-abi; yarn update-dai-strat-abi"
+  },
+  "contracts": {
+    "kovan": {
+      "dai": "0xC4375B7De8af5a38a93548eb8453a498222C4fF2",
+      "cDai": "0x0a1e4d0b5c71b955c0a5993023fc48ba6e380496",
+      "daiCompoundAllocationStrategy": "0xb4377efc05bd28be8e6510629538e54eba2d74e3",
+      "rDai": "0xea718e4602125407fafcb721b7d760ad9652dfe7"
+    }
   },
   "dependencies": {
+    "@material-ui/core": "^4.0.0",
     "babel-polyfill": "^6.26.0",
+    "@material-ui/icons": "^4.4.3",
     "context": "^0.0.1",
     "ethers": "^4.0.37",
-    "react": "^16.9.0",
-    "react-dom": "^16.9.0"
+    "node-jq": "^1.10.3",
+    "prop-types": "^15.7.2",
+    "react": "^16.8.0",
+    "react-dom": "^16.8.0",
+    "react-jss": "^10.0.0"
   },
   "devDependencies": {
     "@storybook/addon-actions": "^5.2.1",
