@@ -1,38 +1,40 @@
 
-export default function Tribute(contract, provider) {
+export default class Tribute {
 
-  this.contract = contract;
-  this.provider = provider;
-  this.signer = provider.getSigner();
+  construction(contract, provider) {
+    this.contract = contract;
+    this.provider = provider;
+    this.signer = provider.getSigner();
+  }
 
-  async function generateTribute() {
+  async generateTribute() {
     await contract.mint();
   }
 
-  async function disableTribute() {
+  async disableTribute() {
     await contract.redeemAll();
   }
 
-  async function removeRecipient() {
+  async removeRecipient() {
   }
 
-  async function addRecipient() {
+  async addRecipient() {
   }
 
-  async function modifyRecipient() {
+  async modifyRecipient() {
   }
 
-  async function setTribute() {
+  async setTribute() {
   }
 
-  async function getInterestPayable() {
+  async getInterestPayable() {
     await contract.interestPayableOf();
   }
 
-  async function claimTribute() {
+  async claimTribute() {
   }
 
-  async function isTributeFlowing(){
+  async isTributeFlowing(){
   }
 
   function convertDaiRateToAllocation() {
@@ -44,6 +46,6 @@ export default function Tribute(contract, provider) {
   function getLendingRate() {
   }
 
-  async function generateReport() {
+  async generateReport() {
   }
 }
