@@ -12,7 +12,7 @@ import { createUseStyles } from 'react-jss';
 import { Icon, CustomTable, SectionHeader } from '../general';
 import { getEtherscanLink } from '../helpers/utils';
 
-import { FIAT_GATEWAYS, CRYPTO_EXCHANGES } from '../helpers/general';
+import { FIAT_GATEWAYS, CRYPTO_EXCHANGES } from '../helpers/constants';
 
 const useStyles = createUseStyles({
   container: {
