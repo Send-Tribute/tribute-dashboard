@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import { Context } from '../../context';
-import { TABS } from '../../helpers/general';
+import { TABS } from '../../helpers/constants';
 import { Tab, Tabs } from '@material-ui/core';
 import Icon from '../../general/Icon';
 

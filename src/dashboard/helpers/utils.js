@@ -1,5 +1,5 @@
 import React from 'react';
-import { NETWORKS } from './general';
+import { NETWORKS } from './constants';
 
 export const getShortAddress = address => {
   const len = address.length;
