@@ -46,8 +46,9 @@ export default function Dashboard() {
             { userDetails }
           );
         });
+      }
     } catch (error) {
-        console.log('Web3 Loading Error: ', error.message);
+          console.log('Web3 Loading Error: ', error.message);
     }
   }, []);
 
@@ -57,7 +58,6 @@ export default function Dashboard() {
     if (tabName === 'receiving') return <Receiving />;
     if (tabName === 'settings') return <Settings />;
     return <Wallet />;
-  };
 
   return (
     <div>
