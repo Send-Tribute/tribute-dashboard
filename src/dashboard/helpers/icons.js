@@ -10,6 +10,13 @@ import receive_money from '../assets/receive-money.png';
 import ice_cubes from '../assets/ice-cubes.png';
 import waterwheel from '../assets/waterwheel.png';
 import waterwheel_off from '../assets/waterwheel-off.png';
+import tribute_token from '../assets/tribute-token.png';
+import convert_dai_tribute from '../assets/convert-dai-tribute.png';
+import convert_dollar_tribute from '../assets/convert-dollar-tribute.png';
+import wallet from '../assets/wallet.png';
+import kyber from '../assets/kyber.png';
+import coinbase from '../assets/coinbase.png';
+import wyre from '../assets/wyre.png';
 import {
   Cached,
   AccountBalanceWallet,
@@ -78,5 +85,33 @@ export const ICONS = {
   oneClickDapp: {
     type: 'image',
     src: one_click_dapp
+  },
+  convertDollarTribute: {
+    type: 'image',
+    src: convert_dollar_tribute
+  },
+  convertDaiTribute: {
+    type: 'image',
+    src: convert_dai_tribute
+  },
+  tributeToken: {
+    type: 'image',
+    src: tribute_token
+  },
+  wallet: {
+    type: 'image',
+    src: wallet
+  },
+  kyber: {
+    type: 'image',
+    src: kyber
+  },
+  coinbase: {
+    type: 'image',
+    src: coinbase
+  },
+  wyre: {
+    type: 'image',
+    src: wyre
   }
 };

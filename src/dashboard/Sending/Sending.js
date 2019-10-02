@@ -9,7 +9,7 @@ import {
   Button
 } from '@material-ui/core';
 import { createUseStyles } from 'react-jss';
-import { Icon, CustomTable, ProviderCard } from '../general';
+import { Icon, CustomTable, ProviderCard, SectionHeader } from '../general';
 import { getEtherscanLink } from '../helpers/utils';
 
 import { DISCOVERABLE_PROVIDERS } from '../helpers/constants';
@@ -22,8 +22,12 @@ const useStyles = createUseStyles({
     paddingTop: 10
   },
   headerImage: {
-    width: 30,
-    paddingRight: 5
+    height: 40,
+    margin: '0 22px 0 22px'
+  },
+  headerImageLarge: {
+    height: 80,
+    marginRight: 10
   },
   headerContainer: {
     display: 'flex',
@@ -62,10 +66,7 @@ const Sending = () => {
   const getActiveTributes = () => {
     return (
       <Container className={classes.container}>
-        <div className={classes.headerContainer}>
-          <Icon name="waterwheel" className={classes.headerImage} />
-          <Typography variant="h4">Active Tributes</Typography>
-        </div>
+        <SectionHeader text="Active Tributes" icon="waterwheel" />
         <Container className={classes.contentContainer}>
           <CustomTable
             headings={[
@@ -91,10 +92,7 @@ const Sending = () => {
   const getInactiveTributes = () => {
     return (
       <Container className={classes.container}>
-        <div className={classes.headerContainer}>
-          <Icon name="waterwheelOff" className={classes.headerImage} />
-          <Typography variant="h4">Inactive Tributes</Typography>
-        </div>
+        <SectionHeader text="Inactive Tributes" icon="waterwheelOff" />
         <Container className={classes.contentContainer}>
           <CustomTable
             headings={[
@@ -116,19 +114,18 @@ const Sending = () => {
   const getDiscoverTributes = () => {
     return (
       <Container className={classes.container}>
-        <div className={classes.headerContainer}>
-          <Icon name="tributeButton" className={classes.headerImage} />
-          <Typography variant="h4">Discover</Typography>
-        </div>
-        <Grid container className={classes.contentContainer}>
-          {Object.keys(DISCOVERABLE_PROVIDERS).map(provider => {
-            return (
-              <Grid item key={provider}>
-                <ProviderCard provider={DISCOVERABLE_PROVIDERS[provider]} />
-              </Grid>
-            );
-          })}
-        </Grid>
+        <SectionHeader text="Discover" icon="tributeButton" />
+        <Container className={classes.contentContainer}>
+          <Grid container>
+            {Object.keys(DISCOVERABLE_PROVIDERS).map(provider => {
+              return (
+                <Grid item key={provider}>
+                  <ProviderCard provider={DISCOVERABLE_PROVIDERS[provider]} />
+                </Grid>
+              );
+            })}
+          </Grid>
+        </Container>
       </Container>
     );
   };
