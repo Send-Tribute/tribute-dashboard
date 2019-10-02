@@ -9,7 +9,7 @@ import Sending from './Sending/Sending.js';
 import Wallet from './Wallet/Wallet.js';
 import Receiving from './Receiving/Receiving.js';
 import Settings from './Settings/Settings.js';
-import rToken from '../contracts/RToken';
+import rToken from '../contracts/rDai.json';
 
 import { TABS, CONTRACTS } from './helpers/constants';
 
