@@ -1,57 +1,103 @@
 
-export default class Tribute {
+import 'babel-polyfill';
+export default function Tribute (DAIContract, rDAIContract, provider) {
+    /*
+    +  RToken (IRToken, Ownable, ReentrancyGuard)
+    - [Pub] <Constructor> #
+    - [Ext] balanceOf
+    - [Ext] allowance
+    - [Ext] approve #
+    - [Ext] transfer #
+    - [Ext] transferAll #
+    - [Ext] transferAllFrom #
+    - [Ext] transferFrom #
+    - [Ext] mint #
+    - [Ext] mintWithSelectedHat #
+    - [Ext] mintWithNewHat #
+    - [Ext] redeem #
+    - [Ext] redeemAll #
+    - [Ext] redeemAndTransfer #
+    - [Ext] redeemAndTransferAll #
+    - [Ext] createHat #
+    - [Ext] changeHat #
+    - [Ext] getMaximumHatID
+    - [Ext] getHatByAddress
+    - [Ext] getHatByID
+    - [Ext] receivedSavingsOf
+    - [Ext] receivedLoanOf
+    - [Ext] interestPayableOf
+    - [Ext] payInterest #
+    - [Ext] getGlobalStats
+    - [Ext] getAccountStats
+    - [Ext] getCurrentSavingStrategy
+    - [Ext] getSavingAssetBalance
+    - [Ext] changeAllocationStrategy #
+    - [Int] transferInternal #
+    - [Int] mintInternal #
+    - [Int] redeemInternal #
+    - [Int] createHatInternal #
+    - [Int] changeHatInternal #
+    - [Int] getInterestPayableOf
+    - [Int] distributeLoans #
+    - [Int] estimateAndRecollectLoans #
+    - [Int] redeemAndRecollectLoans #
+    - [Int] recollectLoans #
+    - [Int] payInterestInternal #
+    */
 
-  construction(contract, provider) {
-    this.contract = contract;
+    this.DAIContract = DAIContract;
+    this.rDAIContract = rDAIContract;
     this.provider = provider;
     this.signer = provider.getSigner();
-  }
 
-  async generateUnallocatedTribute() {
-    //provided some amount generate more
-    //rDAI so that it can be allocated
-    await contract.mintAmount();
-  }
+    this.generateUnallocatedTribute = async (amountToTribute) => {
+        //provided some amount generate more
+        //rDAI so that it can be allocated
+        // amountToTribute to big number and in wei
 
-  async sendTribute() {
-    //begin flowing of tribute from an account to another account
-    await contract.createHat();
-  }
+        await this.DAIContract.approve();
+        await this.rDAIContract
+    }
 
-  async disableTribute() {
-    //stop flowing of tribute from an account to another account
-    //set hat back to 0 hat
-    await contract.setHat(0);
-  }
+    this.sendTribute = async () => {
+        // begin flowing of tribute from an account to another account
+        await contract.createHat();
+    }
 
-  async updateTributeAllocations() {
-    //this will add, remove, and modify existing amounts
-    //this will allow batch allocation updates
+    this.disableTribute = async () => {
+        //stop flowing of tribute from an account to another account
+        //set hat back to 0 hat
+        await contract.setHat(0);
+    }
 
-    let currentHat = await contract.getHatByAddress();
-    //get data from current hat
-    //do math to compute how much everybody else needs to be allocated
-    //create a new hat with MODS to the existing recipients
-    await contract.createHat();
-  }
+    this.updateTributeAllocations = () => {
+        //this will add, remove, and modify existing amounts
+        //this will allow batch allocation updates
 
-  async getIncomingTribute() {
-    //shows current amount of interest being generated against an account
-    await contract.interestPayableOf();
-  }
+        // let currentHat = await contract.getHatByAddress();
+        //get data from current hat
+        //do math to compute how much everybody else needs to be allocated
+        //create a new hat with MODS to the existing recipients
+        // await contract.createHat();
+    }
 
-  async claimTribute() {
-    //this cashes out all rDAI in both interest
-    //and principal and sends it back to the user
-    await contract.redeemAll();
-  }
+    this.getIncomingTribute = async () => {
+        //shows current amount of interest being generated against an account
+        await contract.interestPayableOf();
+    }
 
-  async isTributeFlowing(){
-    //if the account has a 0 hat then no tribute is flowing out
-    //
-    //NOTE: check if its possible to have no rDAI, 
-    //but allocate a hat and make it APPEAR like tribute is flowing
-  }
+    this.claimTribute = async () => {
+        //this cashes out all rDAI in both interest
+        //and principal and sends it back to the user
+        await contract.redeemAll();
+    }
+
+    this.isTributeFlowing = async () => {
+        //if the account has a 0 hat then no tribute is flowing out
+        //
+        //NOTE: check if its possible to have no rDAI, 
+        //but allocate a hat and make it APPEAR like tribute is flowing
+    }
 
 // TODO: work on these after other methods have been set
 //   function convertDaiRateToAllocation() {

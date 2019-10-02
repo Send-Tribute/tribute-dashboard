@@ -21,6 +21,7 @@
     "build-storybook": "build-storybook"
   },
   "dependencies": {
+    "babel-polyfill": "^6.26.0",
     "context": "^0.0.1",
     "ethers": "^4.0.37",
     "react": "^16.9.0",
