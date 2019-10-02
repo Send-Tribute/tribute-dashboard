@@ -5,10 +5,10 @@ import Tribute from './Tribute';
 
 import Footer from './Footer.js';
 import Header from './Header/Header.js';
-import Sending from './sending/Sending.js';
-import Wallet from './wallet/Wallet.js';
-import Receiving from './receiving/Receiving.js';
-import Settings from './settings/Settings.js';
+import Sending from './Sending/Sending.js';
+import Wallet from './Wallet/Wallet.js';
+import Receiving from './Receiving/Receiving.js';
+import Settings from './Settings/Settings.js';
 import rToken from '../contracts/RToken';
 
 import { TABS, CONTRACTS } from './helpers/general';

@@ -1,14 +1,6 @@
-import React from 'react';
-import {
-  AccountBalanceWallet,
-  Send,
-  CallReceived,
-  Settings
-} from '@material-ui/icons';
-
 export const TABS = {
   ordering: ['wallet', 'sending', 'receiving', 'settings'],
-  default: 'sending',
+  default: 'receiving',
   displayNames: {
     wallet: 'Wallet',
     sending: 'Sending',
@@ -16,10 +8,10 @@ export const TABS = {
     settings: 'Settings'
   },
   icons: {
-    wallet: <AccountBalanceWallet />,
-    sending: <Send />,
-    receiving: <CallReceived />,
-    settings: <Settings />
+    wallet: 'accountBalanceWallet',
+    sending: 'send',
+    receiving: 'callReceived',
+    settings: 'settings'
   }
 };
 
