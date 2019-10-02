@@ -6,9 +6,11 @@ export default function Tribute(contract, provider) {
   this.signer = provider.getSigner();
 
   async function generateTribute() {
+    await contract.mint();
   }
 
   async function disableTribute() {
+    await contract.redeemAll();
   }
 
   async function removeRecipient() {
@@ -24,6 +26,7 @@ export default function Tribute(contract, provider) {
   }
 
   async function getInterestPayable() {
+    await contract.interestPayableOf();
   }
 
   async function claimTribute() {
