@@ -53,22 +53,23 @@ export default class Tribute {
     //but allocate a hat and make it APPEAR like tribute is flowing
   }
 
-  function convertDaiRateToAllocation() {
-    //compute how much principal is needed for an interest rate and ideal payment
-    //4000 = 400/.10 => 4k is needed to generate 400 after a year
-    //
-    //helper method that is used to determine how much is needed in order to allocate
-  }
+// TODO: work on these after other methods have been set
+//   function convertDaiRateToAllocation() {
+//     //compute how much principal is needed for an interest rate and ideal payment
+//     //4000 = 400/.10 => 4k is needed to generate 400 after a year
+//     //
+//     //helper method that is used to determine how much is needed in order to allocate
+//   }
 
-  function convertRateToAllocation() {
-    //sounds like the exact same thing
-  }
+//   function convertRateToAllocation() {
+//     //sounds like the exact same thing
+//   }
 
-  function getLendingRate() {
-    //this seems like an oracle thing
-  }
+//   function getLendingRate() {
+//     //this seems like an oracle thing
+//   }
 
-  async generateReport() {
-    //get hat + interest accrued + time + other things
-  }
+//   async generateReport() {
+//     //get hat + interest accrued + time + other things
+//   }
 }
