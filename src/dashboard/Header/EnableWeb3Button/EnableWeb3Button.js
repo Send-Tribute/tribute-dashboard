@@ -10,12 +10,13 @@ export default function EnableWeb3Button() {
     let address = await window.ethereum.enable();
     setContext(state => {
       return Object.assign(
+        {},
         state,
         { isConnected: true },
         { address: address[0] }
       );
     });
-    console.log(context);
+    console.log("Wallet was Connected");
   }
 
   return (

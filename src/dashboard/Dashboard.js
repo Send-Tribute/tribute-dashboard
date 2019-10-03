@@ -27,6 +27,7 @@ export default function Dashboard() {
     if (context.address && context.address !== accounts[0]) {
        setContext(state => {
         return Object.assign(
+          {},
           state,
           { address: accounts[0] }
         );
@@ -53,6 +54,7 @@ export default function Dashboard() {
 
         setContext(state => {
           return Object.assign(
+            {},
             state,
             { tribute },
             { isConnected: false },
