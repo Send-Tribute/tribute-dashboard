@@ -19,6 +19,21 @@ export default function Dashboard() {
   const [context, setContext] = useContext(Context);
   const rDAIAddress = '0xea718e4602125407fafcb721b7d760ad9652dfe7';
   const DAIAddress = '0xbF7A7169562078c96f0eC1A8aFD6aE50f12e5A99';
+  let isConnected = false;
+  let user = {};
+
+  window.ethereum.on('accountsChanged', function (accounts) {
+    //should update context when user change is detected
+    if (context.address && context.address !== accounts[0]) {
+       setContext(state => {
+        return Object.assign(
+          state,
+          { address: accounts[0] }
+        );
+      });
+      console.log("Address was updated " + accounts[0]);
+    }
+  });
 
   useEffect(() => {
     try {
@@ -30,19 +45,18 @@ export default function Dashboard() {
         // Web3 browser user detected. You can now use the provider.
         // let walletProvider = window['ethereum'] || window.web3.currentProvider;
         let walletProvider = new ethers.providers.Web3Provider(window.web3.currentProvider);
-        
+
         // connect to contracts on the network
         const rDAIContract = new ethers.Contract(rDAIAddress, rDAIabi, walletProvider);
         const DAIContract = new ethers.Contract(DAIAddress, DAIabi, walletProvider);
         const tribute = new Tribute(DAIContract, rDAIContract, walletProvider);
 
-        const isConnected = true;
         setContext(state => {
           return Object.assign(
-            {},
+            state,
             { tribute },
-            { isConnected }
-            //{ userDetails }
+            { isConnected: false },
+            { provider: walletProvider }
           );
         });
       }

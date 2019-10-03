@@ -6,10 +6,20 @@ import { Button } from '@material-ui/core';
 export default function EnableWeb3Button() {
   const [context, setContext] = useContext(Context);
 
-  //TODO: request user to unlock wallet. Thoughts on using Block Native?
+  async function connectWallet() {
+    let address = await window.ethereum.enable();
+    setContext(state => {
+      return Object.assign(
+        state,
+        { isConnected: true },
+        { address: address[0] }
+      );
+    });
+    console.log(context);
+  }
 
   return (
-    <Button variant="contained" color="secondary">
+    <Button variant="contained" color="secondary" onClick={ connectWallet }>
       Enable Wallet
     </Button>
   );
