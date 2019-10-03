@@ -15,6 +15,8 @@ export default function EnableWeb3Button() {
   const [context, setContext] = useContext(Context);
 
   async function connectWallet() {
+
+    // 1. enable metamask
     let address = await window.ethereum.enable();
     console.log(`address ${address}`);
 
@@ -52,7 +54,7 @@ export default function EnableWeb3Button() {
             );
           });
 
-          tribute.disableTribute();
+          tribute.getRDAI(10);
         }
       } catch (error) {
             console.log('Web3 Loading Error: ', error.message);

@@ -1,5 +1,8 @@
 
 import 'babel-polyfill';
+import {ethers} from 'ethers';
+const {bigNumberify} = ethers.utils;
+const {WeiPerEther} = ethers.constants;
 export default function Tribute (DAIContract, rDAIContract, provider, address) {
     /*
     +  RToken (IRToken, Ownable, ReentrancyGuard)
@@ -49,6 +52,8 @@ export default function Tribute (DAIContract, rDAIContract, provider, address) {
     this.rDAIContract = rDAIContract;
     this.provider = provider;
     this.signer = provider.getSigner();
+    this.DAIContract = this.DAIContract.connect(this.signer);
+    this.rDAIContract = this.rDAIContract.connect(this.signer);
     this.address = address;
 
     this.generateUnallocatedTribute = async (amountToTribute) => {
@@ -60,6 +65,15 @@ export default function Tribute (DAIContract, rDAIContract, provider, address) {
         await this.rDAIContract
     }
 
+    this.getRDAI = async (amount) => {
+        console.log(amount);
+        console.log(bigNumberify(amount).mul(WeiPerEther));
+        console.log(rDAIContract.address);
+        await this.DAIContract.approve(rDAIContract.address, bigNumberify(amount).mul(WeiPerEther));
+        await this.rDAIContract.mint(bigNumberify(amount).mul(WeiPerEther));
+        await this.rDAIContract.getHatByAddress(this.address);
+    }
+
     this.sendTribute = async () => {
         // begin flowing of tribute from an account to another account
         await contract.createHat();
@@ -69,9 +83,9 @@ export default function Tribute (DAIContract, rDAIContract, provider, address) {
         //stop flowing of tribute from an account to another account
         //set hat back to 0 hat
         console.log(this.address)
-        this.rDAIContract = this.rDAIContract.connect(this.signer);
-        console.log(rDAIContract.getHatByAddress())
-        return await this.rDAIContract.changeHat(0);
+        console.log(ethers.utils.getAddress(this.address));
+        // console.log(await rDAIContract.getHatByAddress(this.address));
+        await this.rDAIContract.changeHat(0);
     }
 
     this.updateTributeAllocations = () => {

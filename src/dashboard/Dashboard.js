@@ -1,10 +1,6 @@
 import React, { useEffect, useContext } from 'react';
 import { Context } from './context';
 import { ethers } from 'ethers';
-import DAIabi from '../contracts/dai'; // 0xbF7A7169562078c96f0eC1A8aFD6aE50f12e5A99
-import rDAIabi from '../contracts/rDai'; // 0xea718e4602125407fafcb721b7d760ad9652dfe7
-import Tribute from './Tribute';
-
 import Footer from './Footer.js';
 import Header from './Header/Header.js';
 import Sending from './Sending/Sending.js';
