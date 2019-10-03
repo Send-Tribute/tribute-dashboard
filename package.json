@@ -35,13 +35,14 @@
     }
   },
   "dependencies": {
-    "@material-ui/core": "^4.0.0",
+    "@material-ui/core": "^4.5.0",
     "@material-ui/icons": "^4.4.3",
+    "babel-polyfill": "^6.26.0",
     "context": "^0.0.1",
     "ethers": "^4.0.37",
     "node-jq": "^1.10.3",
     "prop-types": "^15.7.2",
-    "react": "^16.8.0",
+    "react": ">=15",
     "react-dom": "^16.8.0",
     "react-jss": "^10.0.0"
   },
