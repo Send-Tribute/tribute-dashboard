@@ -67,7 +67,9 @@ export default function Tribute (DAIContract, rDAIContract, provider) {
     this.disableTribute = async () => {
         //stop flowing of tribute from an account to another account
         //set hat back to 0 hat
-        await contract.setHat(0);
+       
+        this.rDAIContract = this.rDAIContract.connect(this.signer);
+        await this.rDAIContract.changeHat(0);
     }
 
     this.updateTributeAllocations = () => {

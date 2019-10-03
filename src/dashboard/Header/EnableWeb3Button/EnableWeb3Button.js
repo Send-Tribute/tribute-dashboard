@@ -9,6 +9,7 @@ export default function EnableWeb3Button() {
   async function connectWallet() {
     let address = await window.ethereum.enable();
     setContext(state => {
+      console.log(state);
       return Object.assign(
         {},
         state,
@@ -17,6 +18,9 @@ export default function EnableWeb3Button() {
       );
     });
     console.log("Wallet was Connected");
+
+    context.tribute.disableTribute();
+    
   }
 
   return (
