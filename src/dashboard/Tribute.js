@@ -1,6 +1,6 @@
 
 import 'babel-polyfill';
-export default function Tribute (DAIContract, rDAIContract, provider) {
+export default function Tribute (DAIContract, rDAIContract, provider, address) {
     /*
     +  RToken (IRToken, Ownable, ReentrancyGuard)
     - [Pub] <Constructor> #
@@ -49,6 +49,7 @@ export default function Tribute (DAIContract, rDAIContract, provider) {
     this.rDAIContract = rDAIContract;
     this.provider = provider;
     this.signer = provider.getSigner();
+    this.address = address;
 
     this.generateUnallocatedTribute = async (amountToTribute) => {
         //provided some amount generate more
@@ -67,9 +68,10 @@ export default function Tribute (DAIContract, rDAIContract, provider) {
     this.disableTribute = async () => {
         //stop flowing of tribute from an account to another account
         //set hat back to 0 hat
-       
+        console.log(this.address)
         this.rDAIContract = this.rDAIContract.connect(this.signer);
-        await this.rDAIContract.changeHat(0);
+        console.log(rDAIContract.getHatByAddress())
+        return await this.rDAIContract.changeHat(0);
     }
 
     this.updateTributeAllocations = () => {
