@@ -153,11 +153,63 @@ export default function Tribute (DAIContract, rDAIContract, provider, address) {
         })
         await this.rDAIContract.createHat(newRecipients,newProportions, true);
     }
-    // should take out an address for a hat
-    this.endTribute = async (address) => {
-        // begin flowing of tribute from an account to another account
-        await contract.createHat();
-    }
+
+    this.endTribute = async address => {
+      // begin flowing of tribute from an account to another account
+
+      // TODO: validate recipientAddress
+
+      const currentHat = await this.rDAIContract.getHatByAddress(this.address[0]);
+      // get user balance
+      const balanceBigNumber = await this.rDAIContract.balanceOf(this.address[0]);
+      const balance = balanceBigNumber.div(WeiPerEther).toNumber();
+      if (currentHat.proportions.length < 1) throw "You don't have any Tribute";
+      // calculate the current proportions in units of Tribute
+      const proportionsSum = currentHat.proportions.reduce(
+        (accl, value) => accl + value
+      );
+      const proportionsInTribute = currentHat.proportions.map(portion => {
+        return (portion / proportionsSum) * balance;
+      });
+      console.log('Current hat: ', currentHat.recipients, currentHat.proportions);
+
+      // Get a searcheable lowercase recipient list
+      const recipientsLowerCase = currentHat.recipients.map(a => a.toLowerCase());
+
+      // Create the new values
+      let newProportions = currentHat.proportions
+      let newRecipients = recipientsLowerCase;
+
+      // Check if the recipient is included in the hat
+      const removeAddressIndex = recipientsLowerCase.indexOf(address.toLowerCase());
+      if (removeAddressIndex < 0) {
+        throw 'You are not sending any Tribute to this address.'
+      }
+
+      // If so, remove the recipient from the new hat
+      newRecipients.splice(removeAddressIndex, 1);
+
+      // Add user to new hat if necessary
+      let selfIndex = recipientsLowerCase.indexOf(this.address[0].toLowerCase());
+      if (selfIndex < 0) {
+        newRecipients.push(this.address[0]);
+        selfIndex = newRecipients.length - 1;
+      }
+
+
+      // Get the removed address proportions
+      const removeAddressProportion = currentHat.proportions[removeAddressIndex]
+      console.log(removeAddressProportion);
+      // Increase the proportion of user by amount
+      newProportions[selfIndex] += removeAddressProportion;
+
+      // Remove the proportion from the new hat
+      newProportions.splice(removeAddressIndex,1)
+
+      console.log('New hat (proportion): ', newRecipients, newProportions);
+
+      await this.rDAIContract.createHat(newRecipients, newProportions, true);
+    };
 
     // Claiming Tribute functions
 
