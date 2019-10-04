@@ -1,7 +1,8 @@
 .cache/
 dist/
 node_modules/
-src/contracts/
+src/contracts/*
 *.swp
 yarn-error.log
 *.notes.*
+package-lock.json
