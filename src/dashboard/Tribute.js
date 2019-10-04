@@ -1,7 +1,7 @@
 
 import 'babel-polyfill';
 import {ethers} from 'ethers';
-const {bigNumberify} = ethers.utils;
+const {bigNumberify, toNumber} = ethers.utils;
 const {WeiPerEther, Zero} = ethers.constants;
 
 export default function Tribute (DAIContract, rDAIContract, provider, address) {
