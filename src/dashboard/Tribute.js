@@ -1,7 +1,7 @@
 
 import 'babel-polyfill';
 import {ethers} from 'ethers';
-const {bigNumberify} = ethers.utils;
+const {bigNumberify, toNumber} = ethers.utils;
 const {WeiPerEther} = ethers.constants;
 
 export default function Tribute (DAIContract, rDAIContract, provider, address) {
@@ -92,7 +92,7 @@ export default function Tribute (DAIContract, rDAIContract, provider, address) {
         console.log(output);
     }
 
-    // send and end 
+    // send and end
     this.sendTribute = async (address) => {
         // begin flowing of tribute from an account to another account
         await contract.createHat();
@@ -102,16 +102,37 @@ export default function Tribute (DAIContract, rDAIContract, provider, address) {
         // begin flowing of tribute from an account to another account
         await contract.createHat();
     }
-    
-    // calling pay interest payable of and converting to rdai
-    // you can claim for others
-    // maybe another function claimonbehalfof
-    // come up with another function for other people
+
+    // Claiming Tribute functions
+
+    // Get the amount of unclaimed tribute
+    this.getUnclaimedTribute = async () => {
+      const response = await this.rDAIContract.interestPayableOf(this.address[0])
+      const output = response.div(WeiPerEther).toNumber()
+      return output
+    }
+
+    // Get the amount of unclaimed tribute
+    this.getUnclaimedTributeOnBehalfOf = async (address) => {
+      const response = await this.rDAIContract.interestPayableOf(address)
+      const output = response.div(WeiPerEther).toNumber()
+      return output
+    }
+
+    // calling interest payable of and converting to rdai
     this.claimTribute = async () => {
         //this cashes out all rDAI in both interest
         //and principal and sends it back to the user
-        await contract.redeemAll();
+        await this.rDAIContract.payInterest(this.address[0]);
     }
+
+    // calling pay interest payable of and converting to rdai
+    this.claimTributeOnBehalfOf = async (address) => {
+        //this cashes out all rDAI in both interest
+        //and principal and sends it back to the user
+        await this.rDAIContract.payInterest(address);
+    }
+
 
 // TODO: work on these after other methods have been set
 
