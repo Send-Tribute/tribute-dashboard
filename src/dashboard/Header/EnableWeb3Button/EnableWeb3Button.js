@@ -1,14 +1,13 @@
 import React, { useContext } from 'react';
-import {ethers} from 'ethers';
+import { ethers } from 'ethers';
 import { Context } from '../../context';
 import { TABS } from '../../helpers/constants';
 import { Button } from '@material-ui/core';
-import DAIabi from '../../../contracts/dai'; // 0xbF7A7169562078c96f0eC1A8aFD6aE50f12e5A99
-import rDAIabi from '../../../contracts/rDai'; // 0xea718e4602125407fafcb721b7d760ad9652dfe7
+import { CONTRACTS } from '../../helpers/constants';
+import DAIabi from '../../../contracts/dai'; 
+import rDAIabi from '../../../contracts/rDai';
 import Tribute from '../../Tribute';
 
-const rDAIAddress = '0xea718e4602125407fafcb721b7d760ad9652dfe7';
-const DAIAddress = '0xbF7A7169562078c96f0eC1A8aFD6aE50f12e5A99';
 let isConnected = false;
 
 export default function EnableWeb3Button() {
@@ -40,8 +39,8 @@ export default function EnableWeb3Button() {
           let walletProvider = new ethers.providers.Web3Provider(window.web3.currentProvider);
 
           // connect to contracts on the network
-          const rDAIContract = new ethers.Contract(rDAIAddress, rDAIabi, walletProvider);
-          const DAIContract = new ethers.Contract(DAIAddress, DAIabi, walletProvider);
+          const rDAIContract = new ethers.Contract(CONTRACTS.rtoken.kovan, rDAIabi, walletProvider);
+          const DAIContract = new ethers.Contract(CONTRACTS.dai.kovan, DAIabi, walletProvider);
           const tribute = new Tribute(DAIContract, rDAIContract, walletProvider, address);
 
           setContext(state => {
@@ -53,7 +52,7 @@ export default function EnableWeb3Button() {
               { provider: walletProvider }
             );
           });
-
+          
         }
       } catch (error) {
             console.log('Web3 Loading Error: ', error.message);

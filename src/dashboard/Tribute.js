@@ -1,54 +1,10 @@
-
 import 'babel-polyfill';
 import {ethers} from 'ethers';
 const {bigNumberify, toNumber} = ethers.utils;
 const {WeiPerEther} = ethers.constants;
 
 export default function Tribute (DAIContract, rDAIContract, provider, address) {
-    /*
-    +  RToken (IRToken, Ownable, ReentrancyGuard)
-    - [Pub] <Constructor> #
-    - [Ext] balanceOf
-    - [Ext] allowance
-    - [Ext] approve #
-    - [Ext] transfer #
-    - [Ext] transferAll #
-    - [Ext] transferAllFrom #
-    - [Ext] transferFrom #
-    - [Ext] mint #
-    - [Ext] mintWithSelectedHat #
-    - [Ext] mintWithNewHat #
-    - [Ext] redeem #
-    - [Ext] redeemAll #
-    - [Ext] redeemAndTransfer #
-    - [Ext] redeemAndTransferAll #
-    - [Ext] createHat #
-    - [Ext] changeHat #
-    - [Ext] getMaximumHatID
-    - [Ext] getHatByAddress
-    - [Ext] getHatByID
-    - [Ext] receivedSavingsOf
-    - [Ext] receivedLoanOf
-    - [Ext] interestPayableOf
-    - [Ext] payInterest #
-    - [Ext] getGlobalStats
-    - [Ext] getAccountStats
-    - [Ext] getCurrentSavingStrategy
-    - [Ext] getSavingAssetBalance
-    - [Ext] changeAllocationStrategy #
-    - [Int] transferInternal #
-    - [Int] mintInternal #
-    - [Int] redeemInternal #
-    - [Int] createHatInternal #
-    - [Int] changeHatInternal #
-    - [Int] getInterestPayableOf
-    - [Int] distributeLoans #
-    - [Int] estimateAndRecollectLoans #
-    - [Int] redeemAndRecollectLoans #
-    - [Int] recollectLoans #
-    - [Int] payInterestInternal #
-    */
-
+    
     this.DAIContract = DAIContract;
     this.rDAIContract = rDAIContract;
     this.provider = provider;
@@ -214,7 +170,6 @@ export default function Tribute (DAIContract, rDAIContract, provider, address) {
         selfIndex = newRecipients.length - 1;
       }
 
-
       // Get the removed address proportions
       const removeAddressProportion = currentHat.proportions[removeAddressIndex]
       console.log(removeAddressProportion);
@@ -258,26 +213,4 @@ export default function Tribute (DAIContract, rDAIContract, provider, address) {
         //and principal and sends it back to the user
         await this.rDAIContract.payInterest(address);
     }
-
-
-// TODO: work on these after other methods have been set
-
-//   function convertDaiRateToAllocation() {
-//     //compute how much principal is needed for an interest rate and ideal payment
-//     //4000 = 400/.10 => 4k is needed to generate 400 after a year
-//     //
-//     //helper method that is used to determine how much is needed in order to allocate
-//   }
-
-//   function convertRateToAllocation() {
-//     //sounds like the exact same thing
-//   }
-
-//   function getLendingRate() {
-//     //this seems like an oracle thing
-//   }
-
-//   async generateReport() {
-//     //get hat + interest accrued + time + other things
-//   }
 }
