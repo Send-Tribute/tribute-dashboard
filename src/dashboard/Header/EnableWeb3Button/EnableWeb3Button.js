@@ -54,7 +54,6 @@ export default function EnableWeb3Button() {
             );
           });
 
-          tribute.getUnclaimedTribute();
         }
       } catch (error) {
             console.log('Web3 Loading Error: ', error.message);
