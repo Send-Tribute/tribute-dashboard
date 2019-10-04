@@ -50,19 +50,6 @@ export default function Tribute (DAIContract, rDAIContract, provider, address) {
         await rDAIContract.redeemAll();
     }
 
-    // this function mints rDAI to your account
-    this.getRDAI = async (amount) => {
-        console.log(amount);
-        console.log(bigNumberify(amount).mul(WeiPerEther));
-        console.log(rDAIContract.address);
-        // what happens when approval works but mint gets dropped
-        await this.DAIContract.approve(rDAIContract.address, bigNumberify(amount).mul(WeiPerEther));
-        // dont call newhat
-        await this.rDAIContract.mint(bigNumberify(amount).mul(WeiPerEther));
-        let output = await this.rDAIContract.getHatByAddress(this.address);
-        console.log(output);
-    }
-
     // send and end
     this.sendTribute = async (recipientAddress, amount) => {
         // begin flowing of tribute from an account to another account
@@ -110,7 +97,6 @@ export default function Tribute (DAIContract, rDAIContract, provider, address) {
 
         // Scenario 2: Recipient is already icluded in the hat
         // TODO: de-scoped for demo. until then, call endTribute to first remove the recipient from the hat before adding them back with the new amount.
-
 
         // Set the new hat
         let greatestSize = 0

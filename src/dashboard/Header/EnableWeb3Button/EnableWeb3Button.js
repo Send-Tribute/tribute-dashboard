@@ -14,7 +14,6 @@ export default function EnableWeb3Button() {
   const [context, setContext] = useContext(Context);
 
   async function connectWallet() {
-
     // 1. enable metamask
     let address = await window.ethereum.enable();
     console.log(`address ${address}`);
@@ -33,9 +32,6 @@ export default function EnableWeb3Button() {
           typeof window.ethereum !== 'undefined' ||
           typeof window.web3 !== 'undefined'
         ) {
-          console.log(window.web3.version);
-          // Web3 browser user detected. You can now use the provider.
-          // let walletProvider = window['ethereum'] || window.web3.currentProvider;
           let walletProvider = new ethers.providers.Web3Provider(window.web3.currentProvider);
 
           // connect to contracts on the network
