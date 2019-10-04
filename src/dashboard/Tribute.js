@@ -103,6 +103,9 @@ export default function Tribute (DAIContract, rDAIContract, provider, address) {
         const balanceBigNumber = await  this.rDAIContract.balanceOf(this.address[0])
         const balance = balanceBigNumber.div(WeiPerEther).toNumber()
 
+        // Check if the user has a hat
+        if (currentHat.proportions.length < 1) throw "You don't have any Tribute";
+
         // calculate the current proportions in units of Tribute
         const proportionsSum = currentHat.proportions.reduce((accl, value)=>accl+value)
         const proportionsInTribute = currentHat.proportions.map(portion=>{
@@ -111,7 +114,7 @@ export default function Tribute (DAIContract, rDAIContract, provider, address) {
         console.log("Current hat: ",currentHat.recipients,proportionsInTribute);
 
         // Get a searcheable lowercase recipient list
-      const recipientsLowerCase = currentHat.recipients.map(a=>a.toLowerCase())
+        const recipientsLowerCase = currentHat.recipients.map(a=>a.toLowerCase())
 
         // Check if the user has enough unallocated Tribute
         const selfIndex=recipientsLowerCase.indexOf(this.address[0].toLowerCase())
