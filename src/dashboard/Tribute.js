@@ -93,15 +93,126 @@ export default function Tribute (DAIContract, rDAIContract, provider, address) {
     }
 
     // send and end
-    this.sendTribute = async (address) => {
+    this.sendTribute = async (recipientAddress, amount) => {
         // begin flowing of tribute from an account to another account
-        await contract.createHat();
+
+        // TODO: validate recipientAddress
+
+        const currentHat = await this.rDAIContract.getHatByAddress(this.address[0])
+        // get user balance
+        const balanceBigNumber = await  this.rDAIContract.balanceOf(this.address[0])
+        const balance = balanceBigNumber.div(WeiPerEther).toNumber()
+
+        // Check if the user has a hat
+        if (currentHat.proportions.length < 1) throw "You don't have any Tribute";
+
+        // calculate the current proportions in units of Tribute
+        const proportionsSum = currentHat.proportions.reduce((accl, value)=>accl+value)
+        const proportionsInTribute = currentHat.proportions.map(portion=>{
+          return portion / proportionsSum * balance
+        })
+        console.log("Current hat: ",currentHat.recipients,proportionsInTribute);
+
+        // Get a searcheable lowercase recipient list
+        const recipientsLowerCase = currentHat.recipients.map(a=>a.toLowerCase())
+
+        // Check if the user has enough unallocated Tribute
+        const selfIndex=recipientsLowerCase.indexOf(this.address[0].toLowerCase())
+        if(selfIndex<0) throw "Not enough unallocated tribute. You have 0 unallocated Tribute available"
+        const unallocatedTribute = proportionsInTribute[selfIndex]
+        if (unallocatedTribute < amount) throw `Not enough unallocated tribute. You have ${unallocatedTribute} unallocated Tribute available`
+        console.log("Unallocated tribute: ",unallocatedTribute);
+
+        // Create the new values
+        let newProportionsInTribute = proportionsInTribute
+        let newRecipients = recipientsLowerCase
+
+        // Scenario 1: Recipient is not already included in the hat
+        if (!newRecipients.includes(recipientAddress.toLowerCase())){
+          newRecipients.push(recipientAddress.toLowerCase())
+          // Increase the proportion of the recipient by amount
+          newProportionsInTribute[newRecipients.length-1] = amount;
+          // Decrease the proportion of user by amount
+          newProportionsInTribute[selfIndex] -= amount;
+        }
+        console.log("New hat: ",newRecipients,newProportionsInTribute);
+
+        // Scenario 2: Recipient is already icluded in the hat
+        // TODO: de-scoped for demo. until then, call endTribute to first remove the recipient from the hat before adding them back with the new amount.
+
+
+        // Set the new hat
+        let greatestSize = 0
+        newProportionsInTribute.forEach(portion=>{
+          const integer = portion.toString().split('.')[0]
+          if (integer){
+            if(integer.length > greatestSize) greatestSize = integer.length
+          }
+        })
+        const MAX_SIZE = 9 // Must be uint32 e.g. less than 4,294,967,295
+        const decimalMultiplier = MAX_SIZE - greatestSize
+        const newProportions = newProportionsInTribute.map(portion=>{
+          return Math.trunc(portion*Math.pow(10, decimalMultiplier))
+        })
+        await this.rDAIContract.createHat(newRecipients,newProportions, true);
     }
-    // should take out an address for a hat
-    this.endTribute = async (address) => {
-        // begin flowing of tribute from an account to another account
-        await contract.createHat();
-    }
+
+    this.endTribute = async address => {
+      // begin flowing of tribute from an account to another account
+
+      // TODO: validate recipientAddress
+
+      const currentHat = await this.rDAIContract.getHatByAddress(this.address[0]);
+      // get user balance
+      const balanceBigNumber = await this.rDAIContract.balanceOf(this.address[0]);
+      const balance = balanceBigNumber.div(WeiPerEther).toNumber();
+      if (currentHat.proportions.length < 1) throw "You don't have any Tribute";
+      // calculate the current proportions in units of Tribute
+      const proportionsSum = currentHat.proportions.reduce(
+        (accl, value) => accl + value
+      );
+      const proportionsInTribute = currentHat.proportions.map(portion => {
+        return (portion / proportionsSum) * balance;
+      });
+      console.log('Current hat: ', currentHat.recipients, currentHat.proportions);
+
+      // Get a searcheable lowercase recipient list
+      const recipientsLowerCase = currentHat.recipients.map(a => a.toLowerCase());
+
+      // Create the new values
+      let newProportions = currentHat.proportions
+      let newRecipients = recipientsLowerCase;
+
+      // Check if the recipient is included in the hat
+      const removeAddressIndex = recipientsLowerCase.indexOf(address.toLowerCase());
+      if (removeAddressIndex < 0) {
+        throw 'You are not sending any Tribute to this address.'
+      }
+
+      // If so, remove the recipient from the new hat
+      newRecipients.splice(removeAddressIndex, 1);
+
+      // Add user to new hat if necessary
+      let selfIndex = recipientsLowerCase.indexOf(this.address[0].toLowerCase());
+      if (selfIndex < 0) {
+        newRecipients.push(this.address[0]);
+        selfIndex = newRecipients.length - 1;
+      }
+
+
+      // Get the removed address proportions
+      const removeAddressProportion = currentHat.proportions[removeAddressIndex]
+      console.log(removeAddressProportion);
+      // Increase the proportion of user by amount
+      newProportions[selfIndex] += removeAddressProportion;
+
+      // Remove the proportion from the new hat
+      newProportions.splice(removeAddressIndex,1)
+
+      console.log('New hat (proportion): ', newRecipients, newProportions);
+
+      await this.rDAIContract.createHat(newRecipients, newProportions, true);
+    };
 
     // Claiming Tribute functions
 
