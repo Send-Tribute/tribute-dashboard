@@ -17,6 +17,7 @@ import wallet from '../assets/wallet.png';
 import kyber from '../assets/kyber.png';
 import coinbase from '../assets/coinbase.png';
 import wyre from '../assets/wyre.png';
+import qr from '../assets/qr.png';
 import {
   Cached,
   AccountBalanceWallet,
@@ -113,5 +114,9 @@ export const ICONS = {
   wyre: {
     type: 'image',
     src: wyre
+  },
+  qr: {
+    type: 'image',
+    src: qr
   }
 };
