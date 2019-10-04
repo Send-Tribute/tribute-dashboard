@@ -46,6 +46,14 @@ const useStyles = createUseStyles({
 const Receiving = () => {
   const [context, setContext] = useContext(Context);
   const classes = useStyles();
+  const {userDetails} = context
+
+  let selfTribute = "(enable wallet) "
+  let unclaimedTribute = "(enable wallet) "
+  if (userDetails) {
+    selfTribute = Math.trunc(userDetails.unallocatedTribute);
+    unclaimedTribute = userDetails.unclaimedTribute;
+  }
 
   const getSelfTribute = () => {
     return (
@@ -54,7 +62,7 @@ const Receiving = () => {
         <Container className={classes.contentContainer}>
           <Paper elevation={5} className={classes.unclaimedTributeContainer}>
             <Typography variant="body1">
-              <b>450</b>{' '}
+              <b>{selfTribute}</b>{' '}
               <Icon name="baseCurrency" className={classes.baseCurrencyIcon} />{' '}
               from your principal are generating interest for you.
             </Typography>
@@ -83,7 +91,7 @@ const Receiving = () => {
           />
           <Paper elevation={5} className={classes.unclaimedTributeContainer}>
             <Typography variant="body1">
-              Ready to claim: <b>344</b>{' '}
+              Ready to claim: <b>{unclaimedTribute}</b>{' '}
               <Icon name="baseCurrency" className={classes.baseCurrencyIcon} />
             </Typography>
 

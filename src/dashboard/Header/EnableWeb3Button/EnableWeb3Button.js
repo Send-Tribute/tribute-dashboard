@@ -43,18 +43,18 @@ export default function EnableWeb3Button() {
           const rDAIContract = new ethers.Contract(rDAIAddress, rDAIabi, walletProvider);
           const DAIContract = new ethers.Contract(DAIAddress, DAIabi, walletProvider);
           const tribute = new Tribute(DAIContract, rDAIContract, walletProvider, address);
-
+          const userDetails = await tribute.getTributes()
+          console.log(userDetails) ;
           setContext(state => {
             return Object.assign(
               {},
               state,
               { tribute },
+              { userDetails },
               { isConnected: false },
               { provider: walletProvider }
             );
           });
-
-          tribute.getUnclaimedTribute();
         }
       } catch (error) {
             console.log('Web3 Loading Error: ', error.message);

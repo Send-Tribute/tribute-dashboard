@@ -74,7 +74,7 @@ export default function Tribute (DAIContract, rDAIContract, provider, address) {
             // if we're on zero hat we simply set a new hat
             await rDAIContract.mintWithNewHat(mintamount, recipients, proportions);
         } else {
-            // TODO: check if the first address is the users address. 
+            // TODO: check if the first address is the users address.
             // Otherwise the hat was not made by us and we need to fix the hat
 
             const proportionsSum = currentHat.proportions.reduce((accl, value) => accl + value);
@@ -105,6 +105,46 @@ export default function Tribute (DAIContract, rDAIContract, provider, address) {
         await this.rDAIContract.mint(bigNumberify(amount).mul(WeiPerEther));
         let output = await this.rDAIContract.getHatByAddress(this.address);
         console.log(output);
+    }
+
+    this.getTributes = async () => {
+      const currentHat = await this.rDAIContract.getHatByAddress(this.address[0])
+      // get user balance
+      const balanceBigNumber = await  this.rDAIContract.balanceOf(this.address[0])
+      const balance = balanceBigNumber.div(WeiPerEther).toNumber()
+      // Check if the user has a hat
+      if (currentHat.proportions.length < 1) throw "You don't have any Tribute";
+
+      // calculate the current proportions in units of Tribute
+      const proportionsSum = currentHat.proportions.reduce((accl, value)=>accl+value)
+      const proportionsInTribute = currentHat.proportions.map(portion=>{
+        return portion / proportionsSum * balance
+      })
+      console.log("Current hat: ",currentHat.recipients,proportionsInTribute);
+
+      // Get a searcheable lowercase recipient list
+      const recipientsLowerCase = currentHat.recipients.map(a=>a.toLowerCase())
+
+      // Check if the user has unallocated Tribute
+      const selfIndex=recipientsLowerCase.indexOf(this.address[0].toLowerCase())
+      const unallocatedTribute = proportionsInTribute[selfIndex]
+
+      // Remove the user from the arrays
+      const activeRecipients = currentHat.recipients.splice(selfIndex,1)
+      const activeTributeAmounts = proportionsInTribute.splice(selfIndex,1)
+
+      // Get unclaimed tribute - copy of getUnclaimedTribute()
+      let unclaimedTribute = await this.rDAIContract.interestPayableOf(this.address[0])
+      console.log("Unlcaimed rDAI: ",unclaimedTribute);
+      unclaimedTribute = unclaimedTribute.div(WeiPerEther).toNumber()
+      return {
+        activeTributes: {
+          recipients: activeRecipients,
+          tributeAmounts: activeTributeAmounts,
+        },
+        unallocatedTribute,
+        unclaimedTribute
+      }
     }
 
     // send and end
