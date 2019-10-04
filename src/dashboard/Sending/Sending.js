@@ -1,14 +1,7 @@
-import React, { useContext } from 'react';
-import { Context } from '../context';
-import {
-  Grid,
-  Typography,
-  Container,
-  Divider,
-  Paper,
-  Button
-} from '@material-ui/core';
+import React, { useContext, useState } from 'react';
+import { Container, Divider, Button, Grid, TextField } from '@material-ui/core';
 import { createUseStyles } from 'react-jss';
+import { Context } from '../context';
 import { Icon, CustomTable, ProviderCard, SectionHeader } from '../general';
 import { getEtherscanLink } from '../helpers/utils';
 
@@ -19,7 +12,8 @@ const useStyles = createUseStyles({
     paddingTop: 20
   },
   contentContainer: {
-    paddingTop: 10
+    paddingTop: 10,
+    justifyContent: 'center'
   },
   headerImage: {
     height: 40,
@@ -54,14 +48,27 @@ const useStyles = createUseStyles({
   buttonIcon: {
     height: 25,
     paddingRight: 10
+  },
+  addressInputContainer: {
+    display: 'flex',
+    margin: '10px 0 15px 0'
+  },
+  sendTributeButton: {
+    padding: 10
   }
 });
 
 const Sending = () => {
-  const [context, setContext] = useContext(Context);
+  const [context] = useContext(Context);
   const classes = useStyles();
+  const [values, setValues] = useState({
+    address: '',
+    amount: ''
+  });
 
-  const redeemTribute = () => {};
+  const handleChange = name => event => {
+    setValues({ ...values, [name]: event.target.value });
+  };
 
   const getActiveTributes = () => {
     return (
@@ -130,11 +137,53 @@ const Sending = () => {
     );
   };
 
+  const getSocialTributes = () => {
+    return (
+      <Container className={classes.container}>
+        <SectionHeader text="Send Tribute" icon="tributeButton" />
+        <Container className={classes.contentContainer}>
+          <div className={classes.addressInputContainer}>
+            <TextField
+              variant="outlined"
+              label="Address"
+              value={values.address}
+              onChange={handleChange('address')}
+            />
+            <Button variant="contained">
+              <Icon name="qr" className={classes.buttonIcon} />
+              Scan
+            </Button>
+          </div>
+          <TextField
+            variant="outlined"
+            label="Amount"
+            value={values.amount}
+            onChange={handleChange('amount')}
+          />
+          <Button
+            onClick={() =>
+              context.tribute.sendTribute(values.address, values.amount)
+            }
+            size="large"
+            type="submit"
+            variant="outlined"
+            color="primary"
+            className={classes.sendTributeButton}
+          >
+            <Icon name="logo" className={classes.buttonIcon} />
+            Send Tribute
+          </Button>
+        </Container>
+      </Container>
+    );
+  };
+
   return (
     <div>
       {getActiveTributes()}
       {getInactiveTributes()}
       {getDiscoverTributes()}
+      {getSocialTributes()}
     </div>
   );
 };
