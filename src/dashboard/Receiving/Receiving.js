@@ -47,8 +47,6 @@ const Receiving = () => {
   const [context, setContext] = useContext(Context);
   const classes = useStyles();
 
-  const redeemTribute = () => {};
-
   const getSelfTribute = () => {
     return (
       <Container className={classes.container}>
@@ -85,19 +83,19 @@ const Receiving = () => {
           />
           <Paper elevation={5} className={classes.unclaimedTributeContainer}>
             <Typography variant="body1">
-              Ready to redeem: <b>344</b>{' '}
+              Ready to claim: <b>344</b>{' '}
               <Icon name="baseCurrency" className={classes.baseCurrencyIcon} />
             </Typography>
 
             <div>
               <Button
-                onClick={redeemTribute()}
+                onClick={() => context.tribute.claimTribute()}
                 variant="contained"
                 color="primary"
                 className={classes.redeemButton}
               >
                 <Icon name="receiveMoney" className={classes.buttonIcon} />
-                Redeem
+                Claim
               </Button>
             </div>
           </Paper>

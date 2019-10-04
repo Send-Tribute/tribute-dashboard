@@ -38,12 +38,12 @@ export default function EnableWeb3Button() {
           // Web3 browser user detected. You can now use the provider.
           // let walletProvider = window['ethereum'] || window.web3.currentProvider;
           let walletProvider = new ethers.providers.Web3Provider(window.web3.currentProvider);
-  
+
           // connect to contracts on the network
           const rDAIContract = new ethers.Contract(rDAIAddress, rDAIabi, walletProvider);
           const DAIContract = new ethers.Contract(DAIAddress, DAIabi, walletProvider);
           const tribute = new Tribute(DAIContract, rDAIContract, walletProvider, address);
-  
+
           setContext(state => {
             return Object.assign(
               {},
@@ -54,7 +54,7 @@ export default function EnableWeb3Button() {
             );
           });
 
-          tribute.getRDAI(10);
+          tribute.getUnclaimedTribute();
         }
       } catch (error) {
             console.log('Web3 Loading Error: ', error.message);
