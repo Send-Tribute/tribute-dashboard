@@ -2,7 +2,7 @@
 import 'babel-polyfill';
 import {ethers} from 'ethers';
 const {bigNumberify} = ethers.utils;
-const {WeiPerEther} = ethers.constants;
+const {WeiPerEther, Zero} = ethers.constants;
 
 export default function Tribute (DAIContract, rDAIContract, provider, address) {
     /*
@@ -57,26 +57,41 @@ export default function Tribute (DAIContract, rDAIContract, provider, address) {
     this.rDAIContract = this.rDAIContract.connect(this.signer);
     this.address = address;
 
-    // [you are in first]
+    // [you are in first] in hat allocations, this never changes
     // every time the pricipal changes we make a new hat
     // add more rdai to your account while updating you hat
     this.generateTribute = async (amountToTribute) => {
-        //provided some amount generate more
-        //rDAI so that it can be allocated
-        // amountToTribute to big number and in wei
+        let bignumberAmount = bigNumberify(amountToTribute).mul(WeiPerEther)
+        await this.DAIContract.approve(rDAIContract.address, bignumberAmount);
 
-        await this.DAIContract.approve();
-        await this.rDAIContract
+        let rDAIbalanceBigNumber = await this.rDAIContract.balanceOf(this.address[0]);
+        let balance = rDAIbalanceBigNumber.div(WeiPerEther).toNumber();
+
+        let currentHat = await this.rDAIContract.getHatByAddress(this.address[0]);
+
+        // check for zero hat Self hat also gives you a zero hat
+        if (currentHat.hatID.isZero()) {
+            // if we're on zero hat we simply set a new hat
+            await rDAIContract.mintWithNewHat(mintamount, recipients, proportions);
+        } else {
+            // TODO: check if the first address is the users address. 
+            // Otherwise the hat was not made by us and we need to fix the hat
+
+            const proportionsSum = currentHat.proportions.reduce((accl, value) => accl + value);
+            // assuming that hat has users address in first slot
+            let proportionsInTribute = currentHat.proportions.map(portion => {
+                return portion / proportionsSum * balance;
+            });
+            // add to user slot
+            proportionsInTribute[0] += amountToTribute;
+
+            await this.rDAIContract.mintWithNewHat(bignumberAmount, currentHat.recipients, proportionsInTribute);
+        }
     }
 
     // reedemm all your rdai to dai
-    this.disableTribute = async (addressToDisable) => {
-        //stop flowing of tribute from an account to another account
-        //set hat back to 0 hat
-        console.log(this.address)
-        console.log(ethers.utils.getAddress(this.address));
-        // console.log(await rDAIContract.getHatByAddress(this.address));
-        await this.rDAIContract.changeHat(0);
+    this.disableTribute = async () => {
+        await rDAIContract.redeemAll();
     }
 
     // this function mints rDAI to your account
