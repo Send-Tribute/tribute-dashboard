@@ -71,15 +71,8 @@ const Receiving = () => {
         <SectionHeader text="Active Tributes" icon="faucetOn" />
         <Container className={classes.contentContainer}>
           <CustomTable
-            headings={[
-              'Sender',
-              'Asset',
-              'Current APR',
-              'Tribute Amount',
-              'Flowing Since',
-              'Total Received'
-            ]}
-            rows={[[1, 2, 3, 4, 5, 6], [1, 2, 3, 4, 5, 6], [1, 2, 3, 4, 5, 6]]}
+            headings={['Sender', 'Tribute Amount']}
+            rows={[[1, 2], [1, 2], [1, 2]]}
           />
           <Paper elevation={5} className={classes.unclaimedTributeContainer}>
             <Typography variant="body1">
@@ -111,15 +104,8 @@ const Receiving = () => {
         <SectionHeader text="Inactive Tributes" icon="faucetOff" />
         <Container className={classes.contentContainer}>
           <CustomTable
-            headings={[
-              'Sender',
-              'Asset',
-              'Average APR',
-              'Tribute Amount',
-              'Tribute Length',
-              'Total Received'
-            ]}
-            rows={[[1, 2, 3, 4, 5, 6], [1, 2, 3, 4, 5, 6], [1, 2, 3, 4, 5, 6]]}
+            headings={['Sender', 'Tribute Amount']}
+            rows={[[1, 2], [1, 2], [1, 2]]}
           />
         </Container>
       </Container>

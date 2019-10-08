@@ -26,27 +26,27 @@ export default function Footer() {
       <a className={classes.icon} target="_blank" href="https://sendtribute.io">
         SendTribute.io
       </a>
-      <div class="icons-social" className={classes.icon}>
+      <div className="icons-social" className={classes.icon}>
         <a
           className={classes.icon}
           target="_blank"
           href="https://github.com/Send-Tribute"
         >
-          <i class="fab fa-github"></i>
+          <i className="fab fa-github"></i>
         </a>
         <a
           className={classes.icon}
           target="_blank"
           href="https://twitter.com/send_tribute"
         >
-          <i class="fab fa-twitter"></i>
+          <i className="fab fa-twitter"></i>
         </a>
         <a
           className={classes.icon}
           target="_blank"
           href="https://tributeforum.io"
         >
-          <i class="fab fa-discourse"></i>
+          <i className="fab fa-discourse"></i>
         </a>
       </div>
     </div>

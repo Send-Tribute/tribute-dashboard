@@ -76,14 +76,7 @@ const Sending = () => {
         <SectionHeader text="Active Tributes" icon="waterwheel" />
         <Container className={classes.contentContainer}>
           <CustomTable
-            headings={[
-              'Recipient',
-              'Tribute Amount',
-              'Current APR',
-              'Flowing Since',
-              'Total Sent',
-              'Actions'
-            ]}
+            headings={['Recipient', 'Tribute Amount', 'Actions']}
             rows={[
               [getEtherscanLink('1', 'kovan'), 2, 3, 4, 5, 6],
               [1, 2, 3, 4, 5, 6],
@@ -102,15 +95,8 @@ const Sending = () => {
         <SectionHeader text="Inactive Tributes" icon="waterwheelOff" />
         <Container className={classes.contentContainer}>
           <CustomTable
-            headings={[
-              'Recipient',
-              'Tribute Amount',
-              'Average APR',
-              'Duration',
-              'Total Sent',
-              'Actions'
-            ]}
-            rows={[[1, 2, 3, 4, 5, 6], [1, 2, 3, 4, 5, 6], [1, 2, 3, 4, 5, 6]]}
+            headings={['Recipient', 'Tribute Amount', 'Actions']}
+            rows={[[1, 2, 3], [1, 2, 3], [1, 2, 3]]}
           />
           <Divider className={classes.divider} />
         </Container>

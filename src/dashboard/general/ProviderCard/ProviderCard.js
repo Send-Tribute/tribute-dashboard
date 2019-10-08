@@ -55,6 +55,7 @@ const ProviderCard = ({ provider }) => {
             <Chip key={tag} label={tag} className={classes.chip} />
           ))}
         </div>
+        <Typography variant="caption">{address}</Typography>
       </CardContent>
       <CardActions>
         <Button
