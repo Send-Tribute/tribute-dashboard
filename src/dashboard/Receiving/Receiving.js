@@ -155,7 +155,9 @@ const Receiving = () => {
             </div>
             <div>
               <Button
-                onClick={() => context.tribute.claimTributeOnBehalfOf(address)}
+                onClick={() =>
+                  context.tribute.claimTributeOnBehalfOf(values.address)
+                }
                 variant="contained"
                 color="primary"
                 className={classes.redeemButton}

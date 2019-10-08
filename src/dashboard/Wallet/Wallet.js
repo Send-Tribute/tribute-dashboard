@@ -78,8 +78,10 @@ const Wallet = () => {
   const { userDetails } = context;
 
   let unallocatedTribute = '(enable wallet)';
+  let tributeBalance = '(enable wallet)';
   if (userDetails) {
     unallocatedTribute = Math.trunc(userDetails.unallocatedTribute);
+    tributeBalance = Math.trunc(userDetails.tributeBalance);
   }
 
   const getSimpleWallet = () => {
@@ -89,9 +91,13 @@ const Wallet = () => {
         <Container className={classes.contentContainer}>
           <Paper elevation={5} className={classes.unclaimedTributeContainer}>
             <Typography variant="body1">
-              You have <b>{unallocatedTribute}</b>{' '}
+              You have <b>{tributeBalance}</b>{' '}
               <Icon name="baseCurrency" className={classes.baseCurrencyIcon} />{' '}
-              unallocated Tribute.
+              Tribute.
+              <br />
+              <b>{unallocatedTribute}</b>{' '}
+              <Icon name="baseCurrency" className={classes.baseCurrencyIcon} />{' '}
+              is unallocated.
             </Typography>
           </Paper>
           <Divider className={classes.divider} />
@@ -150,6 +156,9 @@ const Wallet = () => {
             You can withdraw your DAI at any time.
           </Typography>
           <Button
+            onClick={() => {
+              context.tribute.disableTribute();
+            }}
             variant="contained"
             color="primary"
             style={{ margin: '10px 0 10px', backgroundColor: '#1b1c4c' }}

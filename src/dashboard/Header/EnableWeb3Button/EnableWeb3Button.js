@@ -2,16 +2,31 @@ import React, { useContext } from 'react';
 import { ethers } from 'ethers';
 import { Context } from '../../context';
 import { TABS } from '../../helpers/constants';
-import { Button } from '@material-ui/core';
+import { Button, Typography } from '@material-ui/core';
 import { CONTRACTS } from '../../helpers/constants';
 import DAIabi from '../../../contracts/dai';
 import rDAIabi from '../../../contracts/rDai';
 import Tribute from '../../Tribute';
+import { Icon } from '../../general';
+import { createUseStyles } from 'react-jss';
 
 let isConnected = false;
 
+const useStyles = createUseStyles({
+  icon: {
+    width: 30
+  }
+});
+
 export default function EnableWeb3Button() {
   const [context, setContext] = useContext(Context);
+  const classes = useStyles();
+
+  const { userDetails } = context;
+  let tributeBalance = 'loading...';
+  if (userDetails) {
+    tributeBalance = Math.trunc(userDetails.tributeBalance);
+  }
 
   async function connectWallet() {
     // 1. enable metamask
@@ -72,8 +87,13 @@ export default function EnableWeb3Button() {
   }
 
   return (
-    <Button variant="outlined" color="secondary" onClick={connectWallet}>
-      Enable Wallet
+    <Button
+      variant="text"
+      onClick={connectWallet}
+      style={{ color: 'white', borderColor: 'white' }}
+    >
+      <Typography variant="body2">{tributeBalance}</Typography>
+      <Icon name="tributeToken" className={classes.icon} />
     </Button>
   );
 }

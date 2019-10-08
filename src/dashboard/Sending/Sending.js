@@ -60,6 +60,8 @@ const useStyles = createUseStyles({
 const endButton = (address, context) => {
   return (
     <Button
+      style={{ backgroundColor: '#1b1c4c', color: 'white' }}
+      variant="outlined"
       onClick={() => {
         context.tribute.endTribute(address);
       }}
@@ -83,7 +85,7 @@ const Sending = () => {
   if (userDetails && userDetails.activeTributes.recipients) {
     activeTributeRows = userDetails.activeTributes.recipients.map(
       (address, index) => {
-        const amount = Math.trunc(
+        const amount = Math.round(
           userDetails.activeTributes.tributeAmounts[index]
         );
         return [getShortAddress(address), amount, endButton(address, context)];
@@ -173,6 +175,7 @@ const Sending = () => {
             value={values.amount}
             onChange={handleChange('amount')}
           />
+          <br />
           <Button
             onClick={() =>
               context.tribute.sendTribute(values.address, values.amount)

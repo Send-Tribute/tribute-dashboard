@@ -102,7 +102,11 @@ export default function Tribute(DAIContract, rDAIContract, provider, address) {
     // Remove the user from the arrays
     let activeRecipients = currentHat.recipients;
     activeRecipients.splice(selfIndex, 1);
-    const activeTributeAmounts = proportionsInTribute.splice(selfIndex, 1);
+    let activeTributeAmounts = proportionsInTribute;
+    activeTributeAmounts.splice(selfIndex, 1);
+
+    let totalTribute = await this.rDAIContract.balanceOf(this.address[0]);
+    totalTribute = totalTribute.div(WeiPerEther).toNumber();
 
     // Get unclaimed tribute - copy of getUnclaimedTribute()
     let unclaimedTribute = await this.rDAIContract.interestPayableOf(
@@ -115,6 +119,7 @@ export default function Tribute(DAIContract, rDAIContract, provider, address) {
         recipients: activeRecipients,
         tributeAmounts: activeTributeAmounts
       },
+      tributeBalance: totalTribute,
       unallocatedTribute,
       unclaimedTribute
     };

@@ -9,6 +9,10 @@ import Receiving from './Receiving/Receiving.js';
 import Settings from './Settings/Settings.js';
 import rToken from '../contracts/rDai.json';
 
+import DAIabi from '../contracts/dai';
+import rDAIabi from '../contracts/rDai';
+import Tribute from './Tribute';
+
 import { TABS, CONTRACTS } from './helpers/constants';
 
 export default function Dashboard() {
@@ -26,7 +30,66 @@ export default function Dashboard() {
     }
   });
 
-  useEffect(() => {}, []);
+  useEffect(() => {
+    async function load() {
+      // 1. enable metamask
+      let address = await window.ethereum.enable();
+      console.log(`address ${address}`);
+
+      setContext(state => {
+        return Object.assign(
+          {},
+          state,
+          { isConnected: true },
+          { address: address }
+        );
+      });
+
+      try {
+        if (
+          typeof window.ethereum !== 'undefined' ||
+          typeof window.web3 !== 'undefined'
+        ) {
+          let walletProvider = new ethers.providers.Web3Provider(
+            window.web3.currentProvider
+          );
+
+          // connect to contracts on the network
+          const rDAIContract = new ethers.Contract(
+            CONTRACTS.rtoken.kovan,
+            rDAIabi,
+            walletProvider
+          );
+          const DAIContract = new ethers.Contract(
+            CONTRACTS.dai.kovan,
+            DAIabi,
+            walletProvider
+          );
+          const tribute = new Tribute(
+            DAIContract,
+            rDAIContract,
+            walletProvider,
+            address
+          );
+          const userDetails = await tribute.getTributes();
+          console.log(userDetails);
+          setContext(state => {
+            return Object.assign(
+              {},
+              state,
+              { tribute },
+              { userDetails },
+              { isConnected: false },
+              { provider: walletProvider }
+            );
+          });
+        }
+      } catch (error) {
+        console.log('Web3 Loading Error: ', error.message);
+      }
+    }
+    load();
+  }, []);
 
   function getContent() {
     //let [selectedTab, setSelectedTab] = useState();
