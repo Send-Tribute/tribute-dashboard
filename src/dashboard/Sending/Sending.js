@@ -3,7 +3,7 @@ import { Container, Divider, Button, Grid, TextField } from '@material-ui/core';
 import { createUseStyles } from 'react-jss';
 import { Context } from '../context';
 import { Icon, CustomTable, ProviderCard, SectionHeader } from '../general';
-import { getEtherscanLink } from '../helpers/utils';
+import { getEtherscanLink, getShortAddress } from '../helpers/utils';
 
 import { DISCOVERABLE_PROVIDERS } from '../helpers/constants';
 
@@ -58,6 +58,19 @@ const useStyles = createUseStyles({
   }
 });
 
+const endButton = (address, context) => {
+  return (
+    <Button
+      onClick={() => {
+        context.tribute.endTribute(address);
+      }}
+      variant="text"
+    >
+      end
+    </Button>
+  );
+};
+
 const Sending = () => {
   const [context] = useContext(Context);
   const classes = useStyles();
@@ -65,6 +78,20 @@ const Sending = () => {
     address: '',
     amount: ''
   });
+
+  const { userDetails } = context;
+
+  let activeTributeRows = [['(enable wallet) ']];
+  if (userDetails && userDetails.activeTributes.recipients) {
+    activeTributeRows = userDetails.activeTributes.recipients.map(
+      (address, index) => {
+        const amount = Math.trunc(
+          userDetails.activeTributes.tributeAmounts[index]
+        );
+        return [getShortAddress(address), amount, endButton(address, context)];
+      }
+    );
+  }
 
   const handleChange = name => event => {
     setValues({ ...values, [name]: event.target.value });
@@ -77,11 +104,7 @@ const Sending = () => {
         <Container className={classes.contentContainer}>
           <CustomTable
             headings={['Recipient', 'Tribute Amount', 'Actions']}
-            rows={[
-              [getEtherscanLink('1', 'kovan'), 2, 3],
-              [1, 2, 3],
-              [1, 2, 3]
-            ]}
+            rows={activeTributeRows}
           />
           <Divider className={classes.divider} />
         </Container>
@@ -167,7 +190,6 @@ const Sending = () => {
   return (
     <div>
       {getActiveTributes()}
-      {getInactiveTributes()}
       {getDiscoverTributes()}
       {getSocialTributes()}
     </div>

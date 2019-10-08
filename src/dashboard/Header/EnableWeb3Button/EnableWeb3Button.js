@@ -53,12 +53,14 @@ export default function EnableWeb3Button() {
           walletProvider,
           address
         );
-
+        const userDetails = await tribute.getTributes();
+        console.log(userDetails);
         setContext(state => {
           return Object.assign(
             {},
             state,
             { tribute },
+            { userDetails },
             { isConnected: false },
             { provider: walletProvider }
           );

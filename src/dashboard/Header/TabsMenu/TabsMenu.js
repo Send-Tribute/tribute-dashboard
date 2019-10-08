@@ -8,7 +8,7 @@ export default function TabsMenu() {
   const [context, setContext] = useContext(Context);
 
   const handleTabChange = (event, tab) => {
-    setContext({ selectedTab: TABS.ordering[tab] });
+    setContext({ ...context, selectedTab: TABS.ordering[tab] });
   };
 
   const getTabs = () => {

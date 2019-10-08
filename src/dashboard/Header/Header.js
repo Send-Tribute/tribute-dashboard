@@ -30,10 +30,9 @@ export default function Header() {
 
   const getUserDetails = () => {
     let details = (
-      <EnableWeb3Button
-        className={classes.web3Button}
-        style={{ position: 'absolute', right: 10, top: 30 }}
-      />
+      <div style={{ position: 'absolute', right: 10, top: 10 }}>
+        <EnableWeb3Button className={classes.web3Button} />
+      </div>
     );
     // if (context.userDetails) {
     //  TODO: return userDetails
