@@ -78,9 +78,9 @@ const Sending = () => {
           <CustomTable
             headings={['Recipient', 'Tribute Amount', 'Actions']}
             rows={[
-              [getEtherscanLink('1', 'kovan'), 2, 3, 4, 5, 6],
-              [1, 2, 3, 4, 5, 6],
-              [1, 2, 3, 4, 5, 6]
+              [getEtherscanLink('1', 'kovan'), 2, 3],
+              [1, 2, 3],
+              [1, 2, 3]
             ]}
           />
           <Divider className={classes.divider} />
