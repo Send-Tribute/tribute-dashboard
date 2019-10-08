@@ -205,13 +205,15 @@ const Receiving = () => {
                   />
                 </Modal>
               </div>
-              <Typography variant="body1">
-                Ready to claim: <b>{values.externalUserInterest}</b>{' '}
-                <Icon
-                  name="baseCurrency"
-                  className={classes.baseCurrencyIcon}
-                />
-              </Typography>
+              <div style={{ marginTop: 4 }}>
+                <Typography variant="body1">
+                  Ready to claim: <b>{values.externalUserInterest}</b>{' '}
+                  <Icon
+                    name="baseCurrency"
+                    className={classes.baseCurrencyIcon}
+                  />
+                </Typography>
+              </div>
             </div>
 
             <div>
