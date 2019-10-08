@@ -14,26 +14,19 @@ import { TABS, CONTRACTS } from './helpers/constants';
 export default function Dashboard() {
   const [context, setContext] = useContext(Context);
 
-  
   let user = {};
 
-  window.ethereum.on('accountsChanged', function (accounts) {
+  window.ethereum.on('accountsChanged', function(accounts) {
     //should update context when user change is detected
     if (context.address && context.address !== accounts[0]) {
-       setContext(state => {
-        return Object.assign(
-          {},
-          state,
-          { address: accounts[0] }
-        );
+      setContext(state => {
+        return Object.assign({}, state, { address: accounts[0] });
       });
-      console.log("Address was updated " + accounts[0]);
+      console.log('Address was updated ' + accounts[0]);
     }
   });
 
-  useEffect(() => {
-    
-  }, []);
+  useEffect(() => {}, []);
 
   function getContent() {
     //let [selectedTab, setSelectedTab] = useState();
@@ -51,4 +44,4 @@ export default function Dashboard() {
       <Footer />
     </div>
   );
-};
+}
