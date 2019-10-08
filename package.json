@@ -41,6 +41,7 @@
     "babel-polyfill": "^6.26.0",
     "context": "^0.0.1",
     "ethers": "^4.0.37",
+    "express": "^4.17.1",
     "jimp": "^0.8.4",
     "prop-types": "^15.7.2",
     "qrcode-reader": "^1.0.4",
