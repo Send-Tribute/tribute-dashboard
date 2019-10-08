@@ -17,7 +17,7 @@
   "scripts": {
     "start": "parcel public/dashboard.html public/widget.html",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "parcel build public/dashboard.html public/widget.html --out-dir dist",
+    "build": "parcel build public/dashboard.html --out-dir dist",
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook",
     "update-rdai-abi": "curl -s -X GET \"https://api-kovan.etherscan.io/api?module=contract&action=getabi&address=$npm_package_contracts_kovan_rDai\" | ./node_modules/node-jq/bin/jq -r \"[.result][0]\" > src/contracts/rDai.json",
