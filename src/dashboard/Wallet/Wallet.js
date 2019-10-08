@@ -43,7 +43,6 @@ const useStyles = createUseStyles({
   unclaimedTributeContainer: {
     alignItems: 'center',
     display: 'flex',
-    margin: 20,
     padding: 20,
     borderRadius: 10
   },
@@ -70,18 +69,36 @@ const useStyles = createUseStyles({
   },
   walletGrid: {
     justifyContent: 'space-around'
-  },
-  exchangeButton: {
-    margin: 15
   }
 });
 
 const Wallet = () => {
   const [context, setContext] = useContext(Context);
   const classes = useStyles();
+  const { userDetails } = context;
 
-  const redeemTribute = () => {};
+  let unallocatedTribute = '(enable wallet)';
+  if (userDetails) {
+    unallocatedTribute = Math.trunc(userDetails.unallocatedTribute);
+  }
 
+  const getSimpleWallet = () => {
+    return (
+      <Container className={classes.container}>
+        <SectionHeader text="My Tribute Wallet" icon="wallet" />
+        <Container className={classes.contentContainer}>
+          <Paper elevation={5} className={classes.unclaimedTributeContainer}>
+            <Typography variant="body1">
+              You have <b>{unallocatedTribute}</b>{' '}
+              <Icon name="baseCurrency" className={classes.baseCurrencyIcon} />{' '}
+              unallocated Tribute.
+            </Typography>
+          </Paper>
+          <Divider className={classes.divider} />
+        </Container>
+      </Container>
+    );
+  };
   const getWallet = () => {
     return (
       <Container className={classes.container}>
@@ -123,7 +140,7 @@ const Wallet = () => {
             .
           </Typography>
           <Button
-            className={classes.exchangeButton}
+            style={{ margin: '10px 0 10px', backgroundColor: '#1b1c4c' }}
             variant="contained"
             color="primary"
           >
@@ -135,7 +152,7 @@ const Wallet = () => {
           <Button
             variant="contained"
             color="primary"
-            className={classes.exchangeButton}
+            style={{ margin: '10px 0 10px', backgroundColor: '#1b1c4c' }}
           >
             Withdraw DAI
           </Button>
@@ -154,6 +171,7 @@ const Wallet = () => {
               return (
                 <Grid item key={FIAT_GATEWAYS[gateway].name}>
                   <Button
+                    style={{ margin: 10 }}
                     className={classes.fiatButton}
                     onClick={() =>
                       window.open(FIAT_GATEWAYS[gateway].website, '_blank')
@@ -177,7 +195,7 @@ const Wallet = () => {
 
   return (
     <div>
-      {getWallet()}
+      {getSimpleWallet()}
       {getExchanges()}
       {getFiatGateways()}
     </div>

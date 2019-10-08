@@ -1,6 +1,6 @@
 export const TABS = {
   ordering: ['wallet', 'sending', 'receiving', 'settings'],
-  default: 'sending',
+  default: 'wallet',
   displayNames: {
     wallet: 'Wallet',
     sending: 'Sending',
@@ -33,7 +33,7 @@ export const CONTRACTS = {
 export const DISCOVERABLE_PROVIDERS = {
   oneClickDapp: {
     name: 'One Click Dapp',
-    address: '0xb4377efc05bd28be8e6510629538e54eba2d74e3',
+    address: '0x9492510BbCB93B6992d8b7Bb67888558E12DCac4',
     website: 'http://oneclickdapp.com',
     description: 'Generate frontends quickly for your smart contracts',
     tags: ['open-source', 'tools', 'web3'],

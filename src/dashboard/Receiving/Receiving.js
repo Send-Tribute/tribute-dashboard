@@ -1,7 +1,8 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { Context } from '../context';
 import {
   Typography,
+  TextField,
   Container,
   Divider,
   Paper,
@@ -29,7 +30,6 @@ const useStyles = createUseStyles({
     alignItems: 'center',
     justifyContent: 'space-between',
     display: 'flex',
-    margin: 20,
     padding: 20,
     borderRadius: 10
   },
@@ -47,6 +47,13 @@ const Receiving = () => {
   const [context, setContext] = useContext(Context);
   const classes = useStyles();
   const { userDetails } = context;
+  const [values, setValues] = useState({
+    address: ''
+  });
+
+  const handleChange = name => event => {
+    setValues({ ...values, [name]: event.target.value });
+  };
 
   let selfTribute = '(enable wallet) ';
   let unclaimedTribute = '(enable wallet) ';
@@ -82,24 +89,7 @@ const Receiving = () => {
             headings={['Sender', 'Tribute Amount']}
             rows={[[1, 2], [1, 2], [1, 2]]}
           />
-          <Paper elevation={5} className={classes.unclaimedTributeContainer}>
-            <Typography variant="body1">
-              Ready to claim: <b>{unclaimedTribute}</b>{' '}
-              <Icon name="baseCurrency" className={classes.baseCurrencyIcon} />
-            </Typography>
 
-            <div>
-              <Button
-                onClick={() => context.tribute.claimTribute()}
-                variant="contained"
-                color="primary"
-                className={classes.redeemButton}
-              >
-                <Icon name="receiveMoney" className={classes.buttonIcon} />
-                Claim
-              </Button>
-            </div>
-          </Paper>
           <Divider className={classes.divider} />
         </Container>
       </Container>
@@ -120,10 +110,71 @@ const Receiving = () => {
     );
   };
 
+  const getClaimTribute = () => {
+    return (
+      <Container className={classes.container}>
+        <Container className={classes.contentContainer}>
+          <Paper elevation={5} className={classes.unclaimedTributeContainer}>
+            <Typography variant="body1">
+              Ready to claim: <b>{unclaimedTribute}</b>{' '}
+              <Icon name="baseCurrency" className={classes.baseCurrencyIcon} />
+            </Typography>
+
+            <div>
+              <Button
+                onClick={() => context.tribute.claimTribute()}
+                variant="contained"
+                color="primary"
+                className={classes.redeemButton}
+              >
+                <Icon name="receiveMoney" className={classes.buttonIcon} />
+                Claim
+              </Button>
+            </div>
+          </Paper>
+        </Container>
+      </Container>
+    );
+  };
+
+  const getClaimOnBehalfOf = () => {
+    return (
+      <Container className={classes.container}>
+        <Container className={classes.contentContainer}>
+          <Paper elevation={5} className={classes.unclaimedTributeContainer}>
+            <div className={classes.leftContainer}>
+              <Typography variant="body1">Claim on behalf of:</Typography>
+              <TextField
+                variant="outlined"
+                label="Address"
+                id="outlined-dense"
+                margin="dense"
+                value={values.address}
+                onChange={handleChange('address')}
+              />
+            </div>
+            <div>
+              <Button
+                onClick={() => context.tribute.claimTributeOnBehalfOf(address)}
+                variant="contained"
+                color="primary"
+                className={classes.redeemButton}
+              >
+                <Icon name="receiveMoney" className={classes.buttonIcon} />
+                Claim
+              </Button>
+            </div>
+          </Paper>
+        </Container>
+      </Container>
+    );
+  };
+
   return (
     <div>
       {getSelfTribute()}
-      {getActiveInflows()}
+      {getClaimTribute()}
+      {getClaimOnBehalfOf()}
     </div>
   );
 };

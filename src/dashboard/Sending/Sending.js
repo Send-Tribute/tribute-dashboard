@@ -46,15 +46,14 @@ const useStyles = createUseStyles({
     marginLeft: 20
   },
   buttonIcon: {
-    height: 25,
-    paddingRight: 10
+    height: 25
   },
   addressInputContainer: {
     display: 'flex',
-    margin: '10px 0 15px 0'
+    margin: '10px 0 0px 0'
   },
   sendTributeButton: {
-    padding: 10
+    margin: '10px 0 0 0'
   }
 });
 
@@ -64,7 +63,6 @@ const endButton = (address, context) => {
       onClick={() => {
         context.tribute.endTribute(address);
       }}
-      variant="text"
     >
       end
     </Button>
@@ -146,7 +144,7 @@ const Sending = () => {
     );
   };
 
-  const getSocialTributes = () => {
+  const getSendTributes = () => {
     return (
       <Container className={classes.container}>
         <SectionHeader text="Send Tribute" icon="tributeButton" />
@@ -155,16 +153,22 @@ const Sending = () => {
             <TextField
               variant="outlined"
               label="Address"
+              id="outlined-dense"
+              margin="dense"
               value={values.address}
               onChange={handleChange('address')}
             />
-            <Button variant="contained">
+            <Button
+              variant="contained"
+              style={{ padding: 0, margin: '0 0 0 10px' }}
+            >
               <Icon name="qr" className={classes.buttonIcon} />
-              Scan
             </Button>
           </div>
           <TextField
             variant="outlined"
+            id="outlined-dense"
+            margin="dense"
             label="Amount"
             value={values.amount}
             onChange={handleChange('amount')}
@@ -177,6 +181,7 @@ const Sending = () => {
             type="submit"
             variant="outlined"
             color="primary"
+            style={{ margin: '10px 0 0 0' }}
             className={classes.sendTributeButton}
           >
             <Icon name="logo" className={classes.buttonIcon} />
@@ -191,7 +196,7 @@ const Sending = () => {
     <div>
       {getActiveTributes()}
       {getDiscoverTributes()}
-      {getSocialTributes()}
+      {getSendTributes()}
     </div>
   );
 };
