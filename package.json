@@ -41,11 +41,15 @@
     "babel-polyfill": "^6.26.0",
     "context": "^0.0.1",
     "ethers": "^4.0.37",
-    "node-jq": "^1.10.3",
+    "jimp": "^0.8.4",
     "prop-types": "^15.7.2",
-    "react": ">=15",
-    "react-dom": "^16.8.0",
-    "react-jss": "^10.0.0"
+    "qrcode-reader": "^1.0.4",
+    "react": "^15.0.0 || ^16.0.0",
+    "react-dom": "^15.0.0 || ^16.0.0",
+    "react-file-reader-input": "^2.0.0",
+    "react-jss": "^10.0.0",
+    "react-loading": "^2.0.3",
+    "react-qr-reader": "^2.2.1"
   },
   "devDependencies": {
     "@storybook/addon-actions": "^5.2.1",

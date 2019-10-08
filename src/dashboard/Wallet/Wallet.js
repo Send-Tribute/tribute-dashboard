@@ -1,10 +1,11 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { Context } from '../context';
 import {
   Grid,
   Typography,
   Container,
   Divider,
+  TextField,
   Paper,
   Button
 } from '@material-ui/core';
@@ -77,6 +78,15 @@ const Wallet = () => {
   const classes = useStyles();
   const { userDetails } = context;
 
+  const [values, setValues] = useState({
+    address: '',
+    amount: ''
+  });
+
+  const handleChange = name => event => {
+    setValues({ ...values, [name]: event.target.value });
+  };
+
   let unallocatedTribute = '(enable wallet)';
   let tributeBalance = '(enable wallet)';
   if (userDetails) {
@@ -143,12 +153,23 @@ const Wallet = () => {
             <a href="./" target="_blank">
               here
             </a>
-            .
+            .<br />
+            <TextField
+              variant="outlined"
+              id="outlined-dense"
+              margin="dense"
+              label="Amount"
+              value={values.amount}
+              onChange={handleChange('amount')}
+            />
           </Typography>
           <Button
             style={{ margin: '10px 0 10px', backgroundColor: '#1b1c4c' }}
             variant="contained"
             color="primary"
+            onClick={() => {
+              context.tribute.generateTribute(values.amount);
+            }}
           >
             Generate Tribute
           </Button>

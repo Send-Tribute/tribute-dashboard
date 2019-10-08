@@ -1,6 +1,6 @@
 import 'babel-polyfill';
 import { ethers } from 'ethers';
-const { bigNumberify, toNumber } = ethers.utils;
+const { bigNumberify, toNumber, formatEther } = ethers.utils;
 const { WeiPerEther } = ethers.constants;
 
 export default function Tribute(DAIContract, rDAIContract, provider, address) {
@@ -54,7 +54,7 @@ export default function Tribute(DAIContract, rDAIContract, provider, address) {
 
   // reedemm all your rdai to dai
   this.disableTribute = async () => {
-    await rDAIContract.redeemAll();
+    await this.rDAIContract.redeemAll();
   };
 
   // this function mints rDAI to your account
@@ -112,8 +112,7 @@ export default function Tribute(DAIContract, rDAIContract, provider, address) {
     let unclaimedTribute = await this.rDAIContract.interestPayableOf(
       this.address[0]
     );
-    console.log('Unlcaimed rDAI: ', unclaimedTribute);
-    unclaimedTribute = unclaimedTribute.div(WeiPerEther).toNumber();
+    unclaimedTribute = formatEther(unclaimedTribute);
     return {
       activeTributes: {
         recipients: activeRecipients,

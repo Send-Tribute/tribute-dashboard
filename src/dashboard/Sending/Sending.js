@@ -1,8 +1,22 @@
 import React, { useContext, useState } from 'react';
-import { Container, Divider, Button, Grid, TextField } from '@material-ui/core';
+import {
+  Container,
+  Divider,
+  Button,
+  Grid,
+  TextField,
+  Modal,
+  ModalContent
+} from '@material-ui/core';
 import { createUseStyles } from 'react-jss';
 import { Context } from '../context';
-import { Icon, CustomTable, ProviderCard, SectionHeader } from '../general';
+import {
+  Icon,
+  CustomTable,
+  ProviderCard,
+  SectionHeader,
+  Scanner
+} from '../general';
 import { getEtherscanLink, getShortAddress } from '../helpers/utils';
 
 import { DISCOVERABLE_PROVIDERS } from '../helpers/constants';
@@ -78,6 +92,19 @@ const Sending = () => {
     address: '',
     amount: ''
   });
+
+  const [open, setOpen] = useState(false);
+  const handleOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  const setAddress = address => {
+    setValues({ ...values, address: address });
+  };
 
   const { userDetails } = context;
 
@@ -163,9 +190,26 @@ const Sending = () => {
             <Button
               variant="contained"
               style={{ padding: 0, margin: '0 0 0 10px' }}
+              onClick={() => {
+                handleOpen();
+              }}
             >
               <Icon name="qr" className={classes.buttonIcon} />
             </Button>
+            <Modal
+              open={open}
+              style={{
+                paddingTop: '3rem'
+              }}
+            >
+              <Scanner
+                handleClose={handleClose}
+                setAddress={setAddress}
+                onError={error => {
+                  this.changeAlert('danger', error);
+                }}
+              />
+            </Modal>
           </div>
           <TextField
             variant="outlined"
