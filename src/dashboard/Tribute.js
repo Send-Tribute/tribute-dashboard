@@ -79,7 +79,7 @@ export default function Tribute(DAIContract, rDAIContract, provider, address) {
     const balanceBigNumber = await this.rDAIContract.balanceOf(this.address[0]);
     const balance = balanceBigNumber.div(WeiPerEther).toNumber();
     // Check if the user has a hat
-    if (currentHat.proportions.length < 1) throw "You don't have any Tribute";
+    if (currentHat.proportions.length < 1) return "You don't have any Tribute";
 
     // calculate the current proportions in units of Tribute
     const proportionsSum = currentHat.proportions.reduce(
