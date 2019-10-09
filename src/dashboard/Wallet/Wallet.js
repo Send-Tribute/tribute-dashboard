@@ -154,15 +154,15 @@ const Wallet = () => {
               here
             </a>
             .<br />
-            <TextField
-              variant="outlined"
-              id="outlined-dense"
-              margin="dense"
-              label="Amount"
-              value={values.amount}
-              onChange={handleChange('amount')}
-            />
           </Typography>
+          <TextField
+            variant="outlined"
+            id="outlined-dense"
+            margin="dense"
+            label="Amount"
+            value={values.amount}
+            onChange={handleChange('amount')}
+          />
           <Button
             style={{ margin: '10px 0 10px', backgroundColor: '#1b1c4c' }}
             variant="contained"

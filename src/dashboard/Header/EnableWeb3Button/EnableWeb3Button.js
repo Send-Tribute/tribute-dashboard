@@ -30,59 +30,61 @@ export default function EnableWeb3Button() {
 
   async function connectWallet() {
     // 1. enable metamask
-    let address = await window.ethereum.enable();
-    console.log(`address ${address}`);
+    if (window.ethereum) {
+      let address = await window.ethereum.enable();
+      console.log(`address ${address}`);
 
-    setContext(state => {
-      return Object.assign(
-        {},
-        state,
-        { isConnected: true },
-        { address: address }
-      );
-    });
+      setContext(state => {
+        return Object.assign(
+          {},
+          state,
+          { isConnected: true },
+          { address: address }
+        );
+      });
 
-    try {
-      if (
-        typeof window.ethereum !== 'undefined' ||
-        typeof window.web3 !== 'undefined'
-      ) {
-        let walletProvider = new ethers.providers.Web3Provider(
-          window.web3.currentProvider
-        );
-
-        // connect to contracts on the network
-        const rDAIContract = new ethers.Contract(
-          CONTRACTS.rtoken.kovan,
-          rDAIabi,
-          walletProvider
-        );
-        const DAIContract = new ethers.Contract(
-          CONTRACTS.dai.kovan,
-          DAIabi,
-          walletProvider
-        );
-        const tribute = new Tribute(
-          DAIContract,
-          rDAIContract,
-          walletProvider,
-          address
-        );
-        const userDetails = await tribute.getTributes();
-        console.log(userDetails);
-        setContext(state => {
-          return Object.assign(
-            {},
-            state,
-            { tribute },
-            { userDetails },
-            { isConnected: false },
-            { provider: walletProvider }
+      try {
+        if (
+          typeof window.ethereum !== 'undefined' ||
+          typeof window.web3 !== 'undefined'
+        ) {
+          let walletProvider = new ethers.providers.Web3Provider(
+            window.web3.currentProvider
           );
-        });
+
+          // connect to contracts on the network
+          const rDAIContract = new ethers.Contract(
+            CONTRACTS.rtoken.kovan,
+            rDAIabi,
+            walletProvider
+          );
+          const DAIContract = new ethers.Contract(
+            CONTRACTS.dai.kovan,
+            DAIabi,
+            walletProvider
+          );
+          const tribute = new Tribute(
+            DAIContract,
+            rDAIContract,
+            walletProvider,
+            address
+          );
+          const userDetails = await tribute.getTributes();
+          console.log(userDetails);
+          setContext(state => {
+            return Object.assign(
+              {},
+              state,
+              { tribute },
+              { userDetails },
+              { isConnected: false },
+              { provider: walletProvider }
+            );
+          });
+        }
+      } catch (error) {
+        console.log('Web3 Loading Error: ', error.message);
       }
-    } catch (error) {
-      console.log('Web3 Loading Error: ', error.message);
     }
   }
 
