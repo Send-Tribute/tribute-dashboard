@@ -18,13 +18,13 @@ const useStyles = createUseStyles({
     margin: 10
   },
   media: {
-    height: 140,
+    height: 160,
     overflow: 'hidden'
   },
   image: { width: '100%' },
   chipContainer: {
     display: 'flex',
-    justifyContent: 'left',
+    justifyContent: 'center',
     flexWrap: 'wrap'
   },
   chip: {

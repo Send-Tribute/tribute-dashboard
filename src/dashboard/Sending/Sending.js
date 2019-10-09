@@ -80,7 +80,7 @@ const endButton = (address, context) => {
         context.tribute.endTribute(address);
       }}
     >
-      end
+      End Tribute
     </Button>
   );
 };

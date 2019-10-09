@@ -95,7 +95,7 @@ export default function EnableWeb3Button() {
       style={{ color: 'white', borderColor: 'white' }}
     >
       <Typography variant="body2">{tributeBalance}</Typography>
-      <Icon name="tributeToken" className={classes.icon} />
+      <Icon name="headerLogo" className={classes.icon} />
     </Button>
   );
 }

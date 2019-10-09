@@ -47,6 +47,15 @@ export const DISCOVERABLE_PROVIDERS = {
     website: './',
     tags: ['game', 'paid', 'entertainment'],
     image: 'superMariano'
+  },
+  unicef: {
+    name: 'UNICEF',
+    description:
+      'Protecting the rights of every child, no matter how disadvantaged',
+    address: '0xe179269981E841129e07623720f32f55FF0AF9AB',
+    website: 'https://www.unicef.org/',
+    tags: ['charity', 'tax-deductible', 'humanitarian'],
+    image: 'unicef'
   }
 };
 
@@ -57,21 +66,21 @@ export const NETWORKS = {
 };
 
 export const FIAT_GATEWAYS = {
-  coinbase: {
-    name: 'Coinbase',
-    website: '',
-    image: 'coinbase'
-  },
+  // coinbase: {
+  //   name: 'Coinbase',
+  //   website: '',
+  //   image: 'coinbase'
+  // },
   kyber: {
     name: 'Kyber Network',
     website: '',
     image: 'kyber'
   },
-  wyre: {
-    name: 'Wyre',
-    website: '',
-    image: 'wyre'
-  }
+  // wyre: {
+  //   name: 'Wyre',
+  //   website: '',
+  //   image: 'wyre'
+  // }
 };
 
 export const CRYPTO_EXCHANGES = {};
