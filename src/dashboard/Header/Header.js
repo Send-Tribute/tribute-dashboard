@@ -27,6 +27,7 @@ const useStyles = createUseStyles({
 export default function Header() {
   const [context, setContext] = useContext(Context);
   const classes = useStyles();
+  const { userDetails, isConnected } = context;
 
   const getUserDetails = () => {
     let details = (
@@ -47,6 +48,7 @@ export default function Header() {
         style={{ backgroundColor: '#1b1c4c' }}
         className={classes.appBar}
       >
+        {isConnected}
         <Toolbar>
           <img src={tribute_logo} className={classes.logo} />
           {getUserDetails()}

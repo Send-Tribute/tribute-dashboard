@@ -88,8 +88,20 @@ export default function Dashboard() {
           }
         } catch (error) {
           console.log('Web3 Loading Error: ', error.message);
+          setContext(state => {
+            return Object.assign({}, state, {
+              error: `Web3 Loading Error: ${error.message}`
+            });
+          });
         }
       }
+
+      setContext(state => {
+        return Object.assign(
+          {},
+          { error: 'Web3 Loading Error: no window.ethereum' }
+        );
+      });
     }
     load();
   }, []);

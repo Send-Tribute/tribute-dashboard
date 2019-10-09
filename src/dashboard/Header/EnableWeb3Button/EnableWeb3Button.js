@@ -22,10 +22,15 @@ export default function EnableWeb3Button() {
   const [context, setContext] = useContext(Context);
   const classes = useStyles();
 
-  const { userDetails } = context;
+  const { userDetails, error } = context;
   let tributeBalance = 'loading...';
+
   if (userDetails) {
     tributeBalance = Math.trunc(userDetails.tributeBalance);
+  }
+  let errorMsg = '';
+  if (error) {
+    errorMsg = error;
   }
 
   async function connectWallet() {
@@ -83,19 +88,26 @@ export default function EnableWeb3Button() {
           });
         }
       } catch (error) {
+        setContext({ ...context, error: error.message });
         console.log('Web3 Loading Error: ', error.message);
       }
     }
   }
 
   return (
-    <Button
-      variant="text"
-      onClick={connectWallet}
-      style={{ color: 'white', borderColor: 'white' }}
-    >
-      <Typography variant="body2">{tributeBalance}</Typography>
-      <Icon name="tributeToken" className={classes.icon} />
-    </Button>
+    <div style={{ display: 'flex', alignItems: 'center' }}>
+      <Typography style={{ color: 'orange' }} variant="body2">
+        {errorMsg}
+      </Typography>
+
+      <Button
+        variant="text"
+        onClick={connectWallet}
+        style={{ color: 'white', borderColor: 'white' }}
+      >
+        <Typography variant="body2">{tributeBalance}</Typography>
+        <Icon name="tributeToken" className={classes.icon} />
+      </Button>
+    </div>
   );
 }
