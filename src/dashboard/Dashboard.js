@@ -103,14 +103,14 @@ export default function Dashboard() {
             });
           });
         }
+      } else {
+        setContext(state => {
+          return Object.assign(
+            {},
+            { error: 'Web3 Loading Error: no window.ethereum' }
+          );
+        });
       }
-
-      setContext(state => {
-        return Object.assign(
-          {},
-          { error: 'Web3 Loading Error: no window.ethereum' }
-        );
-      });
     }
     load();
   }, []);
