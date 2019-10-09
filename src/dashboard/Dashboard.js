@@ -35,8 +35,17 @@ export default function Dashboard() {
     async function load() {
       // 1. enable metamask
       if (typeof window.ethereum !== 'undefined') {
-        let address = await window.ethereum.enable();
-        console.log(`address ${address}`);
+        let address = '';
+        try {
+          address = await window.ethereum.enable();
+          console.log(`address ${address}`);
+        } catch (error) {
+          setContext(state => {
+            return Object.assign({}, state, {
+              error: `Web3 Loading Error: ${error.message}`
+            });
+          });
+        }
 
         setContext(state => {
           return Object.assign(
