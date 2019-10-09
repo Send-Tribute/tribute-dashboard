@@ -78,41 +78,49 @@ export default function Tribute(DAIContract, rDAIContract, provider, address) {
     // get user balance
     const balanceBigNumber = await this.rDAIContract.balanceOf(this.address[0]);
     const balance = balanceBigNumber.div(WeiPerEther).toNumber();
-    // Check if the user has a hat
-    if (currentHat.proportions.length < 1) return "You don't have any Tribute";
-
-    // calculate the current proportions in units of Tribute
-    const proportionsSum = currentHat.proportions.reduce(
-      (accl, value) => accl + value
-    );
-    const proportionsInTribute = currentHat.proportions.map(portion => {
-      return (portion / proportionsSum) * balance;
-    });
-    console.log('Current hat: ', currentHat.recipients, proportionsInTribute);
-
-    // Get a searcheable lowercase recipient list
-    const recipientsLowerCase = currentHat.recipients.map(a => a.toLowerCase());
-
-    // Check if the user has unallocated Tribute
-    const selfIndex = recipientsLowerCase.indexOf(
-      this.address[0].toLowerCase()
-    );
-    const unallocatedTribute = proportionsInTribute[selfIndex];
-
-    // Remove the user from the arrays
-    let activeRecipients = currentHat.recipients;
-    activeRecipients.splice(selfIndex, 1);
-    let activeTributeAmounts = proportionsInTribute;
-    activeTributeAmounts.splice(selfIndex, 1);
-
-    let totalTribute = await this.rDAIContract.balanceOf(this.address[0]);
-    totalTribute = totalTribute.div(WeiPerEther).toNumber();
 
     // Get unclaimed tribute - copy of getUnclaimedTribute()
     let unclaimedTribute = await this.rDAIContract.interestPayableOf(
       this.address[0]
     );
     unclaimedTribute = formatEther(unclaimedTribute);
+
+    let activeRecipients = [];
+    let activeTributeAmounts = [];
+    let totalTribute = 0;
+    let unallocatedTribute = 0;
+    // Check if the user has a hat
+    if (currentHat.proportions && currentHat.proportions.length > 0) {
+      // calculate the current proportions in units of Tribute
+      const proportionsSum = currentHat.proportions.reduce(
+        (accl, value) => accl + value
+      );
+      const proportionsInTribute = currentHat.proportions.map(portion => {
+        return (portion / proportionsSum) * balance;
+      });
+      console.log('Current hat: ', currentHat.recipients, proportionsInTribute);
+
+      // Get a searcheable lowercase recipient list
+      const recipientsLowerCase = currentHat.recipients.map(a =>
+        a.toLowerCase()
+      );
+
+      // Check if the user has unallocated Tribute
+      const selfIndex = recipientsLowerCase.indexOf(
+        this.address[0].toLowerCase()
+      );
+      unallocatedTribute = proportionsInTribute[selfIndex];
+
+      // Remove the user from the arrays
+      activeRecipients = currentHat.recipients;
+      activeRecipients.splice(selfIndex, 1);
+      activeTributeAmounts = proportionsInTribute;
+      activeTributeAmounts.splice(selfIndex, 1);
+
+      totalTribute = await this.rDAIContract.balanceOf(this.address[0]);
+      totalTribute = totalTribute.div(WeiPerEther).toNumber();
+    }
+
     return {
       activeTributes: {
         recipients: activeRecipients,
