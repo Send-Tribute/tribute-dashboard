@@ -29,7 +29,11 @@ export default function Tribute(DAIContract, rDAIContract, provider, address) {
     // check for zero hat Self hat also gives you a zero hat
     if (currentHat.hatID.isZero()) {
       // if we're on zero hat we simply set a new hat
-      await rDAIContract.mintWithNewHat(mintamount, recipients, proportions);
+      await this.rDAIContract.mintWithNewHat(
+        bignumberAmount.toNumber(),
+        [this.address[0]],
+        [1]
+      );
     } else {
       // TODO: check if the first address is the users address.
       // Otherwise the hat was not made by us and we need to fix the hat
