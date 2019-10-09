@@ -42,7 +42,7 @@ export default function Dashboard() {
         } catch (error) {
           setContext(state => {
             return Object.assign({}, state, {
-              error: `Web3 Loading Error: ${error.message}`
+              error: `Web3 Loading Error 1: ${error}`
             });
           });
         }
@@ -99,7 +99,7 @@ export default function Dashboard() {
           console.log('Web3 Loading Error: ', error.message);
           setContext(state => {
             return Object.assign({}, state, {
-              error: `Web3 Loading Error: ${error.message}`
+              error: `Web3 Loading Error 2: ${error}`
             });
           });
         }
