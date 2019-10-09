@@ -35,7 +35,7 @@ export default function EnableWeb3Button() {
 
   async function connectWallet() {
     // 1. enable metamask
-    if (window.ethereum) {
+    if (typeof window.ethereum !== 'undefined') {
       let address = await window.ethereum.enable();
       console.log(`address ${address}`);
 

@@ -34,7 +34,7 @@ export default function Dashboard() {
   useEffect(() => {
     async function load() {
       // 1. enable metamask
-      if (window.ethereum) {
+      if (typeof window.ethereum !== 'undefined') {
         let address = await window.ethereum.enable();
         console.log(`address ${address}`);
 
