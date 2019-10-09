@@ -20,7 +20,7 @@ export default function Dashboard() {
 
   let user = {};
 
-  if (window.ethereum) {
+  if (typeof window.ethereum !== 'undefined') {
     window.ethereum.on('accountsChanged', function(accounts) {
       //should update context when user change is detected
       if (context.address && context.address !== accounts[0]) {
