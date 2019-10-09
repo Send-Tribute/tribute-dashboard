@@ -30,7 +30,7 @@ export default function Tribute(DAIContract, rDAIContract, provider, address) {
     if (currentHat.hatID.isZero()) {
       // if we're on zero hat we simply set a new hat
       await this.rDAIContract.mintWithNewHat(
-        bignumberAmount.toNumber(),
+        bignumberAmount,
         [this.address[0]],
         [1]
       );
