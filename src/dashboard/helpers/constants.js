@@ -39,14 +39,14 @@ export const DISCOVERABLE_PROVIDERS = {
     tags: ['open-source', 'tools', 'web3'],
     image: 'oneClickDapp'
   },
-  superMarianoBrothers: {
-    name: 'Super Mariano Bros.',
+  defiant: {
+    name: 'The Defiant',
     description:
-      'Pick up coins as you make your way through Governance castle.',
+      'Curated newsletter on the day’s latest DeFi news',
     address: '0xbF7A7169562078c96f0eC1A8aFD6aE50f12e5A99',
     website: './',
-    tags: ['game', 'paid', 'entertainment'],
-    image: 'superMariano'
+    tags: ['subscription', 'paid', 'newsletter'],
+    image: 'defiant'
   },
   unicef: {
     name: 'UNICEF',

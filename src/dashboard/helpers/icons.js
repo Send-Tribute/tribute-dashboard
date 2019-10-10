@@ -5,6 +5,7 @@ import faucet_on from '../assets/faucet-on.png';
 import faucet_off from '../assets/faucet-off.png';
 import dai from '../assets/dai.png';
 import super_mariano from '../assets/super-mariano.jpeg';
+import defiant from '../assets/defiant.png';
 import unicef from '../assets/unicef.png';
 import one_click_dapp from '../assets/one-click-dapp.png';
 import receive_money from '../assets/receive-money.png';
@@ -89,6 +90,10 @@ export const ICONS = {
   superMariano: {
     type: 'image',
     src: super_mariano
+  },
+  defiant: {
+    type: 'image',
+    src: defiant
   },
   oneClickDapp: {
     type: 'image',

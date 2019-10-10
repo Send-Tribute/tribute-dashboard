@@ -20,7 +20,7 @@ export default function Dashboard() {
 
   let user = {};
 
-  if (window.ethereum) {
+  if (typeof window.ethereum !== 'undefined') {
     window.ethereum.on('accountsChanged', function(accounts) {
       //should update context when user change is detected
       if (context.address && context.address !== accounts[0]) {
@@ -34,9 +34,18 @@ export default function Dashboard() {
   useEffect(() => {
     async function load() {
       // 1. enable metamask
-      if (window.ethereum) {
-        let address = await window.ethereum.enable();
-        console.log(`address ${address}`);
+      if (typeof window.ethereum !== 'undefined') {
+        let address = '';
+        try {
+          address = await window.ethereum.enable();
+          console.log(`address ${address}`);
+        } catch (error) {
+          setContext(state => {
+            return Object.assign({}, state, {
+              error: `Web3 Loading Error 1: ${error}`
+            });
+          });
+        }
 
         setContext(state => {
           return Object.assign(
@@ -88,7 +97,19 @@ export default function Dashboard() {
           }
         } catch (error) {
           console.log('Web3 Loading Error: ', error.message);
+          setContext(state => {
+            return Object.assign({}, state, {
+              error: `Web3 Loading Error 2: ${error}`
+            });
+          });
         }
+      } else {
+        setContext(state => {
+          return Object.assign(
+            {},
+            { error: 'Web3 Loading Error: no window.ethereum' }
+          );
+        });
       }
     }
     load();

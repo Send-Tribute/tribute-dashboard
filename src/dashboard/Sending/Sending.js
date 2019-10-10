@@ -226,9 +226,9 @@ const Sending = () => {
             }
             size="large"
             type="submit"
-            variant="outlined"
+            variant="contained"
             color="primary"
-            style={{ margin: '10px 0 0 0' }}
+            style={{ margin: '10px 0 10px', backgroundColor: '#1b1c4c' }}
             className={classes.sendTributeButton}
           >
             <Icon name="logo" className={classes.buttonIcon} />

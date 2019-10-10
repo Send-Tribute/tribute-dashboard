@@ -101,14 +101,14 @@ const Wallet = () => {
         <Container className={classes.contentContainer}>
           <Paper elevation={5} className={classes.unclaimedTributeContainer}>
             <Typography variant="body1">
-              You have <b>{tributeBalance}</b>{' '}
+              You have generated a total of <b>{tributeBalance}</b>{' '}
               <Icon name="baseCurrency" className={classes.baseCurrencyIcon} />{' '}
               Tribute.
               <br />
               <br />
-              <b>{unallocatedTribute}</b>{' '}
+              From that total, <b>{unallocatedTribute}</b>{' '}
               <Icon name="baseCurrency" className={classes.baseCurrencyIcon} />{' '}
-              is unallocated.
+              Tribute is unallocated.
             </Typography>
           </Paper>
           <Divider className={classes.divider} />

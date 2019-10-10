@@ -21,7 +21,7 @@ const useStyles = createUseStyles({
     height: 160,
     overflow: 'hidden'
   },
-  image: { width: '100%' },
+  image: { width: '100%', height: '100%' },
   chipContainer: {
     display: 'flex',
     justifyContent: 'center',
