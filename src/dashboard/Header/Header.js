@@ -15,7 +15,7 @@ const useStyles = createUseStyles({
   title: {},
   logo: {
     height: 50,
-    marginTop: 5
+    marginTop: 15
   },
   web3Button: {
     position: 'absolute',

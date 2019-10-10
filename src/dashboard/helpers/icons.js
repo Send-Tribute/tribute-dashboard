@@ -19,6 +19,7 @@ import kyber from '../assets/kyber.png';
 import coinbase from '../assets/coinbase.png';
 import wyre from '../assets/wyre.png';
 import qr from '../assets/qr.png';
+import unicef from '../assets/unicef.jpeg';
 import {
   Cached,
   AccountBalanceWallet,
@@ -123,5 +124,9 @@ export const ICONS = {
   qr: {
     type: 'image',
     src: qr
+  },
+  unicef: {
+    type: 'image',
+    src: unicef
   }
 };

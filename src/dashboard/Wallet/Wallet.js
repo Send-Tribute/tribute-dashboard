@@ -153,7 +153,9 @@ const Wallet = () => {
             <a href="./" target="_blank">
               here
             </a>
-            .<br />
+            .
+            <br />
+            <br />1 DAI = 1 Tribute
           </Typography>
           <TextField
             variant="outlined"
