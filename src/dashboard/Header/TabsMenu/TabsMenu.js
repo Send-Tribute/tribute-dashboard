@@ -8,7 +8,13 @@ export default function TabsMenu() {
   const [context, setContext] = useContext(Context);
 
   const handleTabChange = (event, tab) => {
-    setContext({ selectedTab: TABS.ordering[tab] });
+    setContext(state => {
+        Object.assign(
+            {}, 
+            state, 
+            {selectedTab: TABS.ordering[tab]}
+        )
+    });
   };
 
   const getTabs = () => {
