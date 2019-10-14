@@ -267,31 +267,13 @@ export default class Tribute {
     await this.rDAIContract.createHat(newRecipients, newProportions, true);
   };
 
-  // Claiming Tribute functions
-
-  // Get the amount of unclaimed tribute
-  async getUnclaimedTribute() {
-    const response = await this.rDAIContract.interestPayableOf(this.address[0]);
-    const output = response.div(WeiPerEther).toNumber();
-    return output;
-  };
-
-  // Get the amount of unclaimed tribute
-  async getUnclaimedTributeOnBehalfOf(address) {
+  async getUnclaimedTribute(address) {
     const response = await this.rDAIContract.interestPayableOf(address);
     const output = response.div(WeiPerEther).toNumber();
     return output;
   };
 
-  // calling interest payable of and converting to rdai
-  async claimTribute() {
-    //this cashes out all rDAI in both interest
-    //and principal and sends it back to the user
-    await this.rDAIContract.payInterest(this.address[0]);
-  };
-
-  // calling pay interest payable of and converting to rdai
-  async claimTributeOnBehalfOf(address) {
+  async claimTribute(address) {
     //this cashes out all rDAI in both interest
     //and principal and sends it back to the user
     await this.rDAIContract.payInterest(address);
