@@ -1,9 +1,23 @@
 import React, { useContext, useState } from 'react';
-import { Container, Divider, Button, Grid, TextField } from '@material-ui/core';
+import {
+  Container,
+  Divider,
+  Button,
+  Grid,
+  TextField,
+  Modal,
+  ModalContent
+} from '@material-ui/core';
 import { createUseStyles } from 'react-jss';
 import { Context } from '../context';
-import { Icon, CustomTable, ProviderCard, SectionHeader } from '../general';
-import { getEtherscanLink } from '../helpers/utils';
+import {
+  Icon,
+  CustomTable,
+  ProviderCard,
+  SectionHeader,
+  Scanner
+} from '../general';
+import { getEtherscanLink, getShortAddress } from '../helpers/utils';
 
 import { DISCOVERABLE_PROVIDERS } from '../helpers/constants';
 
@@ -46,17 +60,30 @@ const useStyles = createUseStyles({
     marginLeft: 20
   },
   buttonIcon: {
-    height: 25,
-    paddingRight: 10
+    height: 25
   },
   addressInputContainer: {
     display: 'flex',
-    margin: '10px 0 15px 0'
+    margin: '10px 0 0px 0'
   },
   sendTributeButton: {
-    padding: 10
+    margin: '10px 0 0 0'
   }
 });
+
+const endButton = (address, context) => {
+  return (
+    <Button
+      style={{ backgroundColor: '#1b1c4c', color: 'white' }}
+      variant="outlined"
+      onClick={() => {
+        context.tribute.endTribute(address);
+      }}
+    >
+      end tribute
+    </Button>
+  );
+};
 
 const Sending = () => {
   const [context] = useContext(Context);
@@ -65,6 +92,33 @@ const Sending = () => {
     address: '',
     amount: ''
   });
+
+  const [open, setOpen] = useState(false);
+  const handleOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  const setAddress = address => {
+    setValues({ ...values, address: address });
+  };
+
+  const { userDetails } = context;
+
+  let activeTributeRows = [['(enable wallet) ']];
+  if (userDetails && userDetails.activeTributes.recipients) {
+    activeTributeRows = userDetails.activeTributes.recipients.map(
+      (address, index) => {
+        const amount = Math.round(
+          userDetails.activeTributes.tributeAmounts[index]
+        );
+        return [getShortAddress(address), amount, endButton(address, context)];
+      }
+    );
+  }
 
   const handleChange = name => event => {
     setValues({ ...values, [name]: event.target.value });
@@ -76,19 +130,8 @@ const Sending = () => {
         <SectionHeader text="Active Tributes" icon="waterwheel" />
         <Container className={classes.contentContainer}>
           <CustomTable
-            headings={[
-              'Recipient',
-              'Tribute Amount',
-              'Current APR',
-              'Flowing Since',
-              'Total Sent',
-              'Actions'
-            ]}
-            rows={[
-              [getEtherscanLink('1', 'kovan'), 2, 3, 4, 5, 6],
-              [1, 2, 3, 4, 5, 6],
-              [1, 2, 3, 4, 5, 6]
-            ]}
+            headings={['Recipient', 'Tribute Amount', 'Actions']}
+            rows={activeTributeRows}
           />
           <Divider className={classes.divider} />
         </Container>
@@ -102,15 +145,8 @@ const Sending = () => {
         <SectionHeader text="Inactive Tributes" icon="waterwheelOff" />
         <Container className={classes.contentContainer}>
           <CustomTable
-            headings={[
-              'Recipient',
-              'Tribute Amount',
-              'Average APR',
-              'Duration',
-              'Total Sent',
-              'Actions'
-            ]}
-            rows={[[1, 2, 3, 4, 5, 6], [1, 2, 3, 4, 5, 6], [1, 2, 3, 4, 5, 6]]}
+            headings={['Recipient', 'Tribute Amount', 'Actions']}
+            rows={[[1, 2, 3], [1, 2, 3], [1, 2, 3]]}
           />
           <Divider className={classes.divider} />
         </Container>
@@ -137,7 +173,7 @@ const Sending = () => {
     );
   };
 
-  const getSocialTributes = () => {
+  const getSendTributes = () => {
     return (
       <Container className={classes.container}>
         <SectionHeader text="Send Tribute" icon="tributeButton" />
@@ -146,20 +182,44 @@ const Sending = () => {
             <TextField
               variant="outlined"
               label="Address"
+              id="outlined-dense"
+              margin="dense"
               value={values.address}
               onChange={handleChange('address')}
             />
-            <Button variant="contained">
+            <Button
+              variant="contained"
+              style={{ padding: 0, margin: '0 0 0 10px' }}
+              onClick={() => {
+                handleOpen();
+              }}
+            >
               <Icon name="qr" className={classes.buttonIcon} />
-              Scan
             </Button>
+            <Modal
+              open={open}
+              style={{
+                paddingTop: '3rem'
+              }}
+            >
+              <Scanner
+                handleClose={handleClose}
+                setAddress={setAddress}
+                onError={error => {
+                  this.changeAlert('danger', error);
+                }}
+              />
+            </Modal>
           </div>
           <TextField
             variant="outlined"
+            id="outlined-dense"
+            margin="dense"
             label="Amount"
             value={values.amount}
             onChange={handleChange('amount')}
           />
+          <br />
           <Button
             onClick={() =>
               context.tribute.sendTribute(values.address, values.amount)
@@ -168,6 +228,7 @@ const Sending = () => {
             type="submit"
             variant="outlined"
             color="primary"
+            style={{ margin: '10px 0 0 0' }}
             className={classes.sendTributeButton}
           >
             <Icon name="logo" className={classes.buttonIcon} />
@@ -181,9 +242,8 @@ const Sending = () => {
   return (
     <div>
       {getActiveTributes()}
-      {getInactiveTributes()}
       {getDiscoverTributes()}
-      {getSocialTributes()}
+      {getSendTributes()}
     </div>
   );
 };

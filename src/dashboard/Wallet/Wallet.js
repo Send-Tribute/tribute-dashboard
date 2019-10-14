@@ -1,10 +1,11 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { Context } from '../context';
 import {
   Grid,
   Typography,
   Container,
   Divider,
+  TextField,
   Paper,
   Button
 } from '@material-ui/core';
@@ -43,7 +44,6 @@ const useStyles = createUseStyles({
   unclaimedTributeContainer: {
     alignItems: 'center',
     display: 'flex',
-    margin: 20,
     padding: 20,
     borderRadius: 10
   },
@@ -70,18 +70,51 @@ const useStyles = createUseStyles({
   },
   walletGrid: {
     justifyContent: 'space-around'
-  },
-  exchangeButton: {
-    margin: 15
   }
 });
 
 const Wallet = () => {
   const [context, setContext] = useContext(Context);
   const classes = useStyles();
+  const { userDetails } = context;
 
-  const redeemTribute = () => {};
+  const [values, setValues] = useState({
+    address: '',
+    amount: ''
+  });
 
+  const handleChange = name => event => {
+    setValues({ ...values, [name]: event.target.value });
+  };
+
+  let unallocatedTribute = '(enable wallet)';
+  let tributeBalance = '(enable wallet)';
+  if (userDetails) {
+    unallocatedTribute = Math.trunc(userDetails.unallocatedTribute);
+    tributeBalance = Math.trunc(userDetails.tributeBalance);
+  }
+
+  const getSimpleWallet = () => {
+    return (
+      <Container className={classes.container}>
+        <SectionHeader text="My Tribute Wallet" icon="wallet" />
+        <Container className={classes.contentContainer}>
+          <Paper elevation={5} className={classes.unclaimedTributeContainer}>
+            <Typography variant="body1">
+              You have <b>{tributeBalance}</b>{' '}
+              <Icon name="baseCurrency" className={classes.baseCurrencyIcon} />{' '}
+              Tribute.
+              <br />
+              <b>{unallocatedTribute}</b>{' '}
+              <Icon name="baseCurrency" className={classes.baseCurrencyIcon} />{' '}
+              is unallocated.
+            </Typography>
+          </Paper>
+          <Divider className={classes.divider} />
+        </Container>
+      </Container>
+    );
+  };
   const getWallet = () => {
     return (
       <Container className={classes.container}>
@@ -121,11 +154,24 @@ const Wallet = () => {
               here
             </a>
             .
+            <br />
+            <br />1 DAI = 1 Tribute
           </Typography>
+          <TextField
+            variant="outlined"
+            id="outlined-dense"
+            margin="dense"
+            label="Amount"
+            value={values.amount}
+            onChange={handleChange('amount')}
+          />
           <Button
-            className={classes.exchangeButton}
+            style={{ margin: '10px 0 10px', backgroundColor: '#1b1c4c' }}
             variant="contained"
             color="primary"
+            onClick={() => {
+              context.tribute.generateTribute(values.amount);
+            }}
           >
             Generate Tribute
           </Button>
@@ -133,9 +179,12 @@ const Wallet = () => {
             You can withdraw your DAI at any time.
           </Typography>
           <Button
+            onClick={() => {
+              context.tribute.disableTribute();
+            }}
             variant="contained"
             color="primary"
-            className={classes.exchangeButton}
+            style={{ margin: '10px 0 10px', backgroundColor: '#1b1c4c' }}
           >
             Withdraw DAI
           </Button>
@@ -154,6 +203,7 @@ const Wallet = () => {
               return (
                 <Grid item key={FIAT_GATEWAYS[gateway].name}>
                   <Button
+                    style={{ margin: 10 }}
                     className={classes.fiatButton}
                     onClick={() =>
                       window.open(FIAT_GATEWAYS[gateway].website, '_blank')
@@ -177,7 +227,7 @@ const Wallet = () => {
 
   return (
     <div>
-      {getWallet()}
+      {getSimpleWallet()}
       {getExchanges()}
       {getFiatGateways()}
     </div>

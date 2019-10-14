@@ -17,14 +17,15 @@
   "scripts": {
     "start": "parcel public/dashboard.html public/widget.html",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "parcel build public/dashboard.html public/widget.html --out-dir dist",
+    "build": "parcel build public/dashboard.html --out-dir dist",
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook",
     "update-rdai-abi": "curl -s -X GET \"https://api-kovan.etherscan.io/api?module=contract&action=getabi&address=$npm_package_contracts_kovan_rDai\" | ./node_modules/node-jq/bin/jq -r \"[.result][0]\" > src/contracts/rDai.json",
     "update-cdai-abi": "curl -s -X GET \"https://api-kovan.etherscan.io/api?module=contract&action=getabi&address=$npm_package_contracts_kovan_cDai\" | ./node_modules/node-jq/bin/jq -r \"[.result][0]\" > src/contracts/cDai.json",
     "update-dai-abi": "curl -s -X GET \"https://api-kovan.etherscan.io/api?module=contract&action=getabi&address=$npm_package_contracts_kovan_dai\" | ./node_modules/node-jq/bin/jq -r \"[.result][0]\" > src/contracts/dai.json",
     "update-dai-strat-abi": "curl -s -X GET \"https://api-kovan.etherscan.io/api?module=contract&action=getabi&address=$npm_package_contracts_kovan_dai\" | ./node_modules/node-jq/bin/jq -r \"[.result][0]\" > src/contracts/dai-strat.json",
-    "update-abis": "yarn update-rdai-abi; yarn update-cdai-abi; yarn update-dai-abi; yarn update-dai-strat-abi"
+    "update-abis": "yarn update-rdai-abi; yarn update-cdai-abi; yarn update-dai-abi; yarn update-dai-strat-abi",
+    "deploy": "npm run build && surge ./dist https://tribute-dash1.surge.sh"
   },
   "contracts": {
     "kovan": {
@@ -40,11 +41,16 @@
     "babel-polyfill": "^6.26.0",
     "context": "^0.0.1",
     "ethers": "^4.0.37",
-    "node-jq": "^1.10.3",
+    "express": "^4.17.1",
+    "jimp": "^0.8.4",
     "prop-types": "^15.7.2",
-    "react": ">=15",
-    "react-dom": "^16.8.0",
-    "react-jss": "^10.0.0"
+    "qrcode-reader": "^1.0.4",
+    "react": "^15.0.0 || ^16.0.0",
+    "react-dom": "^15.0.0 || ^16.0.0",
+    "react-file-reader-input": "^2.0.0",
+    "react-jss": "^10.0.0",
+    "react-loading": "^2.0.3",
+    "react-qr-reader": "^2.2.1"
   },
   "devDependencies": {
     "@storybook/addon-actions": "^5.2.1",

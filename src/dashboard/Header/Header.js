@@ -8,23 +8,33 @@ import { createUseStyles } from 'react-jss';
 
 const useStyles = createUseStyles({
   root: {
-    flexGrow: 1
+    flexGrow: 1,
+    position: 'relative'
   },
 
   title: {},
   logo: {
-    padding: 8,
-    height: 30
+    height: 50,
+    marginTop: 15
   },
-  web3Button: {}
+  web3Button: {
+    position: 'absolute',
+    right: 10,
+    top: 30
+  }
 });
 
 export default function Header() {
   const [context, setContext] = useContext(Context);
   const classes = useStyles();
+  const { userDetails, isConnected } = context;
 
   const getUserDetails = () => {
-    let details = <EnableWeb3Button className={classes.web3Button} />;
+    let details = (
+      <div style={{ position: 'absolute', right: 10, top: 10 }}>
+        <EnableWeb3Button className={classes.web3Button} />
+      </div>
+    );
     // if (context.userDetails) {
     //  TODO: return userDetails
     // }
@@ -33,7 +43,12 @@ export default function Header() {
 
   return (
     <div className={classes.root}>
-      <AppBar position="static">
+      <AppBar
+        position="static"
+        style={{ backgroundColor: '#1b1c4c' }}
+        className={classes.appBar}
+      >
+        {isConnected}
         <Toolbar>
           <img src={tribute_logo} className={classes.logo} />
           {getUserDetails()}

@@ -6,16 +6,15 @@ import { createUseStyles } from 'react-jss';
 
 const useStyles = createUseStyles({
   container: {
-    height: 80,
+    height: 40,
     display: 'flex',
     alignItems: 'center'
   },
   image: {
-    height: 80,
-    marginRight: 25
+    height: 30
   },
   imageContainer: {
-    width: 80,
+    width: 30,
     marginRight: 10
   }
 });
@@ -28,7 +27,7 @@ const SectionHeader = ({ text, icon }) => {
       <div className={classes.imageContainer}>
         <Icon name={icon} className={classes.image} />
       </div>
-      <Typography variant="h4">{text}</Typography>
+      <Typography variant="h5">{text}</Typography>
     </div>
   );
 };

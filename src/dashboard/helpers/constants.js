@@ -1,6 +1,6 @@
 export const TABS = {
   ordering: ['wallet', 'sending', 'receiving', 'settings'],
-  default: 'sending',
+  default: 'wallet',
   displayNames: {
     wallet: 'Wallet',
     sending: 'Sending',
@@ -31,9 +31,17 @@ export const CONTRACTS = {
 };
 
 export const DISCOVERABLE_PROVIDERS = {
+  unicef: {
+    image: 'unicef',
+    name: 'UNICEF France',
+    description: 'Donate to UNICEF using cryptocurrency',
+    address: '0xA59B29d7dbC9794d1e7f45123C48b2b8d0a34636',
+    website: 'https://www.unicef.fr/',
+    tags: ['charity', 'tax-deductible', 'humanitarian']
+  },
   oneClickDapp: {
     name: 'One Click Dapp',
-    address: '0xb4377efc05bd28be8e6510629538e54eba2d74e3',
+    address: '0x9492510BbCB93B6992d8b7Bb67888558E12DCac4',
     website: 'http://oneclickdapp.com',
     description: 'Generate frontends quickly for your smart contracts',
     tags: ['open-source', 'tools', 'web3'],

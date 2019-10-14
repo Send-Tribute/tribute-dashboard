@@ -1,18 +1,24 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import { Context } from '../context';
 import {
   Typography,
+  TextField,
+  Modal,
   Container,
   Divider,
   Paper,
   Button
 } from '@material-ui/core';
 import { createUseStyles } from 'react-jss';
-import { Icon, CustomTable, SectionHeader } from '../general';
+import { Icon, CustomTable, SectionHeader, Scanner } from '../general';
 
 const useStyles = createUseStyles({
   container: {
     paddingTop: 20
+  },
+  redeemButton: {
+    right: 0,
+    marginLeft: 20
   },
   contentContainer: {
     paddingTop: 10
@@ -29,7 +35,6 @@ const useStyles = createUseStyles({
     alignItems: 'center',
     justifyContent: 'space-between',
     display: 'flex',
-    margin: 20,
     padding: 20,
     borderRadius: 10
   },
@@ -46,6 +51,44 @@ const useStyles = createUseStyles({
 const Receiving = () => {
   const [context, setContext] = useContext(Context);
   const classes = useStyles();
+  const { userDetails } = context;
+  const [values, setValues] = useState({
+    address: '',
+    externalUserInterest: '(scan to load)'
+  });
+
+  const handleChange = name => event => {
+    setValues({ ...values, [name]: event.target.value });
+  };
+
+  const [open, setOpen] = useState(false);
+  const handleOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  const setAddress = async address => {
+    let trimmedAddress = address;
+    if (address.indexOf('ethereum:') > -1) {
+      trimmedAddress = address.substr(9, address.length - 1);
+    }
+    const externalUserDetails = await context.tribute.getTributes(
+      trimmedAddress
+    );
+    console.log(externalUserDetails.unclaimedTribute);
+    const externalUserInterest = externalUserDetails.unclaimedTribute;
+    setValues({ ...values, address: trimmedAddress, externalUserInterest });
+  };
+
+  let selfTribute = '(enable wallet) ';
+  let unclaimedTribute = '(enable wallet) ';
+  if (userDetails) {
+    selfTribute = Math.trunc(userDetails.unallocatedTribute);
+    unclaimedTribute = userDetails.unclaimedTribute;
+  }
 
   const getSelfTribute = () => {
     return (
@@ -54,7 +97,7 @@ const Receiving = () => {
         <Container className={classes.contentContainer}>
           <Paper elevation={5} className={classes.unclaimedTributeContainer}>
             <Typography variant="body1">
-              <b>450</b>{' '}
+              <b>{selfTribute}</b>{' '}
               <Icon name="baseCurrency" className={classes.baseCurrencyIcon} />{' '}
               from your principal are generating interest for you.
             </Typography>
@@ -71,19 +114,37 @@ const Receiving = () => {
         <SectionHeader text="Active Tributes" icon="faucetOn" />
         <Container className={classes.contentContainer}>
           <CustomTable
-            headings={[
-              'Sender',
-              'Asset',
-              'Current APR',
-              'Tribute Amount',
-              'Flowing Since',
-              'Total Received'
-            ]}
-            rows={[[1, 2, 3, 4, 5, 6], [1, 2, 3, 4, 5, 6], [1, 2, 3, 4, 5, 6]]}
+            headings={['Sender', 'Tribute Amount']}
+            rows={[[1, 2], [1, 2], [1, 2]]}
           />
+
+          <Divider className={classes.divider} />
+        </Container>
+      </Container>
+    );
+  };
+
+  const getInactiveInflows = () => {
+    return (
+      <Container className={classes.container}>
+        <SectionHeader text="Inactive Tributes" icon="faucetOff" />
+        <Container className={classes.contentContainer}>
+          <CustomTable
+            headings={['Sender', 'Tribute Amount']}
+            rows={[[1, 2], [1, 2], [1, 2]]}
+          />
+        </Container>
+      </Container>
+    );
+  };
+
+  const getClaimTribute = () => {
+    return (
+      <Container className={classes.container}>
+        <Container className={classes.contentContainer}>
           <Paper elevation={5} className={classes.unclaimedTributeContainer}>
             <Typography variant="body1">
-              Ready to claim: <b>344</b>{' '}
+              Ready to claim: <b>{unclaimedTribute}</b>{' '}
               <Icon name="baseCurrency" className={classes.baseCurrencyIcon} />
             </Typography>
 
@@ -99,28 +160,76 @@ const Receiving = () => {
               </Button>
             </div>
           </Paper>
-          <Divider className={classes.divider} />
         </Container>
       </Container>
     );
   };
 
-  const getInactiveInflows = () => {
+  const getClaimOnBehalfOf = () => {
     return (
       <Container className={classes.container}>
-        <SectionHeader text="Inactive Tributes" icon="faucetOff" />
         <Container className={classes.contentContainer}>
-          <CustomTable
-            headings={[
-              'Sender',
-              'Asset',
-              'Average APR',
-              'Tribute Amount',
-              'Tribute Length',
-              'Total Received'
-            ]}
-            rows={[[1, 2, 3, 4, 5, 6], [1, 2, 3, 4, 5, 6], [1, 2, 3, 4, 5, 6]]}
-          />
+          <Paper elevation={5} className={classes.unclaimedTributeContainer}>
+            <div className={classes.leftContainer}>
+              <Typography variant="body1">Claim on behalf of:</Typography>
+              <div style={{ display: 'flex' }}>
+                <TextField
+                  variant="outlined"
+                  label="Address"
+                  id="outlined-dense"
+                  margin="dense"
+                  value={values.address}
+                  onChange={handleChange('address')}
+                />
+                <Button
+                  variant="contained"
+                  style={{ padding: '0 0 0 0', margin: '0 0 0 10px' }}
+                  onClick={() => {
+                    handleOpen();
+                  }}
+                >
+                  <Icon name="qr" className={classes.buttonIcon} />
+                </Button>
+                <Modal
+                  open={open}
+                  style={{
+                    paddingTop: '3rem'
+                  }}
+                >
+                  <Scanner
+                    handleClose={handleClose}
+                    setAddress={setAddress}
+                    onError={error => {
+                      this.changeAlert('danger', error);
+                    }}
+                  />
+                </Modal>
+              </div>
+              <div style={{ marginTop: 4 }}>
+                <Typography variant="body1">
+                  Ready to claim: <b>{values.externalUserInterest}</b>{' '}
+                  <Icon
+                    name="baseCurrency"
+                    className={classes.baseCurrencyIcon}
+                  />
+                </Typography>
+              </div>
+            </div>
+
+            <div>
+              <Button
+                onClick={() =>
+                  context.tribute.claimTributeOnBehalfOf(values.address)
+                }
+                variant="contained"
+                color="primary"
+                className={classes.redeemButton}
+              >
+                <Icon name="receiveMoney" className={classes.buttonIcon} />
+                Claim
+              </Button>
+            </div>
+          </Paper>
         </Container>
       </Container>
     );
@@ -129,8 +238,8 @@ const Receiving = () => {
   return (
     <div>
       {getSelfTribute()}
-      {getActiveInflows()}
-      {getInactiveInflows()}
+      {getClaimTribute()}
+      {getClaimOnBehalfOf()}
     </div>
   );
 };

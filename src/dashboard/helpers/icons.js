@@ -14,10 +14,12 @@ import tribute_token from '../assets/tribute-token.png';
 import convert_dai_tribute from '../assets/convert-dai-tribute.png';
 import convert_dollar_tribute from '../assets/convert-dollar-tribute.png';
 import wallet from '../assets/wallet.png';
+import wallet_white from '../assets/wallet-white.png';
 import kyber from '../assets/kyber.png';
 import coinbase from '../assets/coinbase.png';
 import wyre from '../assets/wyre.png';
 import qr from '../assets/qr.png';
+import unicef from '../assets/unicef.jpeg';
 import {
   Cached,
   AccountBalanceWallet,
@@ -77,7 +79,7 @@ export const ICONS = {
   },
   baseCurrency: {
     type: 'image',
-    src: dai
+    src: tribute_token
   },
   superMariano: {
     type: 'image',
@@ -103,6 +105,10 @@ export const ICONS = {
     type: 'image',
     src: wallet
   },
+  walletWhite: {
+    type: 'image',
+    src: wallet_white
+  },
   kyber: {
     type: 'image',
     src: kyber
@@ -118,5 +124,9 @@ export const ICONS = {
   qr: {
     type: 'image',
     src: qr
+  },
+  unicef: {
+    type: 'image',
+    src: unicef
   }
 };

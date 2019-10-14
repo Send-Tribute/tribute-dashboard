@@ -15,7 +15,8 @@ import { getShortAddress } from '../../helpers/utils';
 const useStyles = createUseStyles({
   card: {
     maxWidth: 345,
-    margin: 10
+    margin: 10,
+    justifyContent: 'center'
   },
   media: {
     height: 140,
@@ -23,8 +24,9 @@ const useStyles = createUseStyles({
   },
   image: { width: '100%' },
   chipContainer: {
+    marginTop: 5,
     display: 'flex',
-    justifyContent: 'left',
+    justifyContent: 'center',
     flexWrap: 'wrap'
   },
   chip: {
@@ -32,6 +34,12 @@ const useStyles = createUseStyles({
   },
   addressButton: {
     textTransform: 'none'
+  },
+  address: {
+    marginTop: 10
+  },
+  description: {
+    height: 50
   }
 });
 
@@ -43,17 +51,22 @@ const ProviderCard = ({ provider }) => {
       <CardMedia className={classes.media} title={name}>
         <Icon name={image} className={classes.image} />
       </CardMedia>
-      <CardContent>
-        <Typography gutterBottom variant="h5" component="h2">
+      <CardContent style={{ justifyContent: 'center' }}>
+        <Typography gutterBottom variant="h5">
           {name}
         </Typography>
-        <Typography variant="body2" color="textSecondary" component="p">
-          {description}
-        </Typography>
+        <div className={classes.description}>
+          <Typography variant="body2" color="textSecondary" component="p">
+            {description}
+          </Typography>
+        </div>
         <div className={classes.chipContainer}>
           {tags.map(tag => (
             <Chip key={tag} label={tag} className={classes.chip} />
           ))}
+        </div>
+        <div className={classes.address} style={{ paddingTop: 10 }}>
+          <Typography variant="caption">{address}</Typography>
         </div>
       </CardContent>
       <CardActions>
