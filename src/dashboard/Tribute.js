@@ -1,60 +1,64 @@
 import 'babel-polyfill';
 import { ethers } from 'ethers';
 const { bigNumberify, toNumber, formatEther } = ethers.utils;
-const { WeiPerEther } = ethers.constants;
 
 export default class Tribute {
 
-  constructor(DAIContract, rDAIContract, provider, address) {
+  constructor(DAIContract, rDAIContract, userAddress) {
     this.DAIContract = DAIContract;
     this.rDAIContract = rDAIContract;
-    this.provider = provider;
-    this.signer = provider.getSigner();
-    this.DAIContract = this.DAIContract.connect(this.signer);
-    this.rDAIContract = this.rDAIContract.connect(this.signer);
-    this.address = address;
+    this.userAddress = userAddress;
   }
 
-  // [you are in first] in hat allocations, this never changes
-  // every time the pricipal changes we make a new hat
-  // add more rdai to your account while updating you hat
   async generateTribute(amountToTribute) {
-    let bignumberAmount = bigNumberify(amountToTribute).mul(WeiPerEther);
-    await this.DAIContract.approve(rDAIContract.address, bignumberAmount);
 
-    let rDAIbalanceBigNumber = await this.rDAIContract.balanceOf(
-      this.address[0]
-    );
-    let balance = rDAIbalanceBigNumber.div(WeiPerEther).toNumber();
+    // msg.sender approves the rDAIContract to move funds on DAIContract
+    let decimals_DAI = this.DAIContract.decimals();
+    let amountToTribute_BN = bigNumberify(amountToTribute).mul(decimals_DAI);
+    await this.DAIContract.approve(this.rDAIContract.address, amountToTribute_BN);
 
-    let currentHat = await this.rDAIContract.getHatByAddress(this.address[0]);
+    let SELF_HAT_ID = await this.rDAIContract.SELF_HAT_ID;
+    let currentHat = await this.rDAIContract.getHatByAddress(userAddress);
 
-    // check for zero hat Self hat also gives you a zero hat
-    if (currentHat.hatID.isZero()) {
-      // if we're on zero hat we simply set a new hat
+    // if we're on self hat or zero set new hat with 100% allocation
+    if (currentHat.hatID.eq(SELF_HAT_ID) || currentHat.hatId.isZero()) {
       await this.rDAIContract.mintWithNewHat(
-        bignumberAmount,
-        [this.address[0]],
-        [1]
+        amountToTribute_BN,
+        [userAddress],
+        [amountToTribute]
       );
     } else {
+      // else we are adding new rDai to existing rDai
+      // GOAL: increase amount to your address not to others
+      // NOTE: proportions are always in percentages whole. we need to convert to fraction representations
+      // NOTE: first address is always user address
+     
       // TODO: check if the first address is the users address.
       // Otherwise the hat was not made by us and we need to fix the hat
+      
+      // retrieve user balance
+      let rDAIBalance_BN = await this.rDAIContract.balanceOf(userAddress);
+      let decimals_rDAI = this.rDAIContract.decimals();
+      let balance = rDAIBalance_BN.div(decimals_rDAI).toNumber();
 
-      const proportionsSum = currentHat.proportions.reduce(
-        (accl, value) => accl + value
-      );
-      // assuming that hat has users address in first slot
-      let proportionsInTribute = currentHat.proportions.map(portion => {
-        return (portion / proportionsSum) * balance;
+      // grab existing proportions
+      const currentProportions = currentHat.proportions;
+
+      // divide by PROPORTION_BASE
+      const PROPORTION_BASE = await this.rDAIContract.PROPORTION_BASE;
+
+      // calculate proportions whole numbers
+      let updatedPortions = currentHat.proportions.map(portion => {
+        return (portion / PROPORTION_BASE) * balance;
       });
-      // add to user slot
-      proportionsInTribute[0] += amountToTribute;
+
+      // add new amount to existing tribute for user
+      updatedPortions[0] += amountToTribute;
 
       await this.rDAIContract.mintWithNewHat(
-        bignumberAmount,
+        amountToTribute_BN,
         currentHat.recipients,
-        proportionsInTribute
+        updatedPortions
       );
     }
   };

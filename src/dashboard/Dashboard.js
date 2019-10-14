@@ -69,17 +69,16 @@ export default function Dashboard() {
             const rDAIContract = new ethers.Contract(
               CONTRACTS.rtoken.kovan,
               rDAIabi,
-              walletProvider
+              walletProvider.getSigner()
             );
             const DAIContract = new ethers.Contract(
               CONTRACTS.dai.kovan,
               DAIabi,
-              walletProvider
+              walletProvider.getSigner()
             );
             const tribute = new Tribute(
               DAIContract,
               rDAIContract,
-              walletProvider,
               address
             );
             const userDetails = await tribute.getTributes();
