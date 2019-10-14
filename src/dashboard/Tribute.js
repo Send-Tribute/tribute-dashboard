@@ -64,22 +64,6 @@ export default class Tribute {
     await this.rDAIContract.redeemAll();
   };
 
-  // this function mints rDAI to your account
-  async getRDAI() {
-    console.log(amount);
-    console.log(bigNumberify(amount).mul(WeiPerEther));
-    console.log(rDAIContract.address);
-    // what happens when approval works but mint gets dropped
-    await this.DAIContract.approve(
-      rDAIContract.address,
-      bigNumberify(amount).mul(WeiPerEther)
-    );
-    // dont call newhat
-    await this.rDAIContract.mint(bigNumberify(amount).mul(WeiPerEther));
-    let output = await this.rDAIContract.getHatByAddress(this.address);
-    console.log(output);
-  };
-
   async getTributes() {
     const currentHat = await this.rDAIContract.getHatByAddress(this.address[0]);
     // get user balance
