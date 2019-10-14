@@ -13,7 +13,7 @@ export default class Tribute {
   async generate(amountToTribute) {
 
     // msg.sender approves the rDAIContract to move funds on DAIContract
-    let decimals_DAI = this.DAIContract.decimals();
+    let decimals_DAI = await this.DAIContract.decimals();
     let amountToTribute_BN = bigNumberify(amountToTribute).mul(decimals_DAI);
     await this.DAIContract.approve(this.rDAIContract.address, amountToTribute_BN);
 
@@ -24,7 +24,7 @@ export default class Tribute {
     if (currentHat.hatID.eq(SELF_HAT_ID) || currentHat.hatId.isZero()) {
       await this.rDAIContract.mintWithNewHat(
         amountToTribute_BN,
-        [userAddress],
+        [this.userAddress],
         [amountToTribute]
       );
     } else {
@@ -69,62 +69,43 @@ export default class Tribute {
   };
 
   async getInfo() {
-    const currentHat = await this.rDAIContract.getHatByAddress(this.userAddress);
-    const rDAIBalance_BN = await this.rDAIContract.balanceOf(this.userAddress);
     let decimals_rDAI = await this.rDAIContract.decimals();
-    const balance = rDAIBalance_BN.div(decimals_rDAI).toNumber();
 
-    // Get unclaimed tribute - copy of getUnclaimedTribute()
-    let unclaimedTribute = await this.rDAIContract.interestPayableOf(this.userAddress);
+    // Balance
+    const rDAIBalance_BN = await this.rDAIContract.balanceOf(this.userAddress);
+    const rDAIBalance = rDAIBalance_BN.div(decimals_rDAI).toNumber();
 
+    // Unclaimed Balance
+    let unclaimedBalance_BN = await this.rDAIContract.interestPayableOf(this.userAddress);
+    let unclaimedBalance = unclaimedBalance_BN.div(decimals_rDAI).toNumber();
 
-    //========================
-    unclaimedTribute = formatEther(unclaimedTribute);
+    let recipients = [];
+    let proportions = [];
+    let unallocatedBalance = 0;
 
-    let activeRecipients = [];
-    let activeTributeAmounts = [];
-    let totalTribute = 0;
-    let unallocatedTribute = 0;
     // Check if the user has a hat
-    if (currentHat.proportions && currentHat.proportions.length > 0) {
-      // calculate the current proportions in units of Tribute
-      const proportionsSum = currentHat.proportions.reduce(
-        (accl, value) => accl + value
-      );
-      const proportionsInTribute = currentHat.proportions.map(portion => {
-        return (portion / proportionsSum) * balance;
-      });
-      console.log('Current hat: ', currentHat.recipients, proportionsInTribute);
+    let SELF_HAT_ID = await this.rDAIContract.SELF_HAT_ID;
+    const currentHat = await this.rDAIContract.getHatByAddress(this.userAddress);
+    if (!currentHat.hatID.eq(SELF_HAT_ID) && !currentHat.hatId.isZero()) {
+      //grab user's index
+      const userIdx = recipients.indexOf(this.userAddress.toLowerCase());
+      unallocatedBalance = proportions[userIdx];
 
-      // Get a searcheable lowercase recipient list
-      const recipientsLowerCase = currentHat.recipients.map(a =>
-        a.toLowerCase()
-      );
+      recipients = currentHat.recipients.map(r => r.toLowerCase());
+      recipients.splice(userIdx, 1); // remove user from recipients
 
-      // Check if the user has unallocated Tribute
-      const selfIndex = recipientsLowerCase.indexOf(
-        this.address[0].toLowerCase()
-      );
-      unallocatedTribute = proportionsInTribute[selfIndex];
-
-      // Remove the user from the arrays
-      activeRecipients = currentHat.recipients;
-      activeRecipients.splice(selfIndex, 1);
-      activeTributeAmounts = proportionsInTribute;
-      activeTributeAmounts.splice(selfIndex, 1);
-
-      totalTribute = await this.rDAIContract.balanceOf(this.address[0]);
-      totalTribute = totalTribute.div(WeiPerEther).toNumber();
+      proportions = currentHat.proportions;
+      proportions.splice(userIdx, 1); // remove user from the proportions
     }
 
     return {
-      activeTributes: {
-        recipients: activeRecipients,
-        tributeAmounts: activeTributeAmounts
+      allocations: {
+        recipients: recipients,
+        proportions: proportions
       },
-      tributeBalance: totalTribute,
-      unallocatedTribute,
-      unclaimedTribute
+      balance: rDAIBalance,
+      unallocated_balance: unallocatedBalance,
+      unclaimed_balance: unclaimedBalance
     };
   };
 
