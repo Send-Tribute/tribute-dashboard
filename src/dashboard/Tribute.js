@@ -10,7 +10,7 @@ export default class Tribute {
     this.userAddress = userAddress;
   }
 
-  async generateTribute(amountToTribute) {
+  async generate(amountToTribute) {
 
     // msg.sender approves the rDAIContract to move funds on DAIContract
     let decimals_DAI = this.DAIContract.decimals();
@@ -64,11 +64,11 @@ export default class Tribute {
   };
 
   // reedemm all your rdai to dai
-  async disableTribute() {
+  async disable() {
     await this.rDAIContract.redeemAll();
   };
 
-  async getTributes() {
+  async getInfo() {
     const currentHat = await this.rDAIContract.getHatByAddress(this.address[0]);
     // get user balance
     const balanceBigNumber = await this.rDAIContract.balanceOf(this.address[0]);
@@ -128,7 +128,7 @@ export default class Tribute {
   };
 
   // send and end
-  async sendTribute(recipientAddress, amount) {
+  async startFlow(recipientAddress, amount) {
     // begin flowing of tribute from an account to another account
 
     // TODO: validate recipientAddress
@@ -197,7 +197,7 @@ export default class Tribute {
     await this.rDAIContract.createHat(newRecipients, newProportions, true);
   };
 
-  async endTribute(address) {
+  async endFlow(address) {
     // begin flowing of tribute from an account to another account
 
     // TODO: validate recipientAddress
@@ -255,13 +255,13 @@ export default class Tribute {
     await this.rDAIContract.createHat(newRecipients, newProportions, true);
   };
 
-  async getUnclaimedTribute(address) {
+  async getUnclaimedAmount(address) {
     const response = await this.rDAIContract.interestPayableOf(address);
     const output = response.div(WeiPerEther).toNumber();
     return output;
   };
 
-  async claimTribute(address) {
+  async claimAmount(address) {
     //this cashes out all rDAI in both interest
     //and principal and sends it back to the user
     await this.rDAIContract.payInterest(address);
