@@ -38,7 +38,7 @@ export default class Tribute {
       
       // retrieve user balance
       let rDAIBalance_BN = await this.rDAIContract.balanceOf(userAddress);
-      let decimals_rDAI = this.rDAIContract.decimals();
+      let decimals_rDAI = await this.rDAIContract.decimals();
       let balance = rDAIBalance_BN.div(decimals_rDAI).toNumber();
 
       // grab existing proportions
@@ -69,15 +69,16 @@ export default class Tribute {
   };
 
   async getInfo() {
-    const currentHat = await this.rDAIContract.getHatByAddress(this.address[0]);
-    // get user balance
-    const balanceBigNumber = await this.rDAIContract.balanceOf(this.address[0]);
-    const balance = balanceBigNumber.div(WeiPerEther).toNumber();
+    const currentHat = await this.rDAIContract.getHatByAddress(this.userAddress);
+    const rDAIBalance_BN = await this.rDAIContract.balanceOf(this.userAddress);
+    let decimals_rDAI = await this.rDAIContract.decimals();
+    const balance = rDAIBalance_BN.div(decimals_rDAI).toNumber();
 
     // Get unclaimed tribute - copy of getUnclaimedTribute()
-    let unclaimedTribute = await this.rDAIContract.interestPayableOf(
-      this.address[0]
-    );
+    let unclaimedTribute = await this.rDAIContract.interestPayableOf(this.userAddress);
+
+
+    //========================
     unclaimedTribute = formatEther(unclaimedTribute);
 
     let activeRecipients = [];
