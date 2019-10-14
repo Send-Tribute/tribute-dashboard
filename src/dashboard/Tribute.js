@@ -3,19 +3,22 @@ import { ethers } from 'ethers';
 const { bigNumberify, toNumber, formatEther } = ethers.utils;
 const { WeiPerEther } = ethers.constants;
 
-export default function Tribute(DAIContract, rDAIContract, provider, address) {
-  this.DAIContract = DAIContract;
-  this.rDAIContract = rDAIContract;
-  this.provider = provider;
-  this.signer = provider.getSigner();
-  this.DAIContract = this.DAIContract.connect(this.signer);
-  this.rDAIContract = this.rDAIContract.connect(this.signer);
-  this.address = address;
+export default class Tribute {
+
+  constructor(DAIContract, rDAIContract, provider, address) {
+    this.DAIContract = DAIContract;
+    this.rDAIContract = rDAIContract;
+    this.provider = provider;
+    this.signer = provider.getSigner();
+    this.DAIContract = this.DAIContract.connect(this.signer);
+    this.rDAIContract = this.rDAIContract.connect(this.signer);
+    this.address = address;
+  }
 
   // [you are in first] in hat allocations, this never changes
   // every time the pricipal changes we make a new hat
   // add more rdai to your account while updating you hat
-  this.generateTribute = async amountToTribute => {
+  async generateTribute(amountToTribute) {
     let bignumberAmount = bigNumberify(amountToTribute).mul(WeiPerEther);
     await this.DAIContract.approve(rDAIContract.address, bignumberAmount);
 
@@ -57,12 +60,12 @@ export default function Tribute(DAIContract, rDAIContract, provider, address) {
   };
 
   // reedemm all your rdai to dai
-  this.disableTribute = async () => {
+  async disableTribute() {
     await this.rDAIContract.redeemAll();
   };
 
   // this function mints rDAI to your account
-  this.getRDAI = async amount => {
+  async getRDAI() {
     console.log(amount);
     console.log(bigNumberify(amount).mul(WeiPerEther));
     console.log(rDAIContract.address);
@@ -77,7 +80,7 @@ export default function Tribute(DAIContract, rDAIContract, provider, address) {
     console.log(output);
   };
 
-  this.getTributes = async () => {
+  async getTributes() {
     const currentHat = await this.rDAIContract.getHatByAddress(this.address[0]);
     // get user balance
     const balanceBigNumber = await this.rDAIContract.balanceOf(this.address[0]);
@@ -137,7 +140,7 @@ export default function Tribute(DAIContract, rDAIContract, provider, address) {
   };
 
   // send and end
-  this.sendTribute = async (recipientAddress, amount) => {
+  async sendTribute(recipientAddress, amount) {
     // begin flowing of tribute from an account to another account
 
     // TODO: validate recipientAddress
@@ -206,7 +209,7 @@ export default function Tribute(DAIContract, rDAIContract, provider, address) {
     await this.rDAIContract.createHat(newRecipients, newProportions, true);
   };
 
-  this.endTribute = async address => {
+  async endTribute(address) {
     // begin flowing of tribute from an account to another account
 
     // TODO: validate recipientAddress
@@ -267,28 +270,28 @@ export default function Tribute(DAIContract, rDAIContract, provider, address) {
   // Claiming Tribute functions
 
   // Get the amount of unclaimed tribute
-  this.getUnclaimedTribute = async () => {
+  async getUnclaimedTribute() {
     const response = await this.rDAIContract.interestPayableOf(this.address[0]);
     const output = response.div(WeiPerEther).toNumber();
     return output;
   };
 
   // Get the amount of unclaimed tribute
-  this.getUnclaimedTributeOnBehalfOf = async address => {
+  async getUnclaimedTributeOnBehalfOf(address) {
     const response = await this.rDAIContract.interestPayableOf(address);
     const output = response.div(WeiPerEther).toNumber();
     return output;
   };
 
   // calling interest payable of and converting to rdai
-  this.claimTribute = async () => {
+  async claimTribute() {
     //this cashes out all rDAI in both interest
     //and principal and sends it back to the user
     await this.rDAIContract.payInterest(this.address[0]);
   };
 
   // calling pay interest payable of and converting to rdai
-  this.claimTributeOnBehalfOf = async address => {
+  async claimTributeOnBehalfOf(address) {
     //this cashes out all rDAI in both interest
     //and principal and sends it back to the user
     await this.rDAIContract.payInterest(address);
