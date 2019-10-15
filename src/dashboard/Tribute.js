@@ -150,14 +150,11 @@ export default class Tribute {
         if (unallocated < amount)
             throw `Not enough unallocated tribute. You have ${unallocated} Tribute available`;
 
-        const recipientIndex = currentHat.recipients
-                .map( recipient => recipient.toLowerCase() )
-                .indexOf( this.recipientAddress.toLowerCase() );
-
         // Create the new values
         let newProportionsInTribute = currentPortions;
-        let newRecipients = recipientsLowerCase;
-    
+        let newRecipients = currentHat.recipients.map(recipient => recipient.toLowerCase());
+        const recipientIndex = newRecipients.indexOf(this.recipientAddress.toLowerCase());
+
         if (recipientIndex > 0) { // handle if recipient currently exists within the hat
 
         } else { // handle if the recipient is a brand new recipient
@@ -214,7 +211,7 @@ export default class Tribute {
 
             // Create the new values
             let newProportions = currentHat.proportions;
-            let newRecipients = recipientsLowerCase;
+            let newRecipients = currentHat.recipients.map(recipient => recipient.toLowerCase());
 
             const removeAddressProportion = currentHat.proportions[recipientIndex];
             newProportions[0] += removeAddressProportion;
