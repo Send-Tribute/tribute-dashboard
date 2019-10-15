@@ -128,28 +128,40 @@ export default class Tribute {
     };
   };
 
-  // send and end
+  // takes the amount of rDAI set to self and reflows it to another address
+  // this assumes a recipient that doesnt exist within the hat
+  // what about recipients that already exist
   async startFlow(recipientAddress, amount) {
     // begin flowing of tribute from an account to another account
 
     // TODO: validate recipientAddress
 
-    const currentHat = await this.rDAIContract.getHatByAddress(this.address[0]);
-    // get user balance
-    const balanceBigNumber = await this.rDAIContract.balanceOf(this.address[0]);
-    const balance = balanceBigNumber.div(WeiPerEther).toNumber();
+    const decimals_rDAI = await this.rDAIContract.decimals();
+    const balance_BN = await this.rDAIContract.balanceOf(this.userAddress);
+    const balance = balance_BN.div(decimals_rDAI).toNumber();
 
-    // Check if the user has a hat
+    const currentHat = await this.rDAIContract.getHatByAddress(this.userAddress);
+    // detect zero hat, detect self hat
+    if (currentHat.hatID.eq(SELF_HAT_ID) || currentHat.hatId.isZero()) {
+        // can just create new hat with new recipient
+    }
+
+
+
+    // determine
+
     if (currentHat.proportions.length < 1) throw "You don't have any Tribute";
 
     // calculate the current proportions in units of Tribute
-    const proportionsSum = currentHat.proportions.reduce(
-      (accl, value) => accl + value
-    );
-    const proportionsInTribute = currentHat.proportions.map(portion => {
-      return (portion / proportionsSum) * balance;
+    const PROPORTION_BASE = await this.rDAIContract.PROPORTION_BASE;
+
+    const currentPortions = currentHat.proportions.map(portion => {
+      return (portion / PROPORTION_BASE) * balance;
     });
-    console.log('Current hat: ', currentHat.recipients, proportionsInTribute);
+    console.log('Current hat: ', currentHat.recipients, currentPortions);
+
+
+
 
     // Get a searcheable lowercase recipient list
     const recipientsLowerCase = currentHat.recipients.map(a => a.toLowerCase());
@@ -160,13 +172,13 @@ export default class Tribute {
     );
     if (selfIndex < 0)
       throw 'Not enough unallocated tribute. You have 0 unallocated Tribute available';
-    const unallocatedTribute = proportionsInTribute[selfIndex];
-    if (unallocatedTribute < amount)
+    const unallocatedPortion = currentPortions[selfIndex];
+    if (unallocatedPortion < amount)
       throw `Not enough unallocated tribute. You have ${unallocatedTribute} unallocated Tribute available`;
     console.log('Unallocated tribute: ', unallocatedTribute);
 
     // Create the new values
-    let newProportionsInTribute = proportionsInTribute;
+    let newProportionsInTribute = currentPortions;
     let newRecipients = recipientsLowerCase;
 
     // Scenario 1: Recipient is not already included in the hat
