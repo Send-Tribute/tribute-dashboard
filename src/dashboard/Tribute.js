@@ -109,42 +109,46 @@ export default class Tribute {
     };
   };
 
-  // send and end
   async startFlow(recipientAddress, amount) {
-    // begin flowing of tribute from an account to another account
-
     // TODO: validate recipientAddress
+    let decimals_rDAI = await this.rDAIContract.decimals();
 
-    const currentHat = await this.rDAIContract.getHatByAddress(this.address[0]);
-    // get user balance
-    const balanceBigNumber = await this.rDAIContract.balanceOf(this.address[0]);
-    const balance = balanceBigNumber.div(WeiPerEther).toNumber();
+    // Balance
+    const rDAIBalance_BN = await this.rDAIContract.balanceOf(this.userAddress);
+    const rDAIBalance = rDAIBalance_BN.div(decimals_rDAI).toNumber();
+
+    // Unclaimed Balance
+    let unclaimedBalance_BN = await this.rDAIContract.interestPayableOf(this.userAddress);
+    let unclaimedBalance = unclaimedBalance_BN.div(decimals_rDAI).toNumber();
+
+    let recipients = [];
+    let proportions = [];
+    let unallocatedBalance = 0;
 
     // Check if the user has a hat
-    if (currentHat.proportions.length < 1) throw "You don't have any Tribute";
+    let SELF_HAT_ID = await this.rDAIContract.SELF_HAT_ID;
+    const currentHat = await this.rDAIContract.getHatByAddress(this.userAddress);
+    if (!currentHat.hatID.eq(SELF_HAT_ID) && !currentHat.hatId.isZero()) {
+      //grab user's index
+      const userIdx = recipients.indexOf(this.userAddress.toLowerCase());
+      unallocatedBalance = proportions[userIdx];
 
-    // calculate the current proportions in units of Tribute
-    const proportionsSum = currentHat.proportions.reduce(
-      (accl, value) => accl + value
-    );
-    const proportionsInTribute = currentHat.proportions.map(portion => {
-      return (portion / proportionsSum) * balance;
-    });
-    console.log('Current hat: ', currentHat.recipients, proportionsInTribute);
+      recipients = currentHat.recipients.map(r => r.toLowerCase());
+      recipients.splice(userIdx, 1); // remove user from recipients
 
-    // Get a searcheable lowercase recipient list
-    const recipientsLowerCase = currentHat.recipients.map(a => a.toLowerCase());
+      proportions = currentHat.proportions;
+      proportions.splice(userIdx, 1); // remove user from the proportions
 
-    // Check if the user has enough unallocated Tribute
-    const selfIndex = recipientsLowerCase.indexOf(
-      this.address[0].toLowerCase()
-    );
-    if (selfIndex < 0)
-      throw 'Not enough unallocated tribute. You have 0 unallocated Tribute available';
-    const unallocatedTribute = proportionsInTribute[selfIndex];
-    if (unallocatedTribute < amount)
-      throw `Not enough unallocated tribute. You have ${unallocatedTribute} unallocated Tribute available`;
-    console.log('Unallocated tribute: ', unallocatedTribute);
+      // Check if the user has enough unallocated Tribute
+      if (unallocatedBalane < amount)
+        throw `Not enough unallocated tribute. You have ${unallocatedTribute} unallocated Tribute available`;
+      console.log('Unallocated tribute: ', unallocatedTribute);
+    }
+
+
+    //CHECKPOINT
+    
+
 
     // Create the new values
     let newProportionsInTribute = proportionsInTribute;
