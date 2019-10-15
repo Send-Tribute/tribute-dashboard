@@ -109,67 +109,14 @@ export default class Tribute {
     };
   };
 
-<<<<<<< Updated upstream
-=======
   // takes the amount of rDAI set to self and reflows it to another address
   // this assumes a recipient that doesnt exist within the hat
   // what about recipients that already exist
   // this also handles an update flow
->>>>>>> Stashed changes
   async startFlow(recipientAddress, amount) {
     // TODO: validate recipientAddress
     let decimals_rDAI = await this.rDAIContract.decimals();
 
-<<<<<<< Updated upstream
-    // Balance
-    const rDAIBalance_BN = await this.rDAIContract.balanceOf(this.userAddress);
-    const rDAIBalance = rDAIBalance_BN.div(decimals_rDAI).toNumber();
-
-    // Unclaimed Balance
-    let unclaimedBalance_BN = await this.rDAIContract.interestPayableOf(this.userAddress);
-    let unclaimedBalance = unclaimedBalance_BN.div(decimals_rDAI).toNumber();
-
-    let recipients = [];
-    let proportions = [];
-    let unallocatedBalance = 0;
-
-    // Check if the user has a hat
-    let SELF_HAT_ID = await this.rDAIContract.SELF_HAT_ID;
-    const currentHat = await this.rDAIContract.getHatByAddress(this.userAddress);
-    if (!currentHat.hatID.eq(SELF_HAT_ID) && !currentHat.hatId.isZero()) {
-      //grab user's index
-      const userIdx = recipients.indexOf(this.userAddress.toLowerCase());
-      unallocatedBalance = proportions[userIdx];
-
-      recipients = currentHat.recipients.map(r => r.toLowerCase());
-      recipients.splice(userIdx, 1); // remove user from recipients
-
-      proportions = currentHat.proportions;
-      proportions.splice(userIdx, 1); // remove user from the proportions
-
-      // Check if the user has enough unallocated Tribute
-      if (unallocatedBalane < amount)
-        throw `Not enough unallocated tribute. You have ${unallocatedTribute} unallocated Tribute available`;
-      console.log('Unallocated tribute: ', unallocatedTribute);
-    }
-
-
-    //CHECKPOINT
-    
-
-
-    // Create the new values
-    let newProportionsInTribute = proportionsInTribute;
-    let newRecipients = recipientsLowerCase;
-
-    // Scenario 1: Recipient is not already included in the hat
-    if (!newRecipients.includes(recipientAddress.toLowerCase())) {
-      newRecipients.push(recipientAddress.toLowerCase());
-      // Increase the proportion of the recipient by amount
-      newProportionsInTribute[newRecipients.length - 1] = amount;
-      // Decrease the proportion of user by amount
-      newProportionsInTribute[selfIndex] -= amount;
-=======
     // getBalance
     const decimals_rDAI = await this.rDAIContract.decimals();
     const balance_BN = await this.rDAIContract.balanceOf(this.userAddress);
@@ -208,7 +155,6 @@ export default class Tribute {
                 .map( recipient => recipient.toLowerCase() )
                 .indexOf( this.userAddress.toLowerCase() );
 
-
         // Create the new values
         let newProportionsInTribute = currentPortions;
         let newRecipients = recipientsLowerCase;
@@ -226,7 +172,6 @@ export default class Tribute {
         }
 
         await this.rDAIContract.createHat(newRecipients, newProportions, true);
->>>>>>> Stashed changes
     }
   };
 
