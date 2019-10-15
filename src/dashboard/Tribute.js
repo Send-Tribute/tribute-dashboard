@@ -127,8 +127,8 @@ export default class Tribute {
 
     // NOTE: on the case where your address doesnt exist in your hat
     // this means that we cannot move forward because we cannot figure out
-    // how much left over rDAI your hat contains
-    // method should throw error
+    // how much left over rDAI your hat contains.
+    // method should throw error.
     // pass responisbity to calling function and request that the user resets his/her hat
     if (currentHat.hatID.eq(SELF_HAT_ID) || 
         currentHat.hatID.isZero() || 
@@ -201,61 +201,30 @@ export default class Tribute {
                 .indexOf( this.addressToRemove.toLowerCase() );
 
         // handle if reciepient currently exists within the hat
+        if (recipientIndex < 0) {
+            throw 'You are not sending any Tribute to this address.';
+        } else { // normal removal
 
+            // calulate current proportions
+            const PROPORTION_BASE = await this.rDAIContract.PROPORTION_BASE;
+            const currentPortions = currentHat.proportions.map(portion => {
+                return (portion / PROPORTION_BASE) * balance;
+            });
+            console.log('Current hat: ', currentHat.recipients, currentPortions);
 
+            // Create the new values
+            let newProportions = currentHat.proportions;
+            let newRecipients = recipientsLowerCase;
 
-        // normal removal
+            const removeAddressProportion = currentHat.proportions[recipientIndex];
+            newProportions[0] += removeAddressProportion;
+            newProportions.splice(recipientIndex, 1); // removes at index
+            newRecipients.splice(recipientIndex, 1); 
+            console.log('New hat (proportion): ', newRecipients, newProportions);
 
+            await this.rDAIContract.createHat(newRecipients, newProportions, true);
+        }
     }
-
-
-    if (currentHat.proportions.length < 1) throw "You don't have any Tribute";
-    // calculate the current proportions in units of Tribute
-    const proportionsSum = currentHat.proportions.reduce(
-      (accl, value) => accl + value
-    );
-    const proportionsInTribute = currentHat.proportions.map(portion => {
-      return (portion / proportionsSum) * balance;
-    });
-    console.log('Current hat: ', currentHat.recipients, currentHat.proportions);
-
-    // Get a searcheable lowercase recipient list
-    const recipientsLowerCase = currentHat.recipients.map(a => a.toLowerCase());
-
-    // Create the new values
-    let newProportions = currentHat.proportions;
-    let newRecipients = recipientsLowerCase;
-
-    // Check if the recipient is included in the hat
-    const removeAddressIndex = recipientsLowerCase.indexOf(
-      addressToRemove.toLowerCase()
-    );
-    if (removeAddressIndex < 0) {
-      throw 'You are not sending any Tribute to this address.';
-    }
-
-    // If so, remove the recipient from the new hat
-    newRecipients.splice(removeAddressIndex, 1);
-
-    // Add user to new hat if necessary
-    let selfIndex = recipientsLowerCase.indexOf(this.userAddress.toLowerCase());
-    if (selfIndex < 0) {
-      newRecipients.push(this.userAddress);
-      selfIndex = newRecipients.length - 1;
-    }
-
-    // Get the removed address proportions
-    const removeAddressProportion = currentHat.proportions[removeAddressIndex];
-    console.log(removeAddressProportion);
-    // Increase the proportion of user by amount
-    newProportions[selfIndex] += removeAddressProportion;
-
-    // Remove the proportion from the new hat
-    newProportions.splice(removeAddressIndex, 1);
-
-    console.log('New hat (proportion): ', newRecipients, newProportions);
-
-    await this.rDAIContract.createHat(newRecipients, newProportions, true);
   };
 
   async getUnclaimedAmount(address) {
