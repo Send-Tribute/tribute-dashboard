@@ -115,7 +115,6 @@ export default class Tribute {
   // this also handles an update flow
   async startFlow(recipientAddress, amount) {
     // TODO: validate recipientAddress
-    let decimals_rDAI = await this.rDAIContract.decimals();
 
     // getBalance
     const decimals_rDAI = await this.rDAIContract.decimals();
@@ -133,7 +132,7 @@ export default class Tribute {
     // pass responisbity to calling function and request that the user resets his/her hat
     if (currentHat.hatID.eq(SELF_HAT_ID) || 
         currentHat.hatID.isZero() || 
-        this.userAddress.toLowerCase() == currentHat.recipients[0].toLowerCase()) {
+        this.userAddress.toLowerCase() !== currentHat.recipients[0].toLowerCase()) {
 
         // recreate a blank hat
         // then add recipient
@@ -153,7 +152,7 @@ export default class Tribute {
 
         const recipientIndex = currentHat.recipients
                 .map( recipient => recipient.toLowerCase() )
-                .indexOf( this.userAddress.toLowerCase() );
+                .indexOf( this.recipientAddress.toLowerCase() );
 
         // Create the new values
         let newProportionsInTribute = currentPortions;
@@ -162,7 +161,6 @@ export default class Tribute {
         if (recipientIndex > 0) { // handle if recipient currently exists within the hat
 
         } else { // handle if the recipient is a brand new recipient
-
             newRecipients.push(recipientAddress.toLowerCase());
             // Increase the proportion of the recipient by amount
             newProportionsInTribute[newRecipients.length - 1] = amount;
@@ -175,15 +173,42 @@ export default class Tribute {
     }
   };
 
-  async endFlow(address) {
-    // begin flowing of tribute from an account to another account
 
+  // removes rDai interest assigned to addressToRemove
+  // and reflows it back to self
+  async endFlow(addressToRemove) {
     // TODO: validate recipientAddress
 
-    const currentHat = await this.rDAIContract.getHatByAddress(this.address[0]);
-    // get user balance
-    const balanceBigNumber = await this.rDAIContract.balanceOf(this.address[0]);
-    const balance = balanceBigNumber.div(WeiPerEther).toNumber();
+    // getBalance
+    const decimals_rDAI = await this.rDAIContract.decimals();
+    const balance_BN = await this.rDAIContract.balanceOf(this.userAddress);
+    const balance = balance_BN.div(decimals_rDAI).toNumber();
+
+    const currentHat = await this.rDAIContract.getHatByAddress(this.userAddress);
+
+    const SELF_HAT_ID = await this.rDAIContract.SELF_HAT_ID;
+
+    if (currentHat.hatID.eq(SELF_HAT_ID) || 
+        currentHat.hatID.isZero() || 
+        this.userAddress.toLowerCase() !== currentHat.recipients[0].toLowerCase()) {
+
+        // throw error
+
+    } else { // we assume that thier current hat has been created by our system
+        // find recipient within hat
+        const recipientIndex = currentHat.recipients
+                .map( recipient => recipient.toLowerCase() )
+                .indexOf( this.addressToRemove.toLowerCase() );
+
+        // handle if reciepient currently exists within the hat
+
+
+
+        // normal removal
+
+    }
+
+
     if (currentHat.proportions.length < 1) throw "You don't have any Tribute";
     // calculate the current proportions in units of Tribute
     const proportionsSum = currentHat.proportions.reduce(
@@ -203,7 +228,7 @@ export default class Tribute {
 
     // Check if the recipient is included in the hat
     const removeAddressIndex = recipientsLowerCase.indexOf(
-      address.toLowerCase()
+      addressToRemove.toLowerCase()
     );
     if (removeAddressIndex < 0) {
       throw 'You are not sending any Tribute to this address.';
@@ -213,9 +238,9 @@ export default class Tribute {
     newRecipients.splice(removeAddressIndex, 1);
 
     // Add user to new hat if necessary
-    let selfIndex = recipientsLowerCase.indexOf(this.address[0].toLowerCase());
+    let selfIndex = recipientsLowerCase.indexOf(this.userAddress.toLowerCase());
     if (selfIndex < 0) {
-      newRecipients.push(this.address[0]);
+      newRecipients.push(this.userAddress);
       selfIndex = newRecipients.length - 1;
     }
 
