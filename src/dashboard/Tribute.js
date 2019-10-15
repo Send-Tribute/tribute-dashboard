@@ -109,10 +109,18 @@ export default class Tribute {
     };
   };
 
+<<<<<<< Updated upstream
+=======
+  // takes the amount of rDAI set to self and reflows it to another address
+  // this assumes a recipient that doesnt exist within the hat
+  // what about recipients that already exist
+  // this also handles an update flow
+>>>>>>> Stashed changes
   async startFlow(recipientAddress, amount) {
     // TODO: validate recipientAddress
     let decimals_rDAI = await this.rDAIContract.decimals();
 
+<<<<<<< Updated upstream
     // Balance
     const rDAIBalance_BN = await this.rDAIContract.balanceOf(this.userAddress);
     const rDAIBalance = rDAIBalance_BN.div(decimals_rDAI).toNumber();
@@ -161,26 +169,65 @@ export default class Tribute {
       newProportionsInTribute[newRecipients.length - 1] = amount;
       // Decrease the proportion of user by amount
       newProportionsInTribute[selfIndex] -= amount;
+=======
+    // getBalance
+    const decimals_rDAI = await this.rDAIContract.decimals();
+    const balance_BN = await this.rDAIContract.balanceOf(this.userAddress);
+    const balance = balance_BN.div(decimals_rDAI).toNumber();
+
+    const currentHat = await this.rDAIContract.getHatByAddress(this.userAddress);
+    // destructuring const {hatID: currentHatID, } = currentHat
+    const SELF_HAT_ID = await this.rDAIContract.SELF_HAT_ID;
+
+    // NOTE: on the case where your address doesnt exist in your hat
+    // this means that we cannot move forward because we cannot figure out
+    // how much left over rDAI your hat contains
+    // method should throw error
+    // pass responisbity to calling function and request that the user resets his/her hat
+    if (currentHat.hatID.eq(SELF_HAT_ID) || 
+        currentHat.hatID.isZero() || 
+        this.userAddress.toLowerCase() == currentHat.recipients[0].toLowerCase()) {
+
+        // recreate a blank hat
+        // then add recipient
+        // or do error throwing
+    } else { // we assume that thier current hat has been created by our system
+        
+        // calulate current proportions
+        const PROPORTION_BASE = await this.rDAIContract.PROPORTION_BASE;
+        const currentPortions = currentHat.proportions.map(portion => {
+            return (portion / PROPORTION_BASE) * balance;
+        });
+        console.log('Current hat: ', currentHat.recipients, currentPortions);
+        
+        const unallocated = currentPortions[0];
+        if (unallocated < amount)
+            throw `Not enough unallocated tribute. You have ${unallocated} Tribute available`;
+
+        const recipientIndex = currentHat.recipients
+                .map( recipient => recipient.toLowerCase() )
+                .indexOf( this.userAddress.toLowerCase() );
+
+
+        // Create the new values
+        let newProportionsInTribute = currentPortions;
+        let newRecipients = recipientsLowerCase;
+    
+        if (recipientIndex > 0) { // handle if recipient currently exists within the hat
+
+        } else { // handle if the recipient is a brand new recipient
+
+            newRecipients.push(recipientAddress.toLowerCase());
+            // Increase the proportion of the recipient by amount
+            newProportionsInTribute[newRecipients.length - 1] = amount;
+            // Decrease the proportion of user by amount
+            newProportionsInTribute[selfIndex] -= amount;
+            console.log('New hat: ', newRecipients, newProportionsInTribute);
+        }
+
+        await this.rDAIContract.createHat(newRecipients, newProportions, true);
+>>>>>>> Stashed changes
     }
-    console.log('New hat: ', newRecipients, newProportionsInTribute);
-
-    // Scenario 2: Recipient is already icluded in the hat
-    // TODO: de-scoped for demo. until then, call endTribute to first remove the recipient from the hat before adding them back with the new amount.
-
-    // Set the new hat
-    let greatestSize = 0;
-    newProportionsInTribute.forEach(portion => {
-      const integer = portion.toString().split('.')[0];
-      if (integer) {
-        if (integer.length > greatestSize) greatestSize = integer.length;
-      }
-    });
-    const MAX_SIZE = 9; // Must be uint32 e.g. less than 4,294,967,295
-    const decimalMultiplier = MAX_SIZE - greatestSize;
-    const newProportions = newProportionsInTribute.map(portion => {
-      return Math.trunc(portion * Math.pow(10, decimalMultiplier));
-    });
-    await this.rDAIContract.createHat(newRecipients, newProportions, true);
   };
 
   async endFlow(address) {
