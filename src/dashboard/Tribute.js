@@ -109,65 +109,60 @@ export default class Tribute {
     };
   };
 
-  // takes the amount of rDAI set to self and reflows it to another address
-  // this assumes a recipient that doesnt exist within the hat
-  // what about recipients that already exist
-  // this also handles an update flow
   async startFlow(recipientAddress, amount) {
-    // TODO: validate recipientAddress
+    const PROPORTION_BASE = await this.rDAIContract.PROPORTION_BASE;
+    const decimals_rDAI = await this.rDAIContract.decimals();
 
     // getBalance
-    const decimals_rDAI = await this.rDAIContract.decimals();
     const balance_BN = await this.rDAIContract.balanceOf(this.userAddress);
     const balance = balance_BN.div(decimals_rDAI).toNumber();
 
     const currentHat = await this.rDAIContract.getHatByAddress(this.userAddress);
-    // destructuring const {hatID: currentHatID, } = currentHat
     const SELF_HAT_ID = await this.rDAIContract.SELF_HAT_ID;
 
-    // NOTE: on the case where your address doesnt exist in your hat
-    // this means that we cannot move forward because we cannot figure out
-    // how much left over rDAI your hat contains.
-    // method should throw error.
-    // pass responisbity to calling function and request that the user resets his/her hat
-    if (currentHat.hatID.eq(SELF_HAT_ID) || 
-        currentHat.hatID.isZero() || 
-        this.userAddress.toLowerCase() !== currentHat.recipients[0].toLowerCase()) {
 
-        // recreate a blank hat
-        // then add recipient
-        // or do error throwing
-    } else { // we assume that thier current hat has been created by our system
-        
-        // calulate current proportions
-        const PROPORTION_BASE = await this.rDAIContract.PROPORTION_BASE;
-        const currentPortions = currentHat.proportions.map(portion => {
-            return (portion / PROPORTION_BASE) * balance;
-        });
-        console.log('Current hat: ', currentHat.recipients, currentPortions);
-        
-        const unallocated = currentPortions[0];
-        if (unallocated < amount)
-            throw `Not enough unallocated tribute. You have ${unallocated} Tribute available`;
+    let receipents = currentHat.recipients;
+    let proportions = currentHat.proportions;
 
-        // Create the new values
-        let newProportionsInTribute = currentPortions;
-        let newRecipients = currentHat.recipients.map(recipient => recipient.toLowerCase());
-        const recipientIndex = newRecipients.indexOf(this.recipientAddress.toLowerCase());
+    // calculate proportions whole numbers
+    let portionWholeNum = currentHat.proportions.map(portion => {
+      return (portion / PROPORTION_BASE) * balance;
+    });
+    
+    //turn recipients and proportions into map
+    let recipientMap = {};
+    recipients.forEach((address, i) => recipientMap[address] = portionWholeNum[i]);
 
-        if (recipientIndex > 0) { // handle if recipient currently exists within the hat
-
-        } else { // handle if the recipient is a brand new recipient
-            newRecipients.push(recipientAddress.toLowerCase());
-            // Increase the proportion of the recipient by amount
-            newProportionsInTribute[newRecipients.length - 1] = amount;
-            // Decrease the proportion of user by amount
-            newProportionsInTribute[selfIndex] -= amount;
-            console.log('New hat: ', newRecipients, newProportionsInTribute);
-        }
-
-        await this.rDAIContract.createHat(newRecipients, newProportions, true);
+    //validate if hat !exist
+    if (currentHat.hatID.eq(SELF_HAT_ID) || currentHat.hatId.isZero()) {
+      if(balance < amount) throw "insuffient balance";
     }
+
+    //validate if there are amounts left in user portion
+    if(!(this.userAddress in recipientMap)) throw "insufficient balance left";
+
+    let userBal = recipientMap[this.userAddress] ? recipientMap[this.userAddress] : balance;
+    let receipientBal = recipientMap[recipientAddress] ? recipientMap[receipientAddress] : 0;
+    let sum = userBal + receipientBal;
+    if(sum < amount) throw "insufficent balance left";
+
+    //We have enough to update, continue and update values
+  
+    //update values between user and receipient
+    const amountNeeded = amount - receipientBal;
+    userBal -= amountNeeded;
+    receipientBal += amountNeeded;
+
+    //set values
+    recipientMap[this.userAddress] = userBal;
+    recipientMap[recipientAddress] = receipientBal;
+
+    //update to new hat values
+    await this.rDAIContract.createHat(
+      Object.keys(recipientMap),
+      Object.values(recipientMap),
+      true
+    );
   };
 
 
