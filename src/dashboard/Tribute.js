@@ -125,13 +125,13 @@ export default class Tribute {
     let proportions = currentHat.proportions;
 
     // calculate proportions whole numbers
-    let portionWholeNum = currentHat.proportions.map(portion => {
+    let portionWholeNum = proportions.map(portion => {
       return (portion / PROPORTION_BASE) * balance;
     });
     
     //turn recipients and proportions into map
     let recipientMap = {};
-    recipients.forEach((address, i) => recipientMap[address] = portionWholeNum[i]);
+    receipents.forEach((address, i) => recipientMap[address] = portionWholeNum[i]);
 
     //validate if hat !exist
     if (currentHat.hatID.eq(SELF_HAT_ID) || currentHat.hatId.isZero()) {
