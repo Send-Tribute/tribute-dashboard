@@ -61,12 +61,12 @@ export default class Tribute {
         updatedPortions
       );
     }
-  };
+  }
 
   // reedemm all your rdai to dai
   async disable() {
     await this.rDAIContract.redeemAll();
-  };
+  }
 
   async getInfo() {
     let decimals_rDAI = await this.rDAIContract.decimals();
@@ -107,7 +107,7 @@ export default class Tribute {
       unallocated_balance: unallocatedBalance,
       unclaimed_balance: unclaimedBalance
     };
-  };
+  }
 
   async startFlow(recipientAddress, amount) {
     const PROPORTION_BASE = await this.rDAIContract.PROPORTION_BASE;
@@ -119,7 +119,6 @@ export default class Tribute {
 
     const currentHat = await this.rDAIContract.getHatByAddress(this.userAddress);
     const SELF_HAT_ID = await this.rDAIContract.SELF_HAT_ID;
-
 
     let receipents = currentHat.recipients;
     let proportions = currentHat.proportions;
@@ -135,16 +134,16 @@ export default class Tribute {
 
     //validate if hat !exist
     if (currentHat.hatID.eq(SELF_HAT_ID) || currentHat.hatId.isZero()) {
-      if(balance < amount) throw "insuffient balance";
+      if (balance < amount) throw "insuffient balance";
     }
 
     //validate if there are amounts left in user portion
-    if(!(this.userAddress in recipientMap)) throw "insufficient balance left";
+    if (!(this.userAddress in recipientMap)) throw "insufficient balance left";
 
     let userBal = recipientMap[this.userAddress] ? recipientMap[this.userAddress] : balance;
     let receipientBal = recipientMap[recipientAddress] ? recipientMap[receipientAddress] : 0;
     let sum = userBal + receipientBal;
-    if(sum < amount) throw "insufficent balance left";
+    if (sum < amount) throw "insufficent balance left";
 
     //We have enough to update, continue and update values
   
@@ -157,77 +156,83 @@ export default class Tribute {
     recipientMap[this.userAddress] = userBal;
     recipientMap[recipientAddress] = receipientBal;
 
+    // remove addresses that have 0 flow
+    for (let [address, balance] of Object.entries(recipientMap)) {
+        if (balance == 0) {
+            delete recipientMap[address];
+        }
+    }
     //update to new hat values
     await this.rDAIContract.createHat(
       Object.keys(recipientMap),
       Object.values(recipientMap),
       true
     );
-  };
-
+  }
 
   // removes rDai interest assigned to addressToRemove
   // and reflows it back to self
   async endFlow(addressToRemove) {
     // TODO: validate recipientAddress
+    const PROPORTION_BASE = await this.rDAIContract.PROPORTION_BASE;
+    const decimals_rDAI = await this.rDAIContract.decimals();
 
     // getBalance
-    const decimals_rDAI = await this.rDAIContract.decimals();
     const balance_BN = await this.rDAIContract.balanceOf(this.userAddress);
     const balance = balance_BN.div(decimals_rDAI).toNumber();
 
     const currentHat = await this.rDAIContract.getHatByAddress(this.userAddress);
-
     const SELF_HAT_ID = await this.rDAIContract.SELF_HAT_ID;
 
-    if (currentHat.hatID.eq(SELF_HAT_ID) || 
-        currentHat.hatID.isZero() || 
-        this.userAddress.toLowerCase() !== currentHat.recipients[0].toLowerCase()) {
+    let receipents = currentHat.recipients;
+    let proportions = currentHat.proportions;
 
-        // throw error
+    // calculate proportions whole numbers
+    let portionWholeNum = proportions.map(portion => {
+      return (portion / PROPORTION_BASE) * balance;
+    });
+    
+    // turn recipients and proportions into map
+    let recipientMap = {};
+    receipents.forEach((address, i) => recipientMap[address] = portionWholeNum[i]);
 
-    } else { // we assume that thier current hat has been created by our system
-        // find recipient within hat
-        const recipientIndex = currentHat.recipients
-                .map( recipient => recipient.toLowerCase() )
-                .indexOf( this.addressToRemove.toLowerCase() );
+    // validate if hat !exist
+    if (currentHat.hatID.eq(SELF_HAT_ID) || currentHat.hatId.isZero()) throw "No flows to end";
+    
+    // validate if there are amounts left in user portion
+    if(!(addressToRemove in recipientMap)) throw `address: ${addressToRemove} does not exist`;
 
-        // handle if reciepient currently exists within the hat
-        if (recipientIndex < 0) {
-            throw 'You are not sending any Tribute to this address.';
-        } else { // normal removal
+    let userBal = recipientMap[this.userAddress] ? recipientMap[this.userAddress] : 0;
+    let receipientBal = recipientMap[recipientAddress];
+    
+    //update and set values between user and receipient
+    recipientMap[this.userAddress] = userBal + receipientBal;
+    recipientMap[recipientAddress] = 0;
 
-            // calulate current proportions
-            const PROPORTION_BASE = await this.rDAIContract.PROPORTION_BASE;
-            const currentPortions = currentHat.proportions.map(portion => {
-                return (portion / PROPORTION_BASE) * balance;
-            });
-            console.log('Current hat: ', currentHat.recipients, currentPortions);
-
-            // Create the new values
-            let newProportions = currentHat.proportions;
-            let newRecipients = currentHat.recipients.map(recipient => recipient.toLowerCase());
-
-            const removeAddressProportion = currentHat.proportions[recipientIndex];
-            newProportions[0] += removeAddressProportion;
-            newProportions.splice(recipientIndex, 1); // removes at index
-            newRecipients.splice(recipientIndex, 1); 
-            console.log('New hat (proportion): ', newRecipients, newProportions);
-
-            await this.rDAIContract.createHat(newRecipients, newProportions, true);
+    // remove addresses that have 0 flow
+    for (let [address, balance] of Object.entries(recipientMap)) {
+        if (balance == 0) {
+            delete recipientMap[address];
         }
     }
-  };
+
+    //update to new hat values
+    await this.rDAIContract.createHat(
+      Object.keys(recipientMap),
+      Object.values(recipientMap),
+      true
+    );
+  }
 
   async getUnclaimedAmount(address) {
     const response = await this.rDAIContract.interestPayableOf(address);
     const output = response.div(WeiPerEther).toNumber();
     return output;
-  };
+  }
 
   async claimAmount(address) {
     //this cashes out all rDAI in both interest
     //and principal and sends it back to the user
     await this.rDAIContract.payInterest(address);
-  };
+  }
 }
