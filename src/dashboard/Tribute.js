@@ -1,6 +1,6 @@
 import 'babel-polyfill';
 import { ethers } from 'ethers';
-const { bigNumberify, toNumber, formatEther } = ethers.utils;
+const { bigNumberify, formatUnits } = ethers.utils;
 
 export default class Tribute {
 
@@ -26,7 +26,7 @@ export default class Tribute {
     const currentHat = await this.rDAIContract.getHatByAddress(userAddress);
     const SELF_HAT_ID = await this.rDAIContract.SELF_HAT_ID;
 
-    const [receipents, proportions] = currentHat;
+    const {receipents, proportions} = currentHat;
 
     // calculate proportions whole numbers
     let portionWholeNum = proportions.map(portion => {
@@ -55,44 +55,54 @@ export default class Tribute {
 
   async getInfo() {
     let decimals_rDAI = await this.rDAIContract.decimals();
-    console.log(`TEST: ${decimals_rDAI}`)
+    
     // Balance
     const rDAIBalance_BN = await this.rDAIContract.balanceOf(this.userAddress);
-    const rDAIBalance = rDAIBalance_BN.div(decimals_rDAI);
-    
-    // Unclaimed Balance
     let unclaimedBalance_BN = await this.rDAIContract.interestPayableOf(this.userAddress);
-    let unclaimedBalance = unclaimedBalance_BN.div(decimals_rDAI);
     
-    let recipients = [];
-    let proportions = [];
-    let unallocatedBalance = 0;
-
     // Check if the user has a hat
-    let SELF_HAT_ID = await this.rDAIContract.SELF_HAT_ID;
-    const currentHat = await this.rDAIContract.getHatByAddress(this.userAddress);
-
+    const currentHat = await this.rDAIContract.getHatByAddress(this.userAddress);    
     
-    if (!currentHat.hatID.eq(SELF_HAT_ID) && !currentHat.hatID.isZero()) {
-      //grab user's index
-      const userIdx = recipients.indexOf(this.userAddress.toLowerCase());
-      unallocatedBalance = proportions[userIdx];
+    let {recipients, proportions} = currentHat;
+    let unallocatedBalance = 0;
+    
+    console.log(currentHat)
+    const PROPORTION_BASE = bigNumberify("0xFFFFFFFF");
+    console.log(rDAIBalance_BN);
 
-      recipients = currentHat.recipients.map(r => r.toLowerCase());
-      recipients.splice(userIdx, 1); // remove user from recipients
+    let portionWholeNum = proportions.map(portion => {
+        return bigNumberify(portion)
+                    .div(PROPORTION_BASE)
+                    .mul(rDAIBalance_BN);
+    });
+    console.log(recipients);
 
-      proportions = currentHat.proportions;
-      proportions.splice(userIdx, 1); // remove user from the proportions
-    }
+    let recipientMap = {};
+    recipients.forEach((address, i) => recipientMap[address] = portionWholeNum[i]);
 
+    let userBal = recipientMap[this.userAddress] ? recipientMap[this.userAddress] : 0;
+
+
+    // if (0) {
+    //   //grab user's index
+    //   const userIdx = recipients.indexOf(this.userAddress.toLowerCase());
+    //   unallocatedBalance = proportions[userIdx];
+    //   // calculate proportions whole numbers
+    //   recipients = currentHat.recipients.map(r => r.toLowerCase());
+    //   recipients.splice(userIdx, 1); // remove user from recipients
+
+    //   proportions = currentHat.proportions;
+    //   proportions.splice(userIdx, 1); // remove user from the proportions
+    // }
+    
     return {
       allocations: {
         recipients: recipients,
         proportions: proportions
       },
-      balance: rDAIBalance,
+      balance: formatUnits(rDAIBalance_BN, decimals_rDAI),
       unallocated_balance: unallocatedBalance,
-      unclaimed_balance: unclaimedBalance
+      unclaimed_balance: formatUnits(unclaimedBalance_BN, decimals_rDAI)
     };
   }
 
@@ -107,7 +117,7 @@ export default class Tribute {
     const currentHat = await this.rDAIContract.getHatByAddress(this.userAddress);
     const SELF_HAT_ID = await this.rDAIContract.SELF_HAT_ID;
 
-    const [receipents, proportions] = currentHat;
+    const {receipents, proportions} = currentHat;
 
     // calculate proportions whole numbers
     let portionWholeNum = proportions.map(portion => {
@@ -170,7 +180,7 @@ export default class Tribute {
     const currentHat = await this.rDAIContract.getHatByAddress(this.userAddress);
     const SELF_HAT_ID = await this.rDAIContract.SELF_HAT_ID;
 
-    const [receipents, proportions] = currentHat;
+    const {receipents, proportions} = currentHat;
 
     // calculate proportions whole numbers
     let portionWholeNum = proportions.map(portion => {
