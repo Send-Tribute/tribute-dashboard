@@ -79,9 +79,9 @@ export default function Dashboard() {
             const tribute = new Tribute(
               DAIContract,
               rDAIContract,
-              address
+              address[0]
             );
-            const userDetails = await tribute.getTributes();
+            const userDetails = await tribute.getInfo();
             console.log(userDetails);
             setContext(state => {
               return Object.assign(

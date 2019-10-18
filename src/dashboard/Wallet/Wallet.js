@@ -170,7 +170,7 @@ const Wallet = () => {
             variant="contained"
             color="primary"
             onClick={() => {
-              context.tribute.generateTribute(values.amount);
+              context.tribute.generate(values.amount);
             }}
           >
             Generate Tribute
@@ -180,7 +180,7 @@ const Wallet = () => {
           </Typography>
           <Button
             onClick={() => {
-              context.tribute.disableTribute();
+              context.tribute.disable();
             }}
             variant="contained"
             color="primary"

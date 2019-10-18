@@ -11,13 +11,24 @@ export default class Tribute {
   }
 
   async generate(amountToTribute) {
+<<<<<<< Updated upstream
     const PROPORTION_BASE = await this.rDAIContract.PROPORTION_BASE;
     const decimals_DAI = await this.DAIContract.decimals();
     const decimals_rDAI = await this.rDAIContract.decimals();
     
     // approve DAI
     const amountToTribute_BN = bigNumberify(amountToTribute).mul(decimals_DAI);
+=======
+
+<<<<<<< Updated upstream
+    // msg.sender approves the rDAIContract to move funds on DAIContract
+    let decimals_DAI = await this.DAIContract.decimals();
+    let amountToTribute_BN = bigNumberify(amountToTribute).mul(decimals_DAI);
+>>>>>>> Stashed changes
     await this.DAIContract.approve(this.rDAIContract.address, amountToTribute_BN);
+=======
+    const currentHat = await this.rDAIContract.getHatByAddress(userAddress);
+>>>>>>> Stashed changes
 
     // get rDAI balance
     const rDAIBalance_BN = await this.rDAIContract.balanceOf(userAddress);
@@ -55,15 +66,15 @@ export default class Tribute {
 
   async getInfo() {
     let decimals_rDAI = await this.rDAIContract.decimals();
-
+    console.log(`TEST: ${decimals_rDAI}`)
     // Balance
     const rDAIBalance_BN = await this.rDAIContract.balanceOf(this.userAddress);
-    const rDAIBalance = rDAIBalance_BN.div(decimals_rDAI).toNumber();
-
+    const rDAIBalance = rDAIBalance_BN.div(decimals_rDAI);
+    
     // Unclaimed Balance
     let unclaimedBalance_BN = await this.rDAIContract.interestPayableOf(this.userAddress);
-    let unclaimedBalance = unclaimedBalance_BN.div(decimals_rDAI).toNumber();
-
+    let unclaimedBalance = unclaimedBalance_BN.div(decimals_rDAI);
+    
     let recipients = [];
     let proportions = [];
     let unallocatedBalance = 0;
@@ -71,7 +82,9 @@ export default class Tribute {
     // Check if the user has a hat
     let SELF_HAT_ID = await this.rDAIContract.SELF_HAT_ID;
     const currentHat = await this.rDAIContract.getHatByAddress(this.userAddress);
-    if (!currentHat.hatID.eq(SELF_HAT_ID) && !currentHat.hatId.isZero()) {
+
+    
+    if (!currentHat.hatID.eq(SELF_HAT_ID) && !currentHat.hatID.isZero()) {
       //grab user's index
       const userIdx = recipients.indexOf(this.userAddress.toLowerCase());
       unallocatedBalance = proportions[userIdx];
