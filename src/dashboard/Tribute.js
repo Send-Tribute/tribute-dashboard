@@ -6,32 +6,74 @@ export default class Tribute {
 
   constructor(DAIContract, rDAIContract, userAddress) {
     this.DAIContract = DAIContract;
+    this._DAI_Decimals;
+
     this.rDAIContract = rDAIContract;
+    this._rDAI_Deciamls;
+    this._rDAI_Proportion_Base
+    this._rDAI_Self_Hat;
+
     this.userAddress = userAddress;
   }
 
+  async fetch_DAI_Decimals() {
+    if(!this._DAI_Decimals) {
+      this._DAI_Decimals = await this.DAIContract.deciamals();
+    }
+    return this._DAI_Decimals;
+  }
+
+  async fetch_rDAI_Decimals() {
+    if(!this._rDAI_Decimals) {
+      this._rDAI_Decimals = await this.rDAIContract.deciamals();
+    }
+    return this._rDAI_Decimals;
+  }
+
+  async fetch_Self_Hat_Id() {
+    if (!this._rDAI_Self_Hat) {
+      this._rDAI_Self_Hat = await this.rDAIContract.SELF_HAT_ID;
+    }
+    return this._rDAI_Self_Hat;
+  }
+
+  async fetch_rDAI_Proportion_Base() {
+    if(!this._rDAI_Proportion_Base) {
+      this._rDAI_Proportion_Base = await this.rDAIContract.PROPORTION_BASE;
+    }
+    return this._rDAI_Proportion_Base;
+  }
+
+ async calculatePortionWholeNum(balance, proportions) {
+    const PROPORTION_BASE = await fetch_rDAI_Proportion_Base();
+    let portionWholeNum = proportions.map(portion => {
+        return (portion / PROPORTION_BASE) * balance;
+    });
+   return portionWholeNum;
+ }
+
+  async getrDaiBalance() {
+    const rDAIBalance_BN = await this.rDAIContract.balanceOf(this.userAddress);
+    const decimals_rDAI = await this.fetch_rDAI_Decimals();;
+    const balance = awarDAIBalance_BN.div(decimals_rDAI).toNumber();
+    return balance;
+  }
+
   async generate(amountToTribute) {
-    const PROPORTION_BASE = await this.rDAIContract.PROPORTION_BASE;
-    const decimals_DAI = await this.DAIContract.decimals();
-    const decimals_rDAI = await this.rDAIContract.decimals();
+    const PROPORTION_BASE = await this.fetch_rDAI_Proportion_Base();
+    const decimals_DAI = await this.fetch_DAI_Decimals();
+    const decimals_rDAI = await this.fetch_rDAI_Decimals();;
     
     // approve DAI
     const amountToTribute_BN = bigNumberify(amountToTribute).mul(decimals_DAI);
     await this.DAIContract.approve(this.rDAIContract.address, amountToTribute_BN);
 
-    // get rDAI balance
-    const rDAIBalance_BN = await this.rDAIContract.balanceOf(userAddress);
-    const balance = rDAIBalance_BN.div(decimals_rDAI).toNumber();
-
-    const currentHat = await this.rDAIContract.getHatByAddress(userAddress);
-    const SELF_HAT_ID = await this.rDAIContract.SELF_HAT_ID;
-
+    const balance = getrDaiBalance();
+    const currentHat = await this.rDAIContract.getHatByAddress(this.userAddress);
     const [receipents, proportions] = currentHat;
 
     // calculate proportions whole numbers
-    let portionWholeNum = proportions.map(portion => {
-        return (portion / PROPORTION_BASE) * balance;
-    });
+    let portionWholeNum = await calculatePortionWholeNum(balance, proportions);
 
     // convert to object mapping
     let recipientMap = {};
