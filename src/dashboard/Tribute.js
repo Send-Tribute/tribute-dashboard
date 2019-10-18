@@ -18,14 +18,14 @@ export default class Tribute {
 
   async fetch_DAI_Decimals() {
     if(!this._DAI_Decimals) {
-      this._DAI_Decimals = await this.DAIContract.deciamals();
+      this._DAI_Decimals = await this.DAIContract.decimals();
     }
     return this._DAI_Decimals;
   }
 
   async fetch_rDAI_Decimals() {
     if(!this._rDAI_Decimals) {
-      this._rDAI_Decimals = await this.rDAIContract.deciamals();
+      this._rDAI_Decimals = await this.rDAIContract.decimals();
     }
     return this._rDAI_Decimals;
   }
