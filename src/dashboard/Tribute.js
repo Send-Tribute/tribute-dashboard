@@ -11,24 +11,13 @@ export default class Tribute {
   }
 
   async generate(amountToTribute) {
-<<<<<<< Updated upstream
     const PROPORTION_BASE = await this.rDAIContract.PROPORTION_BASE;
     const decimals_DAI = await this.DAIContract.decimals();
     const decimals_rDAI = await this.rDAIContract.decimals();
     
     // approve DAI
     const amountToTribute_BN = bigNumberify(amountToTribute).mul(decimals_DAI);
-=======
-
-<<<<<<< Updated upstream
-    // msg.sender approves the rDAIContract to move funds on DAIContract
-    let decimals_DAI = await this.DAIContract.decimals();
-    let amountToTribute_BN = bigNumberify(amountToTribute).mul(decimals_DAI);
->>>>>>> Stashed changes
     await this.DAIContract.approve(this.rDAIContract.address, amountToTribute_BN);
-=======
-    const currentHat = await this.rDAIContract.getHatByAddress(userAddress);
->>>>>>> Stashed changes
 
     // get rDAI balance
     const rDAIBalance_BN = await this.rDAIContract.balanceOf(userAddress);
