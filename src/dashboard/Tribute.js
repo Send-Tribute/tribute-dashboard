@@ -11,56 +11,41 @@ export default class Tribute {
   }
 
   async generate(amountToTribute) {
-
-    // msg.sender approves the rDAIContract to move funds on DAIContract
-    let decimals_DAI = await this.DAIContract.decimals();
-    let amountToTribute_BN = bigNumberify(amountToTribute).mul(decimals_DAI);
+    const PROPORTION_BASE = await this.rDAIContract.PROPORTION_BASE;
+    const decimals_DAI = await this.DAIContract.decimals();
+    const decimals_rDAI = await this.rDAIContract.decimals();
+    
+    // approve DAI
+    const amountToTribute_BN = bigNumberify(amountToTribute).mul(decimals_DAI);
     await this.DAIContract.approve(this.rDAIContract.address, amountToTribute_BN);
 
-    let SELF_HAT_ID = await this.rDAIContract.SELF_HAT_ID;
-    let currentHat = await this.rDAIContract.getHatByAddress(userAddress);
+    // get rDAI balance
+    const rDAIBalance_BN = await this.rDAIContract.balanceOf(userAddress);
+    const balance = rDAIBalance_BN.div(decimals_rDAI).toNumber();
 
-    // if we're on self hat or zero set new hat with 100% allocation
-    if (currentHat.hatID.eq(SELF_HAT_ID) || currentHat.hatId.isZero()) {
-      await this.rDAIContract.mintWithNewHat(
-        amountToTribute_BN,
-        [this.userAddress],
-        [amountToTribute]
-      );
-    } else {
-      // else we are adding new rDai to existing rDai
-      // GOAL: increase amount to your address not to others
-      // NOTE: proportions are always in percentages whole. we need to convert to fraction representations
-      // NOTE: first address is always user address
-     
-      // TODO: check if the first address is the users address.
-      // Otherwise the hat was not made by us and we need to fix the hat
-      
-      // retrieve user balance
-      let rDAIBalance_BN = await this.rDAIContract.balanceOf(userAddress);
-      let decimals_rDAI = await this.rDAIContract.decimals();
-      let balance = rDAIBalance_BN.div(decimals_rDAI).toNumber();
+    const currentHat = await this.rDAIContract.getHatByAddress(userAddress);
+    const SELF_HAT_ID = await this.rDAIContract.SELF_HAT_ID;
 
-      // grab existing proportions
-      const currentProportions = currentHat.proportions;
+    const [receipents, proportions] = currentHat;
 
-      // divide by PROPORTION_BASE
-      const PROPORTION_BASE = await this.rDAIContract.PROPORTION_BASE;
-
-      // calculate proportions whole numbers
-      let updatedPortions = currentHat.proportions.map(portion => {
+    // calculate proportions whole numbers
+    let portionWholeNum = proportions.map(portion => {
         return (portion / PROPORTION_BASE) * balance;
-      });
+    });
 
-      // add new amount to existing tribute for user
-      updatedPortions[0] += amountToTribute;
+    // convert to object mapping
+    let recipientMap = {};
+    receipents.forEach((address, i) => recipientMap[address] = portionWholeNum[i]);
 
-      await this.rDAIContract.mintWithNewHat(
-        amountToTribute_BN,
-        currentHat.recipients,
-        updatedPortions
-      );
-    }
+    let userBal = recipientMap[this.userAddress] ? recipientMap[this.userAddress] : balance;
+
+    recipientMap[this.userAddress] = userBal + amountToTribute;
+
+    await this.rDAIContract.createHat(
+        Object.keys(recipientMap),
+        Object.values(recipientMap),
+        true
+    );
   }
 
   // reedemm all your rdai to dai
@@ -120,8 +105,7 @@ export default class Tribute {
     const currentHat = await this.rDAIContract.getHatByAddress(this.userAddress);
     const SELF_HAT_ID = await this.rDAIContract.SELF_HAT_ID;
 
-    let receipents = currentHat.recipients;
-    let proportions = currentHat.proportions;
+    const [receipents, proportions] = currentHat;
 
     // calculate proportions whole numbers
     let portionWholeNum = proportions.map(portion => {
@@ -184,8 +168,7 @@ export default class Tribute {
     const currentHat = await this.rDAIContract.getHatByAddress(this.userAddress);
     const SELF_HAT_ID = await this.rDAIContract.SELF_HAT_ID;
 
-    let receipents = currentHat.recipients;
-    let proportions = currentHat.proportions;
+    const [receipents, proportions] = currentHat;
 
     // calculate proportions whole numbers
     let portionWholeNum = proportions.map(portion => {
