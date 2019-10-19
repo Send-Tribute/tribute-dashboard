@@ -90,8 +90,8 @@ const Wallet = () => {
   let unallocatedTribute = '(enable wallet)';
   let tributeBalance = '(enable wallet)';
   if (userDetails) {
-    unallocatedTribute = Math.trunc(userDetails.unallocatedTribute);
-    tributeBalance = Math.trunc(userDetails.tributeBalance);
+    unallocatedTribute = Math.trunc(userDetails.unallocated_balance);
+    tributeBalance = Math.trunc(userDetails.balance);
   }
 
   const getSimpleWallet = () => {
