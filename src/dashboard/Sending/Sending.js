@@ -77,7 +77,7 @@ const endButton = (address, context) => {
       style={{ backgroundColor: '#1b1c4c', color: 'white' }}
       variant="outlined"
       onClick={() => {
-        context.tribute.endTribute(address);
+        context.tribute.endFlow(address);
       }}
     >
       end tribute
