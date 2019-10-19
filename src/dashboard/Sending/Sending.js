@@ -109,11 +109,12 @@ const Sending = () => {
   const { userDetails } = context;
 
   let activeTributeRows = [['(enable wallet) ']];
-  if (userDetails && userDetails.activeTributes.recipients) {
-    activeTributeRows = userDetails.activeTributes.recipients.map(
+  console.log(userDetails);
+  if (userDetails && userDetails.allocations.recipients) {
+    activeTributeRows = userDetails.allocations.recipients.map(
       (address, index) => {
         const amount = Math.round(
-          userDetails.activeTributes.tributeAmounts[index]
+          userDetails.allocations.proportions[index]
         );
         return [getShortAddress(address), amount, endButton(address, context)];
       }
