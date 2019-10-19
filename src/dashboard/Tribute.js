@@ -19,34 +19,44 @@ export default class Tribute {
     const amountToTribute_BN = bigNumberify(amountToTribute).mul(bigNumberify(10).pow(decimals_rDAI))
     await this.DAIContract.approve(this.rDAIContract.address, amountToTribute_BN);
 
-    //mint rDAI
-    //await this.rDAIContract.mint(amountToTribute_BN);
-
     // get rDAI balance
-    const rDAIBalance_BN = await this.rDAIContract.balanceOf(this.userAddress);
-    const balance_BN = rDAIBalance_BN.div(decimals_rDAI)
+    const rDAIBalance_BN = await this.rDAIContract.balanceOf(this.userAddress)
+    const balance_BN = rDAIBalance_BN.div(bigNumberify(10).pow(decimals_rDAI));
 
     const currentHat = await this.rDAIContract.getHatByAddress(this.userAddress);
     const SELF_HAT_ID = await this.rDAIContract.SELF_HAT_ID;
 
     const { recipients, proportions } = currentHat;
 
+    console.log('Proportion')
+    console.log(proportions)
+
     // calculate proportions whole numbers
     let portionWholeNum = proportions.map(portion => {
         return bigNumberify(portion)
                     .div(this.PROPORTION_BASE)
-                    .mul(rDAIBalance_BN);
+                    .mul(balance_BN);
     });
+
+    console.log('Whole Num')
+    console.log(portionWholeNum)
 
     // convert to object mapping
     let recipientMap = {};
-    recipients.forEach((address, i) => recipientMap[address] = portionWholeNum[i]);
+    recipients.forEach((address, i) => recipientMap[address.toLowerCase()] = portionWholeNum[i]);
 
     let userBal = recipientMap[this.userAddress] ? recipientMap[this.userAddress] : balance_BN;
 
-    recipientMap[this.userAddress] = userBal + amountToTribute;
+    console.log("User Bal")
+    console.log(userBal)
 
-    console.log(recipientMap)
+    recipientMap[this.userAddress] = userBal.add(bigNumberify(amountToTribute));
+
+    console.log("new balance")
+    console.log(recipientMap[this.userAddress])
+
+    console.log(Object.keys(recipientMap))
+    console.log(Object.values(recipientMap))
 
     await this.rDAIContract.mintWithNewHat(
       amountToTribute_BN,
