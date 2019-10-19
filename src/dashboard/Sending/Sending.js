@@ -223,7 +223,7 @@ const Sending = () => {
           <br />
           <Button
             onClick={() =>
-              context.tribute.sendTribute(values.address, values.amount)
+              context.tribute.startFlow(values.address, values.amount)
             }
             size="large"
             type="submit"
