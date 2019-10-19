@@ -14,16 +14,19 @@ export default class Tribute {
   async generate(amountToTribute) {
     const decimals_DAI = await this.DAIContract.decimals();
     const decimals_rDAI = await this.rDAIContract.decimals();
-    
+
     // approve DAI
-    const amountToTribute_BN = bigNumberify(amountToTribute).mul(decimals_DAI);
+    const amountToTribute_BN = bigNumberify(amountToTribute).mul(bigNumberify(10).pow(decimals_rDAI))
     await this.DAIContract.approve(this.rDAIContract.address, amountToTribute_BN);
 
+    //mint rDAI
+    await this.rDAIContract.mint(amountToTribute_BN);
+
     // get rDAI balance
-    const rDAIBalance_BN = await this.rDAIContract.balanceOf(userAddress);
+    const rDAIBalance_BN = await this.rDAIContract.balanceOf(this.userAddress);
     const balance = rDAIBalance_BN.div(decimals_rDAI).toNumber();
 
-    const currentHat = await this.rDAIContract.getHatByAddress(userAddress);
+    const currentHat = await this.rDAIContract.getHatByAddress(this.userAddress);
     const SELF_HAT_ID = await this.rDAIContract.SELF_HAT_ID;
 
     const {receipents, proportions} = currentHat;
