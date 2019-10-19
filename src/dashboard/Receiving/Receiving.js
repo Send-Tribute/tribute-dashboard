@@ -86,8 +86,8 @@ const Receiving = () => {
   let selfTribute = '(enable wallet) ';
   let unclaimedTribute = '(enable wallet) ';
   if (userDetails) {
-    selfTribute = Math.trunc(userDetails.unallocatedTribute);
-    unclaimedTribute = userDetails.unclaimedTribute;
+    selfTribute = Math.trunc(userDetails.unallocated_balance);
+    unclaimedTribute = userDetails.unclaimed_balance;
   }
 
   const getSelfTribute = () => {
