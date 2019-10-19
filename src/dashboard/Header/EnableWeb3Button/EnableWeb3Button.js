@@ -24,7 +24,7 @@ export default function EnableWeb3Button() {
   let tributeBalance = 'loading...';
 
   if (userDetails) {
-    tributeBalance = Math.trunc(userDetails.tributeBalance);
+    tributeBalance = Math.trunc(userDetails.balance);
   }
   let errorMsg = '';
   if (error) {
