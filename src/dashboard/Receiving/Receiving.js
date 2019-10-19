@@ -75,7 +75,7 @@ const Receiving = () => {
     if (address.indexOf('ethereum:') > -1) {
       trimmedAddress = address.substr(9, address.length - 1);
     }
-    const externalUserDetails = await context.tribute.getTributes(
+    const externalUserDetails = await context.tribute.getInfo(
       trimmedAddress
     );
     console.log(externalUserDetails.unclaimedTribute);

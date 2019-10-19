@@ -8,10 +8,10 @@ export default class Tribute {
     this.DAIContract = DAIContract;
     this.rDAIContract = rDAIContract;
     this.userAddress = userAddress;
+    this.PROPORTION_BASE = bigNumberify("0xFFFFFFFF");
   }
 
   async generate(amountToTribute) {
-    const PROPORTION_BASE = bigNumberify("0xFFFFFFFF");
     const decimals_DAI = await this.DAIContract.decimals();
     const decimals_rDAI = await this.rDAIContract.decimals();
     
@@ -30,7 +30,7 @@ export default class Tribute {
 
     // calculate proportions whole numbers
     let portionWholeNum = proportions.map(portion => {
-        return (portion / PROPORTION_BASE) * balance;
+        return (portion / this.PROPORTION_BASE) * balance;
     });
 
     // convert to object mapping
@@ -63,43 +63,42 @@ export default class Tribute {
     // Check if the user has a hat
     const currentHat = await this.rDAIContract.getHatByAddress(this.userAddress);    
     
-    let {recipients, proportions} = currentHat;
-    let unallocatedBalance = ethers.constants.Zero;
-    
-    console.log(currentHat)
-    
-    console.log(rDAIBalance_BN);
+    let { recipients, proportions } = currentHat;
+    console.log(currentHat);
+    let unallocatedBalance;
+    let portionWholeNum;
 
-    let portionWholeNum = proportions.map(portion => {
-        return bigNumberify(portion)
-                    .div(PROPORTION_BASE)
-                    .mul(rDAIBalance_BN);
-    });
-    console.log(recipients);
-    const PROPORTION_BASE = bigNumberify("0xFFFFFFFF");
-    let recipientMap = {};
-    recipients.forEach((address, i) => recipientMap[address.toLowerCase()] = portionWholeNum[i]);
+    //check if hat is empty
+    if (recipients.length === 0) {
+      unallocatedBalance = rDAIBalance_BN
+    } else {
 
-    // set user bal if has rdai and no recipients
-    let userBal = recipientMap[this.userAddress] ? recipientMap[this.userAddress] : 0;
-    console.log(formatUnits(userBal, decimals_rDAI));
-    const userIndex = recipients.indexOf(this.userAddress.toLowerCase());
+      // set all recepients to lower case to allow searching
+      recipients = currentHat.recipients.map(r => r.toLowerCase());
+      
+      portionWholeNum = proportions.map(portion => {
+          return bigNumberify(portion)
+                      .div(this.PROPORTION_BASE)
+                      .mul(rDAIBalance_BN);
+      });
+      let userIdx = recipients.indexOf(this.userAddress.toLowerCase())
 
-    //   unallocatedBalance = proportions[userIdx];
-    //   // calculate proportions whole numbers
-    //   recipients = currentHat.recipients.map(r => r.toLowerCase());
-    //   recipients.splice(userIdx, 1); // remove user from recipients
+      //check if user exists 
+      if ( userIdx < 0) {
+        unallocatedBalance = ethers.constants.Zero;
+      } else {
+        unallocatedBalance = portionWholeNum[userIdx];
 
-    //   proportions = currentHat.proportions;
-    //   proportions.splice(userIdx, 1); // remove user from the proportions
-    // }
-    
-    // need to run ether.utils.getAdress to return addresses back to normal after changing toLowerCase
-
+        //remove user from portionWholeNum
+        recipients.splice(userIdx, 1); // remove user from recipients
+        portionWholeNum.splice(userIdx, 1); // remove user from the proportions
+      }
+    }
+   
     return {
       allocations: {
-        recipients: recipients,
-        proportions: proportions
+        recipients: recipients.map(recipient => ethers.utils.getAddress(recipient)),
+        proportions: portionWholeNum.map(portion => formatUnits(portion, decimals_rDAI))
       },
       balance: formatUnits(rDAIBalance_BN, decimals_rDAI),
       unallocated_balance: formatUnits(unallocatedBalance, decimals_rDAI),
@@ -108,7 +107,6 @@ export default class Tribute {
   }
 
   async startFlow(recipientAddress, amount) {
-    const PROPORTION_BASE = bigNumberify("0xFFFFFFFF");
     const decimals_rDAI = await this.rDAIContract.decimals();
 
     // getBalance
@@ -122,7 +120,7 @@ export default class Tribute {
 
     // calculate proportions whole numbers
     let portionWholeNum = proportions.map(portion => {
-      return (portion / PROPORTION_BASE) * balance;
+      return (portion / this.PROPORTION_BASE) * balance;
     });
     
     //turn recipients and proportions into map
@@ -171,7 +169,6 @@ export default class Tribute {
   // and reflows it back to self
   async endFlow(addressToRemove) {
     // TODO: validate recipientAddress
-    const PROPORTION_BASE = bigNumberify("0xFFFFFFFF");
     const decimals_rDAI = await this.rDAIContract.decimals();
 
     // getBalance
@@ -185,7 +182,7 @@ export default class Tribute {
 
     // calculate proportions whole numbers
     let portionWholeNum = proportions.map(portion => {
-      return (portion / PROPORTION_BASE) * balance;
+      return (portion / this.PROPORTION_BASE) * balance;
     });
     
     // turn recipients and proportions into map
