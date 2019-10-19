@@ -64,7 +64,6 @@ export default class Tribute {
     const currentHat = await this.rDAIContract.getHatByAddress(this.userAddress);    
     
     let { recipients, proportions } = currentHat;
-    console.log(currentHat);
     let unallocatedBalance;
     let portionWholeNum;
 
