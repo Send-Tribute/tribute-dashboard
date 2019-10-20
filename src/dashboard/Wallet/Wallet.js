@@ -90,8 +90,8 @@ const Wallet = () => {
   let unallocatedTribute = '(enable wallet)';
   let tributeBalance = '(enable wallet)';
   if (userDetails) {
-    unallocatedTribute = Math.trunc(userDetails.unallocatedTribute);
-    tributeBalance = Math.trunc(userDetails.tributeBalance);
+    unallocatedTribute = Math.trunc(userDetails.unallocated_balance);
+    tributeBalance = Math.trunc(userDetails.balance);
   }
 
   const getSimpleWallet = () => {
@@ -170,7 +170,7 @@ const Wallet = () => {
             variant="contained"
             color="primary"
             onClick={() => {
-              context.tribute.generateTribute(values.amount);
+              context.tribute.generate(values.amount);
             }}
           >
             Generate Tribute
@@ -180,7 +180,7 @@ const Wallet = () => {
           </Typography>
           <Button
             onClick={() => {
-              context.tribute.disableTribute();
+              context.tribute.disable();
             }}
             variant="contained"
             color="primary"

@@ -75,7 +75,7 @@ const Receiving = () => {
     if (address.indexOf('ethereum:') > -1) {
       trimmedAddress = address.substr(9, address.length - 1);
     }
-    const externalUserDetails = await context.tribute.getTributes(
+    const externalUserDetails = await context.tribute.getInfo(
       trimmedAddress
     );
     console.log(externalUserDetails.unclaimedTribute);
@@ -86,8 +86,8 @@ const Receiving = () => {
   let selfTribute = '(enable wallet) ';
   let unclaimedTribute = '(enable wallet) ';
   if (userDetails) {
-    selfTribute = Math.trunc(userDetails.unallocatedTribute);
-    unclaimedTribute = userDetails.unclaimedTribute;
+    selfTribute = Math.trunc(userDetails.unallocated_balance);
+    unclaimedTribute = userDetails.unclaimed_balance;
   }
 
   const getSelfTribute = () => {
@@ -150,7 +150,7 @@ const Receiving = () => {
 
             <div>
               <Button
-                onClick={() => context.tribute.claimTribute()}
+                onClick={() => context.tribute.claimAmount(context.address[0])}
                 variant="contained"
                 color="primary"
                 className={classes.redeemButton}

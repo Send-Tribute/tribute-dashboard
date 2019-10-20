@@ -15,7 +15,7 @@
     "url": "https://github.com/Send-Tribute/tribute-rDAI/issues"
   },
   "scripts": {
-    "start": "parcel public/dashboard.html public/widget.html",
+    "start": "yarn update-abis; parcel public/dashboard.html public/widget.html",
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "parcel build public/dashboard.html public/widget.html --out-dir dist",
     "storybook": "start-storybook -p 6006",
