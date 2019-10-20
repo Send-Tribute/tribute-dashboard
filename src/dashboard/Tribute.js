@@ -28,9 +28,6 @@ export default class Tribute {
 
     const { recipients, proportions } = currentHat;
 
-    console.log('Proportion')
-    console.log(proportions)
-
     // calculate proportions whole numbers
     let portionWholeNum = proportions.map(portion => {
         return bigNumberify(portion)
@@ -38,25 +35,13 @@ export default class Tribute {
                     .div(this.PROPORTION_BASE);
     });
 
-    console.log('Whole Num')
-    console.log(portionWholeNum)
-
     // convert to object mapping
     let recipientMap = {};
     recipients.forEach((address, i) => recipientMap[address.toLowerCase()] = portionWholeNum[i]);
 
     let userBal = recipientMap[this.userAddress] ? recipientMap[this.userAddress] : balance_BN;
 
-    console.log("User Bal")
-    console.log(userBal)
-
     recipientMap[this.userAddress] = userBal.add(bigNumberify(amountToTribute));
-
-    console.log("new balance")
-    console.log(recipientMap[this.userAddress])
-
-    console.log(Object.keys(recipientMap))
-    console.log(Object.values(recipientMap))
 
     await this.rDAIContract.mintWithNewHat(
       amountToTribute_BN,
@@ -143,9 +128,6 @@ export default class Tribute {
                     .div(this.PROPORTION_BASE);
     });
 
-    console.log("portion whole num")
-    console.log(portionWholeNum)
-  
     //turn recipients and proportions into map
     // convert to object mapping
     let recipientMap = {};
@@ -164,15 +146,6 @@ export default class Tribute {
     let recipientBal = recipientMap[recipientAddress.toLowerCase()] ? recipientMap[recipientAddress.toLowerCase()] : ethers.constants.Zero;
     let sum = userBal.add(recipientBal);
 
-    console.log("user bal")
-    console.log(userBal)
-    console.log("balance")
-    console.log(balance_BN.toString())
-    console.log("sum")
-    console.log(sum)
-    console.log("amount")
-    console.log(amount_BN)
-
     if (sum.lt(amount_BN)) throw "insufficent balance left";
 
     //We have enough to update, continue and update values
@@ -185,8 +158,6 @@ export default class Tribute {
     //set values
     recipientMap[this.userAddress] = userBal;
     recipientMap[recipientAddress.toLowerCase()] = recipientBal;
-
-    console.log(recipientMap)
 
     // remove addresses that have 0 flow
     for (let [address, portion_BN] of Object.entries(recipientMap)) {
