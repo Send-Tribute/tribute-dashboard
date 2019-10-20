@@ -189,8 +189,8 @@ export default class Tribute {
     console.log(recipientMap)
 
     // remove addresses that have 0 flow
-    for (let [address, balance_BN] of Object.entries(recipientMap)) {
-        if (balance_BN.eq(ethers.constants.Zero)) {
+    for (let [address, portion_BN] of Object.entries(recipientMap)) {
+        if (portion_BN.eq(ethers.constants.Zero)) {
             delete recipientMap[address];
         }
     }
@@ -205,43 +205,46 @@ export default class Tribute {
   // removes rDai interest assigned to addressToRemove
   // and reflows it back to self
   async endFlow(addressToRemove) {
-    // TODO: validate recipientAddress
     const decimals_rDAI = await this.rDAIContract.decimals();
 
     // getBalance
-    const balance_BN = await this.rDAIContract.balanceOf(this.userAddress);
-    const balance = balance_BN.div(decimals_rDAI).toNumber();
+    const rDAIBalance_BN = await this.rDAIContract.balanceOf(this.userAddress)
+    const balance_BN = rDAIBalance_BN.div(bigNumberify(10).pow(decimals_rDAI));
 
     const currentHat = await this.rDAIContract.getHatByAddress(this.userAddress);
     const SELF_HAT_ID = await this.rDAIContract.SELF_HAT_ID;
 
-    const {recipients, proportions} = currentHat;
+    const { recipients, proportions } = currentHat;
 
     // calculate proportions whole numbers
     let portionWholeNum = proportions.map(portion => {
-      return (portion / this.PROPORTION_BASE) * balance;
+        return bigNumberify(portion)
+                    .mul(balance_BN)
+                    .div(this.PROPORTION_BASE);
     });
-    
-    // turn recipients and proportions into map
+
+    //turn recipients and proportions into map
+    // convert to object mapping
     let recipientMap = {};
-    recipients.forEach((address, i) => recipientMap[address] = portionWholeNum[i]);
+    recipients.forEach((address, i) => recipientMap[address.toLowerCase()] = portionWholeNum[i]);
 
     // validate if hat !exist
-    if (currentHat.hatID.eq(SELF_HAT_ID) || currentHat.hatId.isZero()) throw "No flows to end";
+    if (currentHat.hatID.eq(SELF_HAT_ID) || currentHat.hatID.isZero()) throw "No flows to end";
     
     // validate if there are amounts left in user portion
-    if(!(addressToRemove in recipientMap)) throw `address: ${addressToRemove} does not exist`;
+    if(!(addressToRemove.toLowerCase() in recipientMap)) throw `address: ${addressToRemove} does not exist`;
 
-    let userBal = recipientMap[this.userAddress] ? recipientMap[this.userAddress] : 0;
-    let recipientBal = recipientMap[recipientAddress];
-    
+    let userBal = recipientMap[this.userAddress] ? recipientMap[this.userAddress] : balance_BN;
+    let recipientBal = recipientMap[addressToRemove.toLowerCase()] ? recipientMap[addressToRemove.toLowerCase()] : ethers.constants.Zero;
+    let sum = userBal.add(recipientBal);
+
     //update and set values between user and recipient
-    recipientMap[this.userAddress] = userBal + recipientBal;
-    recipientMap[recipientAddress] = 0;
+    recipientMap[this.userAddress] = userBal.add(recipientBal);
+    recipientMap[addressToRemove.toLowerCase()] = ethers.constants.Zero;
 
     // remove addresses that have 0 flow
-    for (let [address, balance] of Object.entries(recipientMap)) {
-        if (balance == 0) {
+    for (let [address, portion_BN] of Object.entries(recipientMap)) {
+        if (portion_BN.eq(ethers.constants.Zero)) {
             delete recipientMap[address];
         }
     }
