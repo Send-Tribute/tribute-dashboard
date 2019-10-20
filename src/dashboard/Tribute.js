@@ -258,8 +258,9 @@ export default class Tribute {
   }
 
   async getUnclaimedAmount(address) {
+    const decimals_rDAI = await this.rDAIContract.decimals();
     const response = await this.rDAIContract.interestPayableOf(address);
-    const output = response.div(WeiPerEther).toNumber();
+    const output = response.div(bigNumberify(10).pow(decimals_rDAI));
     return output;
   }
 

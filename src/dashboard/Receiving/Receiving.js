@@ -150,7 +150,7 @@ const Receiving = () => {
 
             <div>
               <Button
-                onClick={() => context.tribute.claimTribute()}
+                onClick={() => context.tribute.claimAmount(context.address[0])}
                 variant="contained"
                 color="primary"
                 className={classes.redeemButton}
