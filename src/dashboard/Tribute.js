@@ -267,6 +267,7 @@ export default class Tribute {
   async claimAmount(address) {
     //this cashes out all rDAI in both interest
     //and principal and sends it back to the user
+    //NOTE: this amount is not added to the receiving user's hat, it shows up in their rDAIBalance
     await this.rDAIContract.payInterest(address);
   }
 }
