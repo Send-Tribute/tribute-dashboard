@@ -17,7 +17,8 @@ export const TABS = {
 
 export const CONTRACTS = {
   rtoken: {
-    kovan: '0xea718e4602125407fafcb721b7d760ad9652dfe7'
+    kovan: '0xea718e4602125407fafcb721b7d760ad9652dfe7',
+    mainnet: '0xea8b224eDD3e342DEb514C4176c2E72Bcce6fFF9'
   },
   allocationStrategy: {
     kovan: '0xb4377efc05bd28be8e6510629538e54eba2d74e3'
@@ -26,7 +27,8 @@ export const CONTRACTS = {
     kovan: '0x0a1e4d0b5c71b955c0a5993023fc48ba6e380496'
   },
   dai: {
-    kovan: '0xbF7A7169562078c96f0eC1A8aFD6aE50f12e5A99'
+    kovan: '0xbF7A7169562078c96f0eC1A8aFD6aE50f12e5A99',
+    mainnet: '0x89d24A6b4CcB1B6fAA2625fE562bDD9a23260359'
   }
 };
 
@@ -49,8 +51,7 @@ export const DISCOVERABLE_PROVIDERS = {
   },
   defiant: {
     name: 'The Defiant',
-    description:
-      'Curated newsletter on the day’s latest DeFi news',
+    description: 'Curated newsletter on the day’s latest DeFi news',
     address: '0xbF7A7169562078c96f0eC1A8aFD6aE50f12e5A99',
     website: './',
     tags: ['subscription', 'paid', 'newsletter'],
@@ -83,7 +84,7 @@ export const FIAT_GATEWAYS = {
     name: 'Kyber Network',
     website: '',
     image: 'kyber'
-  },
+  }
   // wyre: {
   //   name: 'Wyre',
   //   website: '',

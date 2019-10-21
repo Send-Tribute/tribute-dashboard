@@ -67,20 +67,16 @@ export default function Dashboard() {
 
             // connect to contracts on the network
             const rDAIContract = new ethers.Contract(
-              CONTRACTS.rtoken.kovan,
+              CONTRACTS.rtoken.mainnet,
               rDAIabi,
               walletProvider.getSigner()
             );
             const DAIContract = new ethers.Contract(
-              CONTRACTS.dai.kovan,
+              CONTRACTS.dai.mainnet,
               DAIabi,
               walletProvider.getSigner()
             );
-            const tribute = new Tribute(
-              DAIContract,
-              rDAIContract,
-              address[0]
-            );
+            const tribute = new Tribute(DAIContract, rDAIContract, address[0]);
             const userDetails = await tribute.getInfo();
             console.log(userDetails);
             setContext(state => {
