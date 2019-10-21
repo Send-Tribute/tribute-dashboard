@@ -19,10 +19,10 @@ const useStyles = createUseStyles({
     justifyContent: 'center'
   },
   media: {
-    height: 140,
+    height: 160,
     overflow: 'hidden'
   },
-  image: { width: '100%' },
+  image: { width: '100%', height: '100%' },
   chipContainer: {
     marginTop: 5,
     display: 'flex',

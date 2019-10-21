@@ -56,7 +56,6 @@ export default function Settings(props) {
               '0xea718e4602125407fafcb721b7d760ad9652dfe7',
               'kovan'
             )}{' '}
-            0xea718e4602125407fafcb721b7d760ad9652dfe7
             <br />
             DAI:{' '}
             {getEtherscanLink(

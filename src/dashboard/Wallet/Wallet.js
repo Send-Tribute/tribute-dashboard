@@ -35,8 +35,8 @@ const useStyles = createUseStyles({
     alignItems: 'center'
   },
   baseCurrencyIcon: {
-    top: 3,
-    height: 20
+    top: 8,
+    height: 25
   },
   divider: {
     marginTop: 20
@@ -101,13 +101,14 @@ const Wallet = () => {
         <Container className={classes.contentContainer}>
           <Paper elevation={5} className={classes.unclaimedTributeContainer}>
             <Typography variant="body1">
-              You have <b>{tributeBalance}</b>{' '}
+              You have generated a total of <b>{tributeBalance}</b>{' '}
               <Icon name="baseCurrency" className={classes.baseCurrencyIcon} />{' '}
               Tribute.
               <br />
-              <b>{unallocatedTribute}</b>{' '}
+              <br />
+              From that total, <b>{unallocatedTribute}</b>{' '}
               <Icon name="baseCurrency" className={classes.baseCurrencyIcon} />{' '}
-              is unallocated.
+              Tribute is unallocated.
             </Typography>
           </Paper>
           <Divider className={classes.divider} />
@@ -143,20 +144,35 @@ const Wallet = () => {
   const getExchanges = () => {
     return (
       <Container className={classes.container}>
-        <SectionHeader text="Exchange Tribute" icon="convertDaiTribute" />
+        <SectionHeader text="Enable Tribute" icon="convertDaiTribute" />
         <Container className={classes.contentContainer}>
+          <Paper elevation={5} className={classes.unclaimedTributeContainer}>
           <Typography variant="body1">
             In order to send Tribute to recipients, you need to generate Tribute
-            from DAI in your wallet. Your DAI never leaves your wallet, but it
-            will generate interest that you can direct to others. More
+            from DAI in your wallet. 
+            <br />
+            <br />
+            Your DAI never leaves your wallet, but it
+            will generate interest that you can direct to others. 
+            <br />
+            <br />
+            More
             information is{' '}
-            <a href="./" target="_blank">
+            <a href="https://redeem.money/" target="_blank">
               here
             </a>
             .
             <br />
             <br />1 DAI = 1 Tribute
           </Typography>
+          </Paper>
+          <Divider className={classes.divider} />
+          <br />
+
+          <Paper elevation={5} className={classes.unclaimedTributeContainer}>
+            <Typography variant="body1">
+            Choose how much Tribute to generate :   
+            </Typography>
           <TextField
             variant="outlined"
             id="outlined-dense"
@@ -175,9 +191,16 @@ const Wallet = () => {
           >
             Generate Tribute
           </Button>
-          <Typography variant="body1">
-            You can withdraw your DAI at any time.
-          </Typography>
+          </Paper>
+          <Divider className={classes.divider} />
+          <br />
+
+          <Paper elevation={5} className={classes.unclaimedTributeContainer}>
+            <Typography variant="body1">
+              You can withdraw your DAI at any time.
+            </Typography>
+          
+          
           <Button
             onClick={() => {
               context.tribute.disable();
@@ -188,6 +211,7 @@ const Wallet = () => {
           >
             Withdraw DAI
           </Button>
+          </Paper>
         </Container>
       </Container>
     );
@@ -196,7 +220,7 @@ const Wallet = () => {
   const getFiatGateways = () => {
     return (
       <Container className={classes.container}>
-        <SectionHeader text="Purchase Tribute" icon="convertDollarTribute" />
+        <SectionHeader text="Purchase Tribute - COMING SOON" icon="convertDollarTribute" />
         <Container className={classes.contentContainer}>
           <Grid container className={classes.fiatGrid}>
             {Object.keys(FIAT_GATEWAYS).map(gateway => {

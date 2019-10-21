@@ -47,14 +47,23 @@ export const DISCOVERABLE_PROVIDERS = {
     tags: ['open-source', 'tools', 'web3'],
     image: 'oneClickDapp'
   },
-  superMarianoBrothers: {
-    name: 'Super Mariano Bros.',
+  defiant: {
+    name: 'The Defiant',
     description:
-      'Pick up coins as you make your way through Governance castle.',
+      'Curated newsletter on the day’s latest DeFi news',
     address: '0xbF7A7169562078c96f0eC1A8aFD6aE50f12e5A99',
     website: './',
-    tags: ['game', 'paid', 'entertainment'],
-    image: 'superMariano'
+    tags: ['subscription', 'paid', 'newsletter'],
+    image: 'defiant'
+  },
+  unicef: {
+    name: 'UNICEF',
+    description:
+      'Protecting the rights of every child, no matter how disadvantaged',
+    address: '0xe179269981E841129e07623720f32f55FF0AF9AB',
+    website: 'https://www.unicef.org/',
+    tags: ['charity', 'tax-deductible', 'humanitarian'],
+    image: 'unicef'
   }
 };
 
@@ -65,21 +74,21 @@ export const NETWORKS = {
 };
 
 export const FIAT_GATEWAYS = {
-  coinbase: {
-    name: 'Coinbase',
-    website: '',
-    image: 'coinbase'
-  },
+  // coinbase: {
+  //   name: 'Coinbase',
+  //   website: '',
+  //   image: 'coinbase'
+  // },
   kyber: {
     name: 'Kyber Network',
     website: '',
     image: 'kyber'
   },
-  wyre: {
-    name: 'Wyre',
-    website: '',
-    image: 'wyre'
-  }
+  // wyre: {
+  //   name: 'Wyre',
+  //   website: '',
+  //   image: 'wyre'
+  // }
 };
 
 export const CRYPTO_EXCHANGES = {};
