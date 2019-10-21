@@ -15,9 +15,9 @@
     "url": "https://github.com/Send-Tribute/tribute-rDAI/issues"
   },
   "scripts": {
-    "start": "parcel public/dashboard.html public/widget.html",
+    "start": "yarn update-abis; parcel public/dashboard.html public/widget.html",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "parcel build public/dashboard.html --out-dir dist",
+    "build": "parcel build public/dashboard.html public/widget.html --out-dir dist",
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook",
     "update-rdai-abi": "curl -s -X GET \"https://api-kovan.etherscan.io/api?module=contract&action=getabi&address=$npm_package_contracts_kovan_rDai\" | ./node_modules/node-jq/bin/jq -r \"[.result][0]\" > src/contracts/rDai.json",
@@ -43,6 +43,7 @@
     "ethers": "^4.0.37",
     "express": "^4.17.1",
     "jimp": "^0.8.4",
+    "node-jq": "^1.10.3",
     "prop-types": "^15.7.2",
     "qrcode-reader": "^1.0.4",
     "react": "^15.0.0 || ^16.0.0",

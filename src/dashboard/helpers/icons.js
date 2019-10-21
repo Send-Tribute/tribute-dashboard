@@ -6,7 +6,6 @@ import faucet_off from '../assets/faucet-off.png';
 import dai from '../assets/dai.png';
 import super_mariano from '../assets/super-mariano.jpeg';
 import defiant from '../assets/defiant.png';
-import unicef from '../assets/unicef.png';
 import one_click_dapp from '../assets/one-click-dapp.png';
 import receive_money from '../assets/receive-money.png';
 import ice_cubes from '../assets/ice-cubes.png';
@@ -22,6 +21,7 @@ import kyber from '../assets/kyber.png';
 import coinbase from '../assets/coinbase.png';
 import wyre from '../assets/wyre.png';
 import qr from '../assets/qr.png';
+import unicef from '../assets/unicef.jpeg';
 import {
   Cached,
   AccountBalanceWallet,
@@ -99,10 +99,7 @@ export const ICONS = {
     type: 'image',
     src: one_click_dapp
   },
-  unicef: {
-    type: 'image',
-    src: unicef
-  },
+
   convertDollarTribute: {
     type: 'image',
     src: convert_dollar_tribute
@@ -138,5 +135,9 @@ export const ICONS = {
   qr: {
     type: 'image',
     src: qr
+  },
+  unicef: {
+    type: 'image',
+    src: unicef
   }
 };

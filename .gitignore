@@ -1,6 +1,7 @@
 .cache/
 dist/
 node_modules/
+src/contracts/*.json
 *.swp
 yarn-error.log
 *.notes.*

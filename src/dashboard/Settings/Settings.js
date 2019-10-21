@@ -59,9 +59,10 @@ export default function Settings(props) {
             <br />
             DAI:{' '}
             {getEtherscanLink(
-              '0xC4375B7De8af5a38a93548eb8453a498222C4fF2',
+              '0xbF7A7169562078c96f0eC1A8aFD6aE50f12e5A99',
               'kovan'
-            )}
+            )}{' '}
+            0xbF7A7169562078c96f0eC1A8aFD6aE50f12e5A99
             <br />
             cDAI:{' '}
             {getEtherscanLink(
@@ -74,6 +75,10 @@ export default function Settings(props) {
               '0xb4377efc05bd28be8e6510629538e54eba2d74e3',
               'kovan'
             )}
+            <br />
+            <a href="https://app.compound.finance/asset/cDAI" target="_blank">
+              DAI Faucet{' '}
+            </a>
           </Typography>
         </Container>
       </Container>

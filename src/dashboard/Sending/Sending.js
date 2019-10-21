@@ -77,7 +77,7 @@ const endButton = (address, context) => {
       style={{ backgroundColor: '#1b1c4c', color: 'white' }}
       variant="outlined"
       onClick={() => {
-        context.tribute.endTribute(address);
+        context.tribute.endFlow(address);
       }}
     >
       End Tribute
@@ -109,12 +109,11 @@ const Sending = () => {
   const { userDetails } = context;
 
   let activeTributeRows = [['(enable wallet) ']];
-  if (userDetails && userDetails.activeTributes.recipients) {
-    activeTributeRows = userDetails.activeTributes.recipients.map(
+  console.log(userDetails);
+  if (userDetails && userDetails.allocations.recipients) {
+    activeTributeRows = userDetails.allocations.recipients.map(
       (address, index) => {
-        const amount = Math.round(
-          userDetails.activeTributes.tributeAmounts[index]
-        );
+        const amount = Math.round(userDetails.allocations.proportions[index]);
         return [getShortAddress(address), amount, endButton(address, context)];
       }
     );
@@ -222,7 +221,7 @@ const Sending = () => {
           <br />
           <Button
             onClick={() =>
-              context.tribute.sendTribute(values.address, values.amount)
+              context.tribute.startFlow(values.address, values.amount)
             }
             size="large"
             type="submit"

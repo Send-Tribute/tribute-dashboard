@@ -10,8 +10,6 @@ import Tribute from '../../Tribute';
 import { Icon } from '../../general';
 import { createUseStyles } from 'react-jss';
 
-let isConnected = false;
-
 const useStyles = createUseStyles({
   icon: {
     width: 30
@@ -25,7 +23,7 @@ export default function EnableWeb3Button() {
   const { userDetails } = context;
   let tributeBalance = 'loading...';
   if (userDetails) {
-    tributeBalance = Math.trunc(userDetails.tributeBalance);
+    tributeBalance = Math.trunc(userDetails.balance);
   }
 
   async function connectWallet() {
@@ -69,7 +67,7 @@ export default function EnableWeb3Button() {
             walletProvider,
             address
           );
-          const userDetails = await tribute.getTributes();
+          const userDetails = await tribute.getInfo();
           console.log(userDetails);
           setContext(state => {
             return Object.assign(
