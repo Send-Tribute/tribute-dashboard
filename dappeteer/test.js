@@ -7,7 +7,7 @@ console.log(process.env.SEED);
 
 async function main() {
   const browser = await dappeteer.launch(puppeteer)
-  const metamask = await dappeteer.getMetamask(browser, {seed: process.env.SEED})
+  const metamask = await dappeteer.getMetamask(browser, {seed: process.env.MNEUMONIC})
   // create or import an account
   //   await metamask.createAccount()
   //   await metamask.importAccount('SEED')
