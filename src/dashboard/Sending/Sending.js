@@ -80,7 +80,7 @@ const endButton = (address, context) => {
         context.tribute.endFlow(address);
       }}
     >
-      end tribute
+      End Tribute
     </Button>
   );
 };
@@ -113,9 +113,7 @@ const Sending = () => {
   if (userDetails && userDetails.allocations.recipients) {
     activeTributeRows = userDetails.allocations.recipients.map(
       (address, index) => {
-        const amount = Math.round(
-          userDetails.allocations.proportions[index]
-        );
+        const amount = Math.round(userDetails.allocations.proportions[index]);
         return [getShortAddress(address), amount, endButton(address, context)];
       }
     );
@@ -227,9 +225,9 @@ const Sending = () => {
             }
             size="large"
             type="submit"
-            variant="outlined"
+            variant="contained"
             color="primary"
-            style={{ margin: '10px 0 0 0' }}
+            style={{ margin: '10px 0 10px', backgroundColor: '#1b1c4c' }}
             className={classes.sendTributeButton}
           >
             <Icon name="logo" className={classes.buttonIcon} />

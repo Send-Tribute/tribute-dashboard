@@ -153,6 +153,7 @@ const Receiving = () => {
                 onClick={() => context.tribute.claimAmount(context.address[0])}
                 variant="contained"
                 color="primary"
+                style={{ backgroundColor: '#1b1c4c' }}
                 className={classes.redeemButton}
               >
                 <Icon name="receiveMoney" className={classes.buttonIcon} />
@@ -223,6 +224,7 @@ const Receiving = () => {
                 }
                 variant="contained"
                 color="primary"
+                style={{ backgroundColor: '#1b1c4c' }}
                 className={classes.redeemButton}
               >
                 <Icon name="receiveMoney" className={classes.buttonIcon} />

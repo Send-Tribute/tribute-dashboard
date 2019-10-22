@@ -20,20 +20,15 @@ export default function EnableWeb3Button() {
   const [context, setContext] = useContext(Context);
   const classes = useStyles();
 
-  const { userDetails, error } = context;
+  const { userDetails } = context;
   let tributeBalance = 'loading...';
-
   if (userDetails) {
     tributeBalance = Math.trunc(userDetails.balance);
-  }
-  let errorMsg = '';
-  if (error) {
-    errorMsg = error;
   }
 
   async function connectWallet() {
     // 1. enable metamask
-    if (typeof window.ethereum !== 'undefined') {
+    if (window.ethereum) {
       let address = await window.ethereum.enable();
       console.log(`address ${address}`);
 
@@ -86,26 +81,19 @@ export default function EnableWeb3Button() {
           });
         }
       } catch (error) {
-        setContext({ ...context, error: error.message });
         console.log('Web3 Loading Error: ', error.message);
       }
     }
   }
 
   return (
-    <div style={{ display: 'flex', alignItems: 'center' }}>
-      <Typography style={{ color: 'orange' }} variant="body2">
-        {errorMsg}
-      </Typography>
-
-      <Button
-        variant="text"
-        onClick={connectWallet}
-        style={{ color: 'white', borderColor: 'white' }}
-      >
-        <Typography variant="body2">{tributeBalance}</Typography>
-        <Icon name="tributeToken" className={classes.icon} />
-      </Button>
-    </div>
+    <Button
+      variant="text"
+      onClick={connectWallet}
+      style={{ color: 'white', borderColor: 'white' }}
+    >
+      <Typography variant="body2">{tributeBalance}</Typography>
+      <Icon name="headerLogo" className={classes.icon} />
+    </Button>
   );
 }
