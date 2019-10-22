@@ -15,17 +15,17 @@
     "url": "https://github.com/Send-Tribute/tribute-rDAI/issues"
   },
   "scripts": {
-    "start": "yarn update-abis; parcel public/dashboard.html public/widget.html",
-    "ganache_fork": "ganache-cli -f $(node infura_key.js) -m \"$(node mnenomic.js)\"",
-    "test": "node dappeteer/test.js",
-    "build": "parcel build public/dashboard.html public/widget.html --out-dir dist",
-    "storybook": "start-storybook -p 6006",
-    "build-storybook": "build-storybook",
     "update-rdai-abi": "curl -s -X GET \"https://api-kovan.etherscan.io/api?module=contract&action=getabi&address=$npm_package_contracts_kovan_rDai\" | ./node_modules/node-jq/bin/jq -r \"[.result][0]\" > src/contracts/rDai.json",
     "update-cdai-abi": "curl -s -X GET \"https://api-kovan.etherscan.io/api?module=contract&action=getabi&address=$npm_package_contracts_kovan_cDai\" | ./node_modules/node-jq/bin/jq -r \"[.result][0]\" > src/contracts/cDai.json",
     "update-dai-abi": "curl -s -X GET \"https://api-kovan.etherscan.io/api?module=contract&action=getabi&address=$npm_package_contracts_kovan_dai\" | ./node_modules/node-jq/bin/jq -r \"[.result][0]\" > src/contracts/dai.json",
     "update-dai-strat-abi": "curl -s -X GET \"https://api-kovan.etherscan.io/api?module=contract&action=getabi&address=$npm_package_contracts_kovan_dai\" | ./node_modules/node-jq/bin/jq -r \"[.result][0]\" > src/contracts/dai-strat.json",
     "update-abis": "yarn update-rdai-abi; yarn update-cdai-abi; yarn update-dai-abi; yarn update-dai-strat-abi",
+    "start": "yarn update-abis; parcel public/dashboard.html public/widget.html",
+    "ganache_fork": "ganache-cli -f $(node infura_key.js) -m \"$(node mnenomic.js)\" -n 42",
+    "test": "node dappeteer/test.js",
+    "build": "parcel build public/dashboard.html public/widget.html --out-dir dist",
+    "storybook": "start-storybook -p 6006",
+    "build-storybook": "build-storybook",
     "deploy": "npm run build && surge ./dist https://tribute-dash1.surge.sh"
   },
   "contracts": {
