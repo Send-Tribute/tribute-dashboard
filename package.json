@@ -16,6 +16,7 @@
   },
   "scripts": {
     "start": "yarn update-abis; parcel public/dashboard.html public/widget.html",
+    "ganache_fork": "ganache-cli -f $(node infura_key.js) -m \"$(node mnenomic.js)\"",
     "test": "node dappeteer/test.js",
     "build": "parcel build public/dashboard.html public/widget.html --out-dir dist",
     "storybook": "start-storybook -p 6006",
