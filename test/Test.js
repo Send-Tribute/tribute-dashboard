@@ -19,10 +19,7 @@ contract('TESTING', async (accounts) => {
 
     describe("Test Describe", async() => {
       it("getHatByAddress", async () => {
-
         let val = await contract.getHatByAddress("0xb893D8F6779842959C1dfC3095b1c62ceAA16703")
-        console.log(val)
-
         assert.equal(true, true, "did not pass")
       });
   });
