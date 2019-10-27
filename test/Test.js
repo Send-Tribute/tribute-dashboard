@@ -2,10 +2,6 @@ const ethers = require('ethers');
 const rDAI = require('../src/contracts/rDai.json')
 
 const provider = new ethers.providers.JsonRpcProvider("http://localhost:8545")
-console.log(provider.getSigner(0))
-//provider.unlock()
-
-//console.log(rDAI)
 
 const contract = new ethers.Contract(
                     "0xeA718E4602125407fAfcb721b7D760aD9652dfe7",

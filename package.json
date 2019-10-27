@@ -21,7 +21,7 @@
     "update-dai-strat-abi": "curl -s -X GET \"https://api-kovan.etherscan.io/api?module=contract&action=getabi&address=$npm_package_contracts_kovan_dai\" | ./node_modules/node-jq/bin/jq -r \"[.result][0]\" > src/contracts/dai-strat.json",
     "update-abis": "yarn update-rdai-abi; yarn update-cdai-abi; yarn update-dai-abi; yarn update-dai-strat-abi",
     "start": "yarn update-abis; parcel public/dashboard.html public/widget.html",
-    "ganache_fork": "ganache-cli -f $(node get_infura.js) -m \"$(node get_mnenomic.js)\"",
+    "ganache_fork": "ganache-cli -f $(node get_infura.js) -m \"$(node get_mnemonic.js)\"",
     "test": "node dappeteer/test.js",
     "build": "parcel build public/dashboard.html public/widget.html --out-dir dist",
     "storybook": "start-storybook -p 6006",
@@ -66,7 +66,7 @@
     "babel-preset-env": "^1.7.0",
     "babel-preset-react": "^6.24.1",
     "dappeteer": "^0.6.0",
-    "puppeteer": "^1.20.0",
-    "parcel-bundler": "^1.12.4"
+    "parcel-bundler": "^1.12.4",
+    "puppeteer": "^1.20.0"
   }
 }
