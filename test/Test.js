@@ -1,7 +1,6 @@
 const ethers = require('ethers')
 const rDAI = require('../src/contracts/rDai.json')
 
-
 contract('TESTING', async (accounts) => {
 
   let provider
@@ -20,7 +19,7 @@ contract('TESTING', async (accounts) => {
     describe("Test Describe", async() => {
       it("getHatByAddress", async () => {
         let val = await contract.getHatByAddress("0xb893D8F6779842959C1dfC3095b1c62ceAA16703")
-        assert.equal(true, true, "did not pass")
+        console.log(val.hatID.toNumber())
       });
   });
 });
