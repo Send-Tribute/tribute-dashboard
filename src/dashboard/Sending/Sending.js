@@ -114,7 +114,7 @@ const Sending = () => {
     activeTributeRows = userDetails.allocations.recipients.map(
       (address, index) => {
         const amount = Math.round(userDetails.allocations.proportions[index]);
-        return [getShortAddress(address), amount, endButton(address, context)];
+        return [address, amount, endButton(address, context)];
       }
     );
   }

@@ -15,7 +15,7 @@
     "url": "https://github.com/Send-Tribute/tribute-rDAI/issues"
   },
   "scripts": {
-    "start": "yarn update-abis; parcel public/dashboard.html public/widget.html",
+    "start": "yarn update-abis; parcel public/dashboard.html",
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "parcel build public/dashboard.html public/widget.html --out-dir dist",
     "storybook": "start-storybook -p 6006",
@@ -46,7 +46,8 @@
     "node-jq": "^1.10.3",
     "prop-types": "^15.7.2",
     "qrcode-reader": "^1.0.4",
-    "react": "^15.0.0 || ^16.0.0",
+    "react": "^15.3.0 || ^16.0.0",
+    "react-copy-to-clipboard": "^5.0.1",
     "react-dom": "^15.0.0 || ^16.0.0",
     "react-file-reader-input": "^2.0.0",
     "react-jss": "^10.0.0",

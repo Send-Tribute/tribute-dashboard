@@ -12,6 +12,7 @@ import {
 import { createUseStyles } from 'react-jss';
 import { Icon, CustomTable, SectionHeader } from '../general';
 import { getEtherscanLink } from '../helpers/utils';
+import { CopyToClipboard } from 'react-copy-to-clipboard';
 
 import { FIAT_GATEWAYS, CRYPTO_EXCHANGES } from '../helpers/constants';
 
@@ -45,8 +46,10 @@ const useStyles = createUseStyles({
     alignItems: 'center',
     display: 'flex',
     padding: 20,
-    borderRadius: 10
+    borderRadius: 10,
+    justifyContent: 'space-between'
   },
+
   redeemButton: {
     right: 0,
     marginLeft: 20
@@ -70,6 +73,10 @@ const useStyles = createUseStyles({
   },
   walletGrid: {
     justifyContent: 'space-around'
+  },
+  floatRightButton: {
+    right: 0,
+    marginLeft: 20
   }
 });
 
@@ -147,50 +154,53 @@ const Wallet = () => {
         <SectionHeader text="Enable Tribute" icon="convertDaiTribute" />
         <Container className={classes.contentContainer}>
           <Paper elevation={5} className={classes.unclaimedTributeContainer}>
-          <Typography variant="body1">
-            In order to send Tribute to recipients, you need to generate Tribute
-            from DAI in your wallet. 
-            <br />
-            <br />
-            Your DAI never leaves your wallet, but it
-            will generate interest that you can direct to others. 
-            <br />
-            <br />
-            More
-            information is{' '}
-            <a href="https://redeem.money/" target="_blank">
-              here
-            </a>
-            .
-            <br />
-            <br />1 DAI = 1 Tribute
-          </Typography>
+            <Typography variant="body1">
+              In order to send Tribute to recipients, you need to generate
+              Tribute from DAI in your wallet.
+              <br />
+              <br />
+              Your DAI never leaves your wallet, but it will generate interest
+              that you can direct to others.
+              <br />
+              <br />
+              More information is{' '}
+              <a href="https://redeem.money/" target="_blank">
+                here
+              </a>
+              .
+              <br />
+              <br />1 DAI = 1 Tribute
+            </Typography>
           </Paper>
           <Divider className={classes.divider} />
           <br />
 
           <Paper elevation={5} className={classes.unclaimedTributeContainer}>
-            <Typography variant="body1">
-            Choose how much Tribute to generate :   
-            </Typography>
-          <TextField
-            variant="outlined"
-            id="outlined-dense"
-            margin="dense"
-            label="Amount"
-            value={values.amount}
-            onChange={handleChange('amount')}
-          />
-          <Button
-            style={{ margin: '10px 0 10px', backgroundColor: '#1b1c4c' }}
-            variant="contained"
-            color="primary"
-            onClick={() => {
-              context.tribute.generate(values.amount);
-            }}
-          >
-            Generate Tribute
-          </Button>
+            <div>
+              <Typography variant="body1">
+                Choose how much Tribute to generate :
+              </Typography>
+              <TextField
+                variant="outlined"
+                id="outlined-dense"
+                margin="dense"
+                label="Amount"
+                value={values.amount}
+                onChange={handleChange('amount')}
+              />
+            </div>
+            <div>
+              <Button
+                style={{ margin: '10px 0 10px', backgroundColor: '#1b1c4c' }}
+                variant="contained"
+                color="primary"
+                onClick={() => {
+                  context.tribute.generate(values.amount);
+                }}
+              >
+                Generate Tribute
+              </Button>
+            </div>
           </Paper>
           <Divider className={classes.divider} />
           <br />
@@ -199,18 +209,18 @@ const Wallet = () => {
             <Typography variant="body1">
               You can withdraw your DAI at any time.
             </Typography>
-          
-          
-          <Button
-            onClick={() => {
-              context.tribute.disable();
-            }}
-            variant="contained"
-            color="primary"
-            style={{ margin: '10px 0 10px', backgroundColor: '#1b1c4c' }}
-          >
-            Withdraw DAI
-          </Button>
+
+            <Button
+              onClick={() => {
+                context.tribute.disable();
+              }}
+              variant="contained"
+              color="primary"
+              style={{ margin: '10px 0 10px', backgroundColor: '#1b1c4c' }}
+              className={classes.floatRightButton}
+            >
+              Withdraw DAI
+            </Button>
           </Paper>
         </Container>
       </Container>
@@ -220,30 +230,58 @@ const Wallet = () => {
   const getFiatGateways = () => {
     return (
       <Container className={classes.container}>
-        <SectionHeader text="Purchase Tribute - COMING SOON" icon="convertDollarTribute" />
+        <SectionHeader text="Get Tribute" icon="convertDollarTribute" />
         <Container className={classes.contentContainer}>
-          <Grid container className={classes.fiatGrid}>
-            {Object.keys(FIAT_GATEWAYS).map(gateway => {
-              return (
-                <Grid item key={FIAT_GATEWAYS[gateway].name}>
-                  <Button
-                    style={{ margin: 10 }}
-                    className={classes.fiatButton}
-                    onClick={() =>
-                      window.open(FIAT_GATEWAYS[gateway].website, '_blank')
-                    }
-                    variant="outlined"
-                  >
-                    <Icon
-                      name={FIAT_GATEWAYS[gateway].image}
-                      className={classes.fiatButtonIcon}
-                    />{' '}
-                    {FIAT_GATEWAYS[gateway].name}
-                  </Button>
-                </Grid>
-              );
-            })}
-          </Grid>
+          <Paper elevation={5} className={classes.unclaimedTributeContainer}>
+            <Typography variant="body1">
+              In order to use Tribute on the Kovan testnet, you will need some
+              Kovan ETH and Kovan DAI.
+              <br />
+              <br /> You can obtain Kovan ETH from a faucet{' '}
+              <a href="https://faucet.kovan.network/" target="_blank">
+                here
+              </a>
+              . You will need to use your GitHub login. <br />
+              <br />
+              You can obtain Kovan DAI via the Compound faucet{' '}
+              <a href="https://app.compound.finance/asset/cDAI" target="_blank">
+                here
+              </a>
+              . You will need to first click “Enable DAI“ before accessing the
+              DAI faucet. <br />
+              <br />
+              To see your DAI and rDAI balances in your wallet, add these two
+              custom token addresses: <br />
+              <br />
+              <b>DAI (Kovan)</b>: 0xbF7A7169562078c96f0eC1A8aFD6aE50f12e5A99{' '}
+              {'  '}
+              <CopyToClipboard
+                text={'0xbF7A7169562078c96f0eC1A8aFD6aE50f12e5A99'}
+              >
+                <Button
+                  style={{ margin: '10px 0 10px', backgroundColor: '#1b1c4c' }}
+                  variant="contained"
+                  color="primary"
+                >
+                  Copy
+                </Button>
+              </CopyToClipboard>
+              <br />
+              <b>rDAI (Kovan)</b>: 0xeA718E4602125407fAfcb721b7D760aD9652dfe7
+              {'  '}
+              <CopyToClipboard
+                text={'0xeA718E4602125407fAfcb721b7D760aD9652dfe7'}
+              >
+                <Button
+                  style={{ margin: '10px 0 10px', backgroundColor: '#1b1c4c' }}
+                  variant="contained"
+                  color="primary"
+                >
+                  Copy
+                </Button>
+              </CopyToClipboard>
+            </Typography>
+          </Paper>
         </Container>
       </Container>
     );
