@@ -113,8 +113,15 @@ const Sending = () => {
   if (userDetails && userDetails.allocations.recipients) {
     activeTributeRows = userDetails.allocations.recipients.map(
       (address, index) => {
+        let recipient = address;
         const amount = Math.round(userDetails.allocations.proportions[index]);
-        return [address, amount, endButton(address, context)];
+        // Check if the address is known and provide the name
+        Object.keys(DISCOVERABLE_PROVIDERS).forEach(provider => {
+          if (DISCOVERABLE_PROVIDERS[provider].address === address) {
+            recipient = DISCOVERABLE_PROVIDERS[provider].name;
+          }
+        });
+        return [recipient, amount, endButton(address, context)];
       }
     );
   }
