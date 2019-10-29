@@ -242,3 +242,5 @@ class Tribute {
     await this.rDAIContract.payInterest(address);
   }
 }
+
+module.exports = Tribute;
