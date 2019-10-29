@@ -41,9 +41,9 @@ contract('TESTING', async (accounts) => {
     });
 
     describe("Yolo", async() => {
-        it("", async() => {
-            console.log("herro")
-            console.log(tribute)
+        it("test", async() => {
+          let val = await tribute.getInfo()
+          console.log(val)
         })
     })
 
