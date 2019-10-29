@@ -1,6 +1,6 @@
 import React, { useEffect, useContext } from 'react';
-import { Context } from './context';
 import { ethers } from 'ethers';
+import { Context } from './context';
 import Footer from './Footer.js';
 import Header from './Header/Header.js';
 import Sending from './Sending/Sending.js';
@@ -18,16 +18,14 @@ import { TABS, CONTRACTS } from './helpers/constants';
 export default function Dashboard() {
   const [context, setContext] = useContext(Context);
 
-  let user = {};
+  const user = {};
 
   if (typeof window.ethereum !== 'undefined') {
-    window.ethereum.on('accountsChanged', function(accounts) {
-      //should update context when user change is detected
+    window.ethereum.on('accountsChanged', (accounts) => {
+      // should update context when user change is detected
       if (context.address && context.address !== accounts[0]) {
-        setContext(state => {
-          return Object.assign({}, state, { address: accounts[0] });
-        });
-        console.log('Address was updated ' + accounts[0]);
+        setContext((state) => ({ ...state, address: accounts[0] }));
+        console.log(`Address was updated ${accounts[0]}`);
       }
     });
   }
@@ -40,78 +38,64 @@ export default function Dashboard() {
           address = await window.ethereum.enable();
           console.log(`address ${address}`);
         } catch (error) {
-          setContext(state => {
-            return Object.assign({}, state, {
-              error: `Web3 Loading Error 1: ${error}`
-            });
-          });
+          setContext((state) => ({ ...state, error: `Web3 Loading Error 1: ${error}` }));
         }
 
-        setContext(state => {
-          return Object.assign(
-            {},
-            state,
-            { isConnected: true },
-            { address: address }
-          );
-        });
+        setContext((state) => ({
+
+          ...state,
+          isConnected: true,
+          address,
+        }));
 
         try {
           if (
-            typeof window.ethereum !== 'undefined' ||
-            typeof window.web3 !== 'undefined'
+            typeof window.ethereum !== 'undefined'
+            || typeof window.web3 !== 'undefined'
           ) {
-            let walletProvider = new ethers.providers.Web3Provider(
-              window.web3.currentProvider
+            const walletProvider = new ethers.providers.Web3Provider(
+              window.web3.currentProvider,
             );
 
             // connect to contracts on the network
             const rDAIContract = new ethers.Contract(
               CONTRACTS.rtoken.kovan,
               rDAIabi,
-              walletProvider.getSigner()
+              walletProvider.getSigner(),
             );
             const DAIContract = new ethers.Contract(
               CONTRACTS.dai.kovan,
               DAIabi,
-              walletProvider.getSigner()
+              walletProvider.getSigner(),
             );
             const tribute = new Tribute(DAIContract, rDAIContract, address[0]);
             const userDetails = await tribute.getInfo();
             console.log(userDetails);
-            setContext(state => {
-              return Object.assign(
-                {},
-                state,
-                { tribute },
-                { userDetails },
-                { isConnected: false },
-                { provider: walletProvider }
-              );
-            });
+            setContext((state) => ({
+
+              ...state,
+              tribute,
+              userDetails,
+              isConnected: false,
+              provider: walletProvider,
+            }));
           }
         } catch (error) {
           console.log('Web3 Loading Error: ', error.message);
-          setContext(state => {
-            return Object.assign({}, state, {
-              error: `Web3 Loading Error 2: ${error}`
-            });
-          });
+          setContext((state) => ({ ...state, error: `Web3 Loading Error 2: ${error}` }));
         }
       } else {
-        setContext(state => {
-          return Object.assign(
-            {},
-            { error: 'Web3 Loading Error: no window.ethereum' }
-          );
-        });
+        setContext((state) => ({
+
+          error: 'Web3 Loading Error: no window.ethereum',
+        }));
       }
     }
     load();
   }, []);
 
   function getContent() {
-    //let [selectedTab, setSelectedTab] = useState();
+    // let [selectedTab, setSelectedTab] = useState();
     const tabName = context.selectedTab ? context.selectedTab : TABS.default;
     if (tabName === 'sending') return <Sending />;
     if (tabName === 'receiving') return <Receiving />;

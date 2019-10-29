@@ -1,22 +1,22 @@
 import React from 'react';
 import { Typography } from '@material-ui/core';
 import PropTypes from 'prop-types';
-import Icon from '../Icon';
 import { createUseStyles } from 'react-jss';
+import Icon from '../Icon';
 
 const useStyles = createUseStyles({
   container: {
     height: 40,
     display: 'flex',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   image: {
-    height: 30
+    height: 30,
   },
   imageContainer: {
     width: 30,
-    marginRight: 10
-  }
+    marginRight: 10,
+  },
 });
 
 const SectionHeader = ({ text, icon }) => {
@@ -34,7 +34,7 @@ const SectionHeader = ({ text, icon }) => {
 
 SectionHeader.propTypes = {
   text: PropTypes.string.isRequired,
-  icon: PropTypes.string.isRequired
+  icon: PropTypes.string.isRequired,
 };
 
 export default SectionHeader;

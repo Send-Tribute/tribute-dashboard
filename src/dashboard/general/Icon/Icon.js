@@ -11,7 +11,7 @@ const Icon = ({ name, className }) => {
       return <div className={className}>{ICONS[name].component}</div>;
     }
   }
-  return <img src={ICONS['logo'].src} className={className} />;
+  return <img src={ICONS.logo.src} className={className} />;
 };
 
 export default Icon;

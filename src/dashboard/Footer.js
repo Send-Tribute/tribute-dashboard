@@ -1,6 +1,7 @@
 import React from 'react';
 import { createUseStyles } from 'react-jss';
 import { Typography } from '@material-ui/core';
+
 const useStyles = createUseStyles({
   footer: {
     marginTop: 30,
@@ -9,13 +10,13 @@ const useStyles = createUseStyles({
     backgroundColor: '#1b1c4c',
     width: '100%',
     display: 'flex',
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
   icon: {
     color: '#FAFAFA',
     marginRight: 10,
-    marginTop: 10
-  }
+    marginTop: 10,
+  },
 });
 
 export default function Footer() {
@@ -38,21 +39,21 @@ export default function Footer() {
           target="_blank"
           href="https://github.com/Send-Tribute"
         >
-          <i className="fab fa-github"></i>
+          <i className="fab fa-github" />
         </a>
         <a
           className={classes.icon}
           target="_blank"
           href="https://twitter.com/send_tribute"
         >
-          <i className="fab fa-twitter"></i>
+          <i className="fab fa-twitter" />
         </a>
         <a
           className={classes.icon}
           target="_blank"
           href="https://tributeforum.io"
         >
-          <i className="fab fa-discourse"></i>
+          <i className="fab fa-discourse" />
         </a>
       </div>
     </div>

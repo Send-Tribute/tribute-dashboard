@@ -6,17 +6,18 @@ import {
   TableCell,
   TableRow,
   Paper,
-  Typography
+  Typography,
 } from '@material-ui/core';
 import PropTypes from 'prop-types';
 import { createUseStyles } from 'react-jss';
+
 const useStyles = createUseStyles({
   root: {
     width: '100%',
     marginTop: 10,
-    overflowX: 'auto'
+    overflowX: 'auto',
   },
-  table: {}
+  table: {},
 });
 
 const CustomTable = ({ headings, rows }) => {
@@ -24,30 +25,24 @@ const CustomTable = ({ headings, rows }) => {
 
   let head = <TableCell />;
   if (headings && headings.length) {
-    head = headings.map((heading, index) => {
-      return (
-        <TableCell align="center" key={index}>
-          {heading}
-        </TableCell>
-      );
-    });
+    head = headings.map((heading, index) => (
+      <TableCell align="center" key={index}>
+        {heading}
+      </TableCell>
+    ));
   }
 
   let bodyRows = <TableRow />;
   if (rows && rows.length) {
-    bodyRows = rows.map((row, i) => {
-      return (
-        <TableRow key={i}>
-          {row.map((item, j) => {
-            return (
-              <TableCell align="center" key={j}>
-                {item}
-              </TableCell>
-            );
-          })}
-        </TableRow>
-      );
-    });
+    bodyRows = rows.map((row, i) => (
+      <TableRow key={i}>
+        {row.map((item, j) => (
+          <TableCell align="center" key={j}>
+            {item}
+          </TableCell>
+        ))}
+      </TableRow>
+    ));
   }
 
   return (
@@ -64,7 +59,7 @@ const CustomTable = ({ headings, rows }) => {
 
 CustomTable.propTypes = {
   headings: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired,
-  rows: PropTypes.arrayOf(PropTypes.node.isRequired).isRequired
+  rows: PropTypes.arrayOf(PropTypes.node.isRequired).isRequired,
 };
 
 export default CustomTable;

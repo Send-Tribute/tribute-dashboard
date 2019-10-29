@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import QrReader from 'react-qr-reader';
 import FileReaderInput from 'react-file-reader-input';
 import QrCode from 'qrcode-reader';
-var Jimp = require('jimp');
+
+const Jimp = require('jimp');
 
 class Scanner extends Component {
   constructor(props) {
@@ -17,47 +18,55 @@ class Scanner extends Component {
       browser: '',
       legacyMode: defaultToLegacyMode,
       scanFail: false,
-      isLoading: false
+      isLoading: false,
     };
     this.handleScan = this.handleScan.bind(this);
   }
+
   stopRecording() {
     this.setState({ delay: false });
   }
+
   onImageLoad(data) {
     console.log(data);
   }
+
   handleScan(data) {
     if (data) {
       setTimeout(() => {
         this.props.setAddress(data);
         this.props.handleClose();
-        //maybe they just scanned an address?
+        // maybe they just scanned an address?
       }, 100);
     }
   }
+
   chooseDeviceId(a, b) {
     console.log('choose', a, b);
   }
+
   handleError(error) {
     console.error(error);
     this.setState({ legacyMode: true });
     this.props.onError(error);
   }
+
   onClose() {
     this.props.handleClose();
   }
-  //componentDidMount(){
+
+  // componentDidMount(){
   //  this.setState({scanFail:"TEST"})
-  //}
+  // }
   componentWillUnmount() {
     this.props.handleClose();
   }
+
   legacyHandleChange(e, results) {
-    results.forEach(result => {
+    results.forEach((result) => {
       const [e, file] = result;
-      let reader = new FileReader();
-      reader.onload = e => {
+      const reader = new FileReader();
+      reader.onload = (e) => {
         console.log('');
         this.setState({ imageData: e.target.result });
         Jimp.read(
@@ -65,7 +74,7 @@ class Scanner extends Component {
             e.target.result
               .replace(/^data:image\/png;base64,/, '')
               .replace(/^data:image\/jpeg;base64,/, ''),
-            'base64'
+            'base64',
           ),
           (err, image) => {
             if (err) {
@@ -73,7 +82,7 @@ class Scanner extends Component {
               console.error('ERR1', err);
               this.setState({ scanFail: err.toString() });
             }
-            var qr = new QrCode();
+            const qr = new QrCode();
             qr.callback = (err, value) => {
               this.setState({ isLoading: false });
               if (err) {
@@ -92,17 +101,18 @@ class Scanner extends Component {
               }
             };
             if (!image || !image.bitmap) {
-              //this.setState({extraFail:JSON.stringify(e.target.result)})
+              // this.setState({extraFail:JSON.stringify(e.target.result)})
             } else {
               qr.decode(image.bitmap);
             }
-          }
+          },
         );
         //  })
       };
       reader.readAsDataURL(file);
     });
   }
+
   render() {
     let displayedImage = '';
     if (this.state.imageData) {
@@ -113,7 +123,7 @@ class Scanner extends Component {
             left: 0,
             top: 0,
             maxWidth: '100%',
-            opacity: 0.7
+            opacity: 0.7,
           }}
           src={this.state.imageData}
         />
@@ -135,9 +145,9 @@ class Scanner extends Component {
             opacity: 0.9,
             width: '100%',
             height: 1,
-            fontWeight: 'bold'
+            fontWeight: 'bold',
           }}
-        ></div>
+        />
       );
     }
 
@@ -156,7 +166,7 @@ class Scanner extends Component {
             opacity: 0.9,
             width: '100%',
             height: '100%',
-            fontWeight: 'bold'
+            fontWeight: 'bold',
           }}
         >
           <div style={{ textAlign: 'center', paddingTop: '15%' }}>
@@ -172,7 +182,7 @@ class Scanner extends Component {
               textAlign: 'center',
               padding: '10%',
               paddingTop: '15%',
-              fontSize: 16
+              fontSize: 16,
             }}
           >
             <div>{this.state.scanFail}</div>
@@ -212,7 +222,7 @@ class Scanner extends Component {
                 width: '100%',
                 height: '100%',
                 color: '#FFFFFF',
-                cursor: 'pointer'
+                cursor: 'pointer',
               }}
             >
               <div style={{ textAlign: 'center', paddingTop: '15%' }}>
@@ -221,7 +231,7 @@ class Scanner extends Component {
                 </div>
                 <img
                   // src={qrimage}
-                  src={'./'}
+                  src="./"
                   style={{
                     position: 'absolute',
                     left: '36%',
@@ -230,7 +240,7 @@ class Scanner extends Component {
                     border: '1px solid #888888',
                     opacity: 0.25,
                     maxWidth: '30%',
-                    maxHight: '30%'
+                    maxHight: '30%',
                   }}
                 />
               </div>
@@ -242,7 +252,9 @@ class Scanner extends Component {
                 >
                   <div className="content ops row">
                     <button className="btn btn-large w-100">
-                      <i className="fas fa-camera" /> Take Picture
+                      <i className="fas fa-camera" />
+                      {' '}
+Take Picture
                     </button>
                   </div>
                 </div>
@@ -263,7 +275,7 @@ class Scanner extends Component {
           bottom: 0,
           zIndex: 5,
           margin: '0 auto !important',
-          background: '#000000'
+          background: '#000000',
         }}
       >
         <div
@@ -275,7 +287,7 @@ class Scanner extends Component {
             fontSize: 80,
             paddingRight: 20,
             color: '#FFFFFF',
-            cursor: 'pointer'
+            cursor: 'pointer',
           }}
           onClick={this.onClose}
         >
@@ -290,10 +302,13 @@ class Scanner extends Component {
             fontSize: 12,
             left: 20,
             color: '#FFFFFF',
-            opacity: 0.333
+            opacity: 0.333,
           }}
         >
-          {navigator.userAgent} - {JSON.stringify(navigator.mediaDevices)}
+          {navigator.userAgent}
+          {' '}
+-
+          {JSON.stringify(navigator.mediaDevices)}
         </div>
         {displayedImage}
         {failMessage}

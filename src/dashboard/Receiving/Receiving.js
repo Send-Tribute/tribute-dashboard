@@ -1,5 +1,4 @@
 import React, { useContext, useState, useEffect } from 'react';
-import { Context } from '../context';
 import { ethers } from 'ethers';
 
 import {
@@ -9,10 +8,13 @@ import {
   Container,
   Divider,
   Paper,
-  Button
+  Button,
 } from '@material-ui/core';
 import { createUseStyles } from 'react-jss';
-import { Icon, CustomTable, SectionHeader, Scanner } from '../general';
+import { Context } from '../context';
+import {
+  Icon, CustomTable, SectionHeader, Scanner,
+} from '../general';
 import { CONTRACTS } from '../helpers/constants';
 import DAIabi from '../../contracts/dai';
 import rDAIabi from '../../contracts/rDai';
@@ -20,38 +22,38 @@ import Tribute from '../Tribute';
 
 const useStyles = createUseStyles({
   container: {
-    paddingTop: 20
+    paddingTop: 20,
   },
   redeemButton: {
     right: 0,
-    marginLeft: 20
+    marginLeft: 20,
   },
   contentContainer: {
-    paddingTop: 10
+    paddingTop: 10,
   },
   baseCurrencyIcon: {
     top: 3,
-    height: 20
+    height: 20,
   },
 
   divider: {
-    marginTop: 20
+    marginTop: 20,
   },
   unclaimedTributeContainer: {
     alignItems: 'center',
     justifyContent: 'space-between',
     display: 'flex',
     padding: 20,
-    borderRadius: 10
+    borderRadius: 10,
   },
   redeemButton: {
     right: 0,
-    marginLeft: 20
+    marginLeft: 20,
   },
   buttonIcon: {
     height: 25,
-    paddingRight: 10
-  }
+    paddingRight: 10,
+  },
 });
 
 const Receiving = () => {
@@ -60,10 +62,10 @@ const Receiving = () => {
   const { userDetails } = context;
   const [values, setValues] = useState({
     address: '',
-    externalUserInterest: '(scan to load)'
+    externalUserInterest: '(scan to load)',
   });
 
-  const handleChange = name => event => {
+  const handleChange = (name) => (event) => {
     setValues({ ...values, [name]: event.target.value });
   };
 
@@ -76,32 +78,32 @@ const Receiving = () => {
     setOpen(false);
   };
 
-  const setAddress = async address => {
+  const setAddress = async (address) => {
     let trimmedAddress = await address;
     if (address.indexOf('ethereum:') > -1) {
       trimmedAddress = address.substr(9, address.length - 1);
     }
     setValues({ ...values, address: trimmedAddress });
     if (trimmedAddress.length > 41) {
-      let walletProvider = new ethers.providers.Web3Provider(
-        window.web3.currentProvider
+      const walletProvider = new ethers.providers.Web3Provider(
+        window.web3.currentProvider,
       );
       // connect to contracts on the network
       const rDAIContract = new ethers.Contract(
         CONTRACTS.rtoken.kovan,
         rDAIabi,
-        walletProvider
+        walletProvider,
       );
       const DAIContract = new ethers.Contract(
         CONTRACTS.dai.kovan,
         DAIabi,
-        walletProvider
+        walletProvider,
       );
       const tribute = new Tribute(
         DAIContract,
         rDAIContract,
         walletProvider,
-        trimmedAddress
+        trimmedAddress,
       );
       const userDetails = await tribute.getInfo();
       const externalUserInterest = userDetails.unclaimedTribute;
@@ -117,154 +119,150 @@ const Receiving = () => {
     unclaimedTribute = userDetails.unclaimed_balance;
   }
 
-  const getSelfTribute = () => {
-    return (
-      <Container className={classes.container}>
-        <SectionHeader text="Self Tribute" icon="cached" />
-        <Container className={classes.contentContainer}>
-          <Paper elevation={5} className={classes.unclaimedTributeContainer}>
-            <Typography variant="body1">
-              <b>{selfTribute}</b>{' '}
-              <Icon name="baseCurrency" className={classes.baseCurrencyIcon} />{' '}
+  const getSelfTribute = () => (
+    <Container className={classes.container}>
+      <SectionHeader text="Self Tribute" icon="cached" />
+      <Container className={classes.contentContainer}>
+        <Paper elevation={5} className={classes.unclaimedTributeContainer}>
+          <Typography variant="body1">
+            <b>{selfTribute}</b>
+            {' '}
+            <Icon name="baseCurrency" className={classes.baseCurrencyIcon} />
+            {' '}
               from your principal are generating interest for you.
-            </Typography>
-          </Paper>
-          <Divider className={classes.divider} />
-        </Container>
+          </Typography>
+        </Paper>
+        <Divider className={classes.divider} />
       </Container>
-    );
-  };
+    </Container>
+  );
 
-  const getActiveInflows = () => {
-    return (
-      <Container className={classes.container}>
-        <SectionHeader text="Active Tributes" icon="faucetOn" />
-        <Container className={classes.contentContainer}>
-          <CustomTable
-            headings={['Sender', 'Tribute Amount']}
-            rows={[[1, 2], [1, 2], [1, 2]]}
-          />
+  const getActiveInflows = () => (
+    <Container className={classes.container}>
+      <SectionHeader text="Active Tributes" icon="faucetOn" />
+      <Container className={classes.contentContainer}>
+        <CustomTable
+          headings={['Sender', 'Tribute Amount']}
+          rows={[[1, 2], [1, 2], [1, 2]]}
+        />
 
-          <Divider className={classes.divider} />
-        </Container>
+        <Divider className={classes.divider} />
       </Container>
-    );
-  };
+    </Container>
+  );
 
-  const getInactiveInflows = () => {
-    return (
-      <Container className={classes.container}>
-        <SectionHeader text="Inactive Tributes" icon="faucetOff" />
-        <Container className={classes.contentContainer}>
-          <CustomTable
-            headings={['Sender', 'Tribute Amount']}
-            rows={[[1, 2], [1, 2], [1, 2]]}
-          />
-        </Container>
+  const getInactiveInflows = () => (
+    <Container className={classes.container}>
+      <SectionHeader text="Inactive Tributes" icon="faucetOff" />
+      <Container className={classes.contentContainer}>
+        <CustomTable
+          headings={['Sender', 'Tribute Amount']}
+          rows={[[1, 2], [1, 2], [1, 2]]}
+        />
       </Container>
-    );
-  };
+    </Container>
+  );
 
-  const getClaimTribute = () => {
-    return (
-      <Container className={classes.container}>
-        <Container className={classes.contentContainer}>
-          <Paper elevation={5} className={classes.unclaimedTributeContainer}>
-            <Typography variant="body1">
-              Ready to claim: <b>{unclaimedTribute}</b>{' '}
-              <Icon name="baseCurrency" className={classes.baseCurrencyIcon} />
-            </Typography>
+  const getClaimTribute = () => (
+    <Container className={classes.container}>
+      <Container className={classes.contentContainer}>
+        <Paper elevation={5} className={classes.unclaimedTributeContainer}>
+          <Typography variant="body1">
+              Ready to claim:
+            {' '}
+            <b>{unclaimedTribute}</b>
+            {' '}
+            <Icon name="baseCurrency" className={classes.baseCurrencyIcon} />
+          </Typography>
 
-            <div>
-              <Button
-                onClick={() => context.tribute.claimAmount(context.address[0])}
-                variant="contained"
-                color="primary"
-                style={{ backgroundColor: '#1b1c4c' }}
-                className={classes.redeemButton}
-              >
-                <Icon name="receiveMoney" className={classes.buttonIcon} />
+          <div>
+            <Button
+              onClick={() => context.tribute.claimAmount(context.address[0])}
+              variant="contained"
+              color="primary"
+              style={{ backgroundColor: '#1b1c4c' }}
+              className={classes.redeemButton}
+            >
+              <Icon name="receiveMoney" className={classes.buttonIcon} />
                 Claim
-              </Button>
-            </div>
-          </Paper>
-        </Container>
+            </Button>
+          </div>
+        </Paper>
       </Container>
-    );
-  };
+    </Container>
+  );
 
-  const getClaimOnBehalfOf = () => {
-    return (
-      <Container className={classes.container}>
-        <Container className={classes.contentContainer}>
-          <Paper elevation={5} className={classes.unclaimedTributeContainer}>
-            <div>
-              <Typography variant="body1">Claim on behalf of:</Typography>
-              <div style={{ display: 'flex' }}>
-                <TextField
-                  variant="outlined"
-                  label="Address"
-                  id="outlined-dense"
-                  margin="dense"
-                  value={values.address}
-                  onChange={e => {
-                    setAddress(e.target.value);
+  const getClaimOnBehalfOf = () => (
+    <Container className={classes.container}>
+      <Container className={classes.contentContainer}>
+        <Paper elevation={5} className={classes.unclaimedTributeContainer}>
+          <div>
+            <Typography variant="body1">Claim on behalf of:</Typography>
+            <div style={{ display: 'flex' }}>
+              <TextField
+                variant="outlined"
+                label="Address"
+                id="outlined-dense"
+                margin="dense"
+                value={values.address}
+                onChange={(e) => {
+                  setAddress(e.target.value);
+                }}
+              />
+              <Button
+                variant="contained"
+                style={{ padding: '0 0 0 0', margin: '0 0 0 10px' }}
+                onClick={() => {
+                  handleOpen();
+                }}
+              >
+                <Icon name="qr" className={classes.buttonIcon} />
+              </Button>
+              <Modal
+                open={open}
+                style={{
+                  paddingTop: '3rem',
+                }}
+              >
+                <Scanner
+                  handleClose={handleClose}
+                  setAddress={setAddress}
+                  onError={(error) => {
+                    this.changeAlert('danger', error);
                   }}
                 />
-                <Button
-                  variant="contained"
-                  style={{ padding: '0 0 0 0', margin: '0 0 0 10px' }}
-                  onClick={() => {
-                    handleOpen();
-                  }}
-                >
-                  <Icon name="qr" className={classes.buttonIcon} />
-                </Button>
-                <Modal
-                  open={open}
-                  style={{
-                    paddingTop: '3rem'
-                  }}
-                >
-                  <Scanner
-                    handleClose={handleClose}
-                    setAddress={setAddress}
-                    onError={error => {
-                      this.changeAlert('danger', error);
-                    }}
-                  />
-                </Modal>
-              </div>
-              <div style={{ marginTop: 4 }}>
-                <Typography variant="body1">
-                  Ready to claim: <b>{values.externalUserInterest}</b>{' '}
-                  <Icon
-                    name="baseCurrency"
-                    className={classes.baseCurrencyIcon}
-                  />
-                </Typography>
-              </div>
+              </Modal>
             </div>
+            <div style={{ marginTop: 4 }}>
+              <Typography variant="body1">
+                  Ready to claim:
+                {' '}
+                <b>{values.externalUserInterest}</b>
+                {' '}
+                <Icon
+                  name="baseCurrency"
+                  className={classes.baseCurrencyIcon}
+                />
+              </Typography>
+            </div>
+          </div>
 
-            <div>
-              <Button
-                onClick={() =>
-                  context.tribute.claimTributeOnBehalfOf(values.address)
-                }
-                variant="contained"
-                color="primary"
-                style={{ backgroundColor: '#1b1c4c' }}
-                className={classes.redeemButton}
-              >
-                <Icon name="receiveMoney" className={classes.buttonIcon} />
+          <div>
+            <Button
+              onClick={() => context.tribute.claimTributeOnBehalfOf(values.address)}
+              variant="contained"
+              color="primary"
+              style={{ backgroundColor: '#1b1c4c' }}
+              className={classes.redeemButton}
+            >
+              <Icon name="receiveMoney" className={classes.buttonIcon} />
                 Claim
-              </Button>
-            </div>
-          </Paper>
-        </Container>
+            </Button>
+          </div>
+        </Paper>
       </Container>
-    );
-  };
+    </Container>
+  );
 
   return (
     <div>

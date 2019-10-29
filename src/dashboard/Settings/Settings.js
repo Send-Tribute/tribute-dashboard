@@ -5,43 +5,43 @@ import {
   Container,
   Divider,
   Paper,
-  Button
+  Button,
 } from '@material-ui/core';
 import { createUseStyles } from 'react-jss';
+import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { SectionHeader } from '../general';
 import { getEtherscanLink } from '../helpers/utils';
-import { CopyToClipboard } from 'react-copy-to-clipboard';
 
 const useStyles = createUseStyles({
   container: {
-    paddingTop: 20
+    paddingTop: 20,
   },
   contentContainer: {
-    paddingTop: 10
+    paddingTop: 10,
   },
   baseCurrencyIcon: {
     top: 3,
-    height: 20
+    height: 20,
   },
 
   divider: {
-    marginTop: 20
+    marginTop: 20,
   },
   unclaimedTributeContainer: {
     alignItems: 'center',
     justifyContent: 'space-between',
     display: 'flex',
     padding: 20,
-    borderRadius: 10
+    borderRadius: 10,
   },
   redeemButton: {
     right: 0,
-    marginLeft: 20
+    marginLeft: 20,
   },
   buttonIcon: {
     height: 25,
-    paddingRight: 10
-  }
+    paddingRight: 10,
+  },
 });
 
 export default function Settings(props) {
@@ -52,19 +52,21 @@ export default function Settings(props) {
         <SectionHeader text="Contracts (kovan)" icon="" />
         <Container className={classes.contentContainer}>
           <Typography variant="body1">
-            rDAI:{' '}
+            rDAI:
+            {' '}
             {getEtherscanLink(
               '0xea718e4602125407fafcb721b7d760ad9652dfe7',
-              'kovan'
-            )}{' '}
+              'kovan',
+            )}
+            {' '}
             <CopyToClipboard
-              text={'0xea718e4602125407fafcb721b7d760ad9652dfe7'}
+              text="0xea718e4602125407fafcb721b7d760ad9652dfe7"
             >
               <Button
                 style={{
                   margin: '10px 0 10px',
                   backgroundColor: '#1b1c4c',
-                  marginLeft: 10
+                  marginLeft: 10,
                 }}
                 variant="contained"
                 color="primary"
@@ -73,19 +75,20 @@ export default function Settings(props) {
               </Button>
             </CopyToClipboard>
             <br />
-            DAI:{' '}
+            DAI:
+            {' '}
             {getEtherscanLink(
               '0xbF7A7169562078c96f0eC1A8aFD6aE50f12e5A99',
-              'kovan'
+              'kovan',
             )}
             <CopyToClipboard
-              text={'0xbF7A7169562078c96f0eC1A8aFD6aE50f12e5A99'}
+              text="0xbF7A7169562078c96f0eC1A8aFD6aE50f12e5A99"
             >
               <Button
                 style={{
                   margin: '10px 0 10px',
                   backgroundColor: '#1b1c4c',
-                  marginLeft: 10
+                  marginLeft: 10,
                 }}
                 variant="contained"
                 color="primary"
@@ -94,19 +97,20 @@ export default function Settings(props) {
               </Button>
             </CopyToClipboard>
             <br />
-            cDAI:{' '}
+            cDAI:
+            {' '}
             {getEtherscanLink(
               '0x0a1e4d0b5c71b955c0a5993023fc48ba6e380496',
-              'kovan'
+              'kovan',
             )}
             <CopyToClipboard
-              text={'0x0a1e4d0b5c71b955c0a5993023fc48ba6e380496'}
+              text="0x0a1e4d0b5c71b955c0a5993023fc48ba6e380496"
             >
               <Button
                 style={{
                   margin: '10px 0 10px',
                   backgroundColor: '#1b1c4c',
-                  marginLeft: 10
+                  marginLeft: 10,
                 }}
                 variant="contained"
                 color="primary"
@@ -115,19 +119,20 @@ export default function Settings(props) {
               </Button>
             </CopyToClipboard>
             <br />
-            daiCompoundAllocationStrategy:{' '}
+            daiCompoundAllocationStrategy:
+            {' '}
             {getEtherscanLink(
               '0xb4377efc05bd28be8e6510629538e54eba2d74e3',
-              'kovan'
+              'kovan',
             )}
             <CopyToClipboard
-              text={'0xb4377efc05bd28be8e6510629538e54eba2d74e3'}
+              text="0xb4377efc05bd28be8e6510629538e54eba2d74e3"
             >
               <Button
                 style={{
                   margin: '10px 0 10px',
                   backgroundColor: '#1b1c4c',
-                  marginLeft: 10
+                  marginLeft: 10,
                 }}
                 variant="contained"
                 color="primary"

@@ -1,11 +1,11 @@
 import React from 'react';
-import ReactDOM from "react-dom";
+import ReactDOM from 'react-dom';
 import { Provider } from './context';
-import Dashboard from "./Dashboard";
+import Dashboard from './Dashboard';
 
 ReactDOM.render(
   <Provider>
-    <Dashboard/>
+    <Dashboard />
   </Provider>,
-  document.getElementById('app')
+  document.getElementById('app'),
 );
