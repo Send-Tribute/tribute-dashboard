@@ -233,54 +233,65 @@ const Wallet = () => {
         <SectionHeader text="Get Tribute" icon="convertDollarTribute" />
         <Container className={classes.contentContainer}>
           <Paper elevation={5} className={classes.unclaimedTributeContainer}>
-            <Typography variant="body1">
-              In order to use Tribute on the Kovan testnet, you will need some
-              Kovan ETH and Kovan DAI.
-              <br />
-              <br /> You can obtain Kovan ETH from a faucet{' '}
-              <a href="https://faucet.kovan.network/" target="_blank">
-                here
-              </a>
-              . You will need to use your GitHub login. <br />
-              <br />
-              You can obtain Kovan DAI via the Compound faucet{' '}
-              <a href="https://app.compound.finance/asset/cDAI" target="_blank">
-                here
-              </a>
-              . You will need to first click “Enable DAI“ before accessing the
-              DAI faucet. <br />
-              <br />
-              To see your DAI and rDAI balances in your wallet, add these two
-              custom token addresses: <br />
-              <br />
-              <b>DAI (Kovan)</b>: 0xbF7A7169562078c96f0eC1A8aFD6aE50f12e5A99{' '}
-              {'  '}
-              <CopyToClipboard
-                text={'0xbF7A7169562078c96f0eC1A8aFD6aE50f12e5A99'}
-              >
-                <Button
-                  style={{ margin: '10px 0 10px', backgroundColor: '#1b1c4c' }}
-                  variant="contained"
-                  color="primary"
+            <div style={{ wordWrap: 'break-word', width: '100%' }}>
+              <Typography variant="body1">
+                In order to use Tribute on the Kovan testnet, you will need some
+                Kovan ETH and Kovan DAI.
+                <br />
+                <br /> You can obtain Kovan ETH from a faucet{' '}
+                <a href="https://faucet.kovan.network/" target="_blank">
+                  here
+                </a>
+                . You will need to use your GitHub login. <br />
+                <br />
+                You can obtain Kovan DAI via the Compound faucet{' '}
+                <a
+                  href="https://app.compound.finance/asset/cDAI"
+                  target="_blank"
                 >
-                  Copy
-                </Button>
-              </CopyToClipboard>
-              <br />
-              <b>rDAI (Kovan)</b>: 0xeA718E4602125407fAfcb721b7D760aD9652dfe7
-              {'  '}
-              <CopyToClipboard
-                text={'0xeA718E4602125407fAfcb721b7D760aD9652dfe7'}
-              >
-                <Button
-                  style={{ margin: '10px 0 10px', backgroundColor: '#1b1c4c' }}
-                  variant="contained"
-                  color="primary"
+                  here
+                </a>
+                . You will need to first click “Enable DAI“ before accessing the
+                DAI faucet. <br />
+                <br />
+                To see your DAI and rDAI balances in your wallet, add these two
+                custom token addresses: <br />
+                <br />
+                <b>DAI (Kovan)</b>: 0xbF7A7169562078c96f0eC1A8aFD6aE50f12e5A99{' '}
+                <br />
+                <CopyToClipboard
+                  text={'0xbF7A7169562078c96f0eC1A8aFD6aE50f12e5A99'}
                 >
-                  Copy
-                </Button>
-              </CopyToClipboard>
-            </Typography>
+                  <Button
+                    style={{
+                      margin: '10px 0 10px',
+                      backgroundColor: '#1b1c4c'
+                    }}
+                    variant="contained"
+                    color="primary"
+                  >
+                    Copy
+                  </Button>
+                </CopyToClipboard>
+                <br />
+                <b>rDAI (Kovan)</b>: 0xeA718E4602125407fAfcb721b7D760aD9652dfe7
+                <br />
+                <CopyToClipboard
+                  text={'0xeA718E4602125407fAfcb721b7D760aD9652dfe7'}
+                >
+                  <Button
+                    style={{
+                      margin: '10px 0 10px',
+                      backgroundColor: '#1b1c4c'
+                    }}
+                    variant="contained"
+                    color="primary"
+                  >
+                    Copy
+                  </Button>
+                </CopyToClipboard>
+              </Typography>
+            </div>
           </Paper>
         </Container>
       </Container>
