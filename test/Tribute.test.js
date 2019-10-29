@@ -24,7 +24,7 @@ contract('TESTING', async (accounts) => {
       });
 
       it("changeHat", async () => {
-        await contract.changeHat(0)
+        await contract.changeHat(48)
       });
 
       it("getHatByAddress", async () => {
