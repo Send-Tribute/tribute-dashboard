@@ -22,9 +22,6 @@ export default class Tribute {
       this.rDAIContract.address,
       amountToTribute_BN
     );
-    setTimeout(() => {
-      return;
-    }, 13000);
 
     // get rDAI balance
     const rDAIBalance_BN = await this.rDAIContract.balanceOf(this.userAddress);
@@ -55,12 +52,14 @@ export default class Tribute {
       : balance_BN;
 
     recipientMap[this.userAddress] = userBal.add(bigNumberify(amountToTribute));
-
-    await this.rDAIContract.mintWithNewHat(
-      amountToTribute_BN,
-      Object.keys(recipientMap),
-      Object.values(recipientMap)
-    );
+    await setTimeout(() => {
+      // Delay for Metamask Mobile back-to-back tx issues
+      this.rDAIContract.mintWithNewHat(
+        amountToTribute_BN,
+        Object.keys(recipientMap),
+        Object.values(recipientMap)
+      );
+    }, 10000);
   }
 
   // reedemm all your rdai to dai
