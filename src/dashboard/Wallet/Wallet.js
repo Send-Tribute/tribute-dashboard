@@ -107,21 +107,13 @@ const Wallet = () => {
       <Container className={classes.contentContainer}>
         <Paper elevation={5} className={classes.unclaimedTributeContainer}>
           <Typography variant="body1">
-            You have generated a total of 
-{' '}
-<b>{tributeBalance}</b>
-            {' '}
-            <Icon name="baseCurrency" className={classes.baseCurrencyIcon} />
-{' '}
+            You have generated a total of <b>{tributeBalance}</b>{' '}
+            <Icon name="baseCurrency" className={classes.baseCurrencyIcon} />{' '}
             Tribute.
             <br />
             <br />
-            From that total, 
-{' '}
-<b>{unallocatedTribute}</b>
-            {' '}
-            <Icon name="baseCurrency" className={classes.baseCurrencyIcon} />
-{' '}
+            From that total, <b>{unallocatedTribute}</b>{' '}
+            <Icon name="baseCurrency" className={classes.baseCurrencyIcon} />{' '}
             Tribute is unallocated.
           </Typography>
         </Paper>
@@ -166,16 +158,14 @@ const Wallet = () => {
             that you can direct to others.
             <br />
             <br />
-            More information is
-{' '}
+            More information is{' '}
             <a href="https://redeem.money/" target="_blank">
               here
             </a>
             .
             <br />
-            <br />
-1 DAI = 1 Tribute
-</Typography>
+            <br />1 DAI = 1 Tribute
+          </Typography>
         </Paper>
         <Divider className={classes.divider} />
         <br />
@@ -241,35 +231,23 @@ const Wallet = () => {
               In order to use Tribute on the Kovan testnet, you will need some
               Kovan ETH and Kovan DAI.
               <br />
-              <br />
-{' '}
-You can obtain Kovan ETH from a faucet
-{' '}
+              <br /> You can obtain Kovan ETH from a faucet{' '}
               <a href="https://faucet.kovan.network/" target="_blank">
                 here
               </a>
-              . You will need to use your GitHub login. 
-{' '}
-<br />
+              . You will need to use your GitHub login. <br />
               <br />
-              You can obtain Kovan DAI via the Compound faucet
-{' '}
+              You can obtain Kovan DAI via the Compound faucet{' '}
               <a href="https://app.compound.finance/asset/cDAI" target="_blank">
                 here
               </a>
               . You will need to first click “Enable DAI“ before accessing the
-              DAI faucet. 
-{' '}
-<br />
+              DAI faucet. <br />
               <br />
               To see your DAI and rDAI balances in your wallet, add these two
-              custom token addresses: 
-{' '}
-<br />
+              custom token addresses: <br />
               <br />
-              <b>DAI (Kovan)</b>
-: 0xbF7A7169562078c96f0eC1A8aFD6aE50f12e5A99
-{' '}
+              <b>DAI (Kovan)</b>: 0xbF7A7169562078c96f0eC1A8aFD6aE50f12e5A99{' '}
               <br />
               <CopyToClipboard text="0xbF7A7169562078c96f0eC1A8aFD6aE50f12e5A99">
                 <Button

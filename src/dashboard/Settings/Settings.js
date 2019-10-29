@@ -1,12 +1,5 @@
 import React from 'react';
-import {
-  Grid,
-  Typography,
-  Container,
-  Divider,
-  Paper,
-  Button
-} from '@material-ui/core';
+import { Typography, Container, Button } from '@material-ui/core';
 import { createUseStyles } from 'react-jss';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { SectionHeader } from '../general';
@@ -44,7 +37,7 @@ const useStyles = createUseStyles({
   }
 });
 
-export default function Settings(props) {
+export default function Settings() {
   const classes = useStyles();
   return (
     <div>
@@ -52,13 +45,11 @@ export default function Settings(props) {
         <SectionHeader text="Contracts (kovan)" icon="" />
         <Container className={classes.contentContainer}>
           <Typography variant="body1">
-            rDAI:
-{' '}
+            rDAI:{' '}
             {getEtherscanLink(
               '0xea718e4602125407fafcb721b7d760ad9652dfe7',
               'kovan'
-            )}
-{' '}
+            )}{' '}
             <CopyToClipboard text="0xea718e4602125407fafcb721b7d760ad9652dfe7">
               <Button
                 style={{
@@ -73,8 +64,7 @@ export default function Settings(props) {
               </Button>
             </CopyToClipboard>
             <br />
-            DAI:
-{' '}
+            DAI:{' '}
             {getEtherscanLink(
               '0xbF7A7169562078c96f0eC1A8aFD6aE50f12e5A99',
               'kovan'
@@ -93,8 +83,7 @@ export default function Settings(props) {
               </Button>
             </CopyToClipboard>
             <br />
-            cDAI:
-{' '}
+            cDAI:{' '}
             {getEtherscanLink(
               '0x0a1e4d0b5c71b955c0a5993023fc48ba6e380496',
               'kovan'
@@ -113,8 +102,7 @@ export default function Settings(props) {
               </Button>
             </CopyToClipboard>
             <br />
-            daiCompoundAllocationStrategy:
-{' '}
+            daiCompoundAllocationStrategy:{' '}
             {getEtherscanLink(
               '0xb4377efc05bd28be8e6510629538e54eba2d74e3',
               'kovan'

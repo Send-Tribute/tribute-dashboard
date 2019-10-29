@@ -5,8 +5,7 @@ import {
   Button,
   Grid,
   TextField,
-  Modal,
-  ModalContent
+  Modal
 } from '@material-ui/core';
 import { createUseStyles } from 'react-jss';
 import { Context } from '../context';
@@ -17,7 +16,6 @@ import {
   SectionHeader,
   Scanner
 } from '../general';
-import { getEtherscanLink, getShortAddress } from '../helpers/utils';
 
 import { DISCOVERABLE_PROVIDERS } from '../helpers/constants';
 
@@ -141,18 +139,18 @@ const Sending = () => {
     </Container>
   );
 
-  const getInactiveTributes = () => (
-    <Container className={classes.container}>
-      <SectionHeader text="Inactive Tributes" icon="waterwheelOff" />
-      <Container className={classes.contentContainer}>
-        <CustomTable
-          headings={['Recipient', 'Tribute Amount', 'Actions']}
-          rows={[[1, 2, 3], [1, 2, 3], [1, 2, 3]]}
-        />
-        <Divider className={classes.divider} />
-      </Container>
-    </Container>
-  );
+  // const getInactiveTributes = () => (
+  //   <Container className={classes.container}>
+  //     <SectionHeader text="Inactive Tributes" icon="waterwheelOff" />
+  //     <Container className={classes.contentContainer}>
+  //       <CustomTable
+  //         headings={['Recipient', 'Tribute Amount', 'Actions']}
+  //         rows={[[1, 2, 3], [1, 2, 3], [1, 2, 3]]}
+  //       />
+  //       <Divider className={classes.divider} />
+  //     </Container>
+  //   </Container>
+  // );
 
   const getDiscoverTributes = () => (
     <Container className={classes.container}>
@@ -217,7 +215,8 @@ const Sending = () => {
         <br />
         <Button
           onClick={() =>
-            context.tribute.startFlow(values.address, values.amount)}
+            context.tribute.startFlow(values.address, values.amount)
+          }
           size="large"
           type="submit"
           variant="contained"

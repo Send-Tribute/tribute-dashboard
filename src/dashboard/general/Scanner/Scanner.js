@@ -252,10 +252,8 @@ class Scanner extends Component {
                 >
                   <div className="content ops row">
                     <button className="btn btn-large w-100">
-                      <i className="fas fa-camera" />
-{' '}
-Take Picture
-</button>
+                      <i className="fas fa-camera" /> Take Picture
+                    </button>
                   </div>
                 </div>
               </div>
@@ -305,10 +303,7 @@ Take Picture
             opacity: 0.333
           }}
         >
-          {navigator.userAgent}
-{' '}
--
-{JSON.stringify(navigator.mediaDevices)}
+          {navigator.userAgent} -{JSON.stringify(navigator.mediaDevices)}
         </div>
         {displayedImage}
         {failMessage}

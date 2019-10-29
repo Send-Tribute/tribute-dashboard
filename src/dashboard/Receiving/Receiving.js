@@ -123,10 +123,8 @@ const Receiving = () => {
       <Container className={classes.contentContainer}>
         <Paper elevation={5} className={classes.unclaimedTributeContainer}>
           <Typography variant="body1">
-            <b>{selfTribute}</b>
-{' '}
-            <Icon name="baseCurrency" className={classes.baseCurrencyIcon} />
-{' '}
+            <b>{selfTribute}</b>{' '}
+            <Icon name="baseCurrency" className={classes.baseCurrencyIcon} />{' '}
             from your principal are generating interest for you.
           </Typography>
         </Paper>
@@ -166,10 +164,7 @@ const Receiving = () => {
       <Container className={classes.contentContainer}>
         <Paper elevation={5} className={classes.unclaimedTributeContainer}>
           <Typography variant="body1">
-            Ready to claim: 
-{' '}
-<b>{unclaimedTribute}</b>
-            {' '}
+            Ready to claim: <b>{unclaimedTribute}</b>{' '}
             <Icon name="baseCurrency" className={classes.baseCurrencyIcon} />
           </Typography>
 
@@ -233,10 +228,7 @@ const Receiving = () => {
             </div>
             <div style={{ marginTop: 4 }}>
               <Typography variant="body1">
-                Ready to claim: 
-{' '}
-<b>{values.externalUserInterest}</b>
-                {' '}
+                Ready to claim: <b>{values.externalUserInterest}</b>{' '}
                 <Icon
                   name="baseCurrency"
                   className={classes.baseCurrencyIcon}
