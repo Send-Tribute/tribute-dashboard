@@ -9,19 +9,19 @@ import tribute_logo from '../assets/tribute-logo.png';
 const useStyles = createUseStyles({
   root: {
     flexGrow: 1,
-    position: 'relative',
+    position: 'relative'
   },
 
   title: {},
   logo: {
     height: 60,
-    marginTop: 25,
+    marginTop: 25
   },
   web3Button: {
     position: 'absolute',
     right: 10,
-    top: 30,
-  },
+    top: 30
+  }
 });
 
 export default function Header() {

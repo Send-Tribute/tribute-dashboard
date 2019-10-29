@@ -2,7 +2,7 @@ import React, { useState, createContext } from 'react';
 
 const Context = createContext();
 
-const Provider = (props) => {
+const Provider = props => {
   const [state, setState] = useState({}); // this overrides context state
   return (
     <Context.Provider value={[state, setState]}>

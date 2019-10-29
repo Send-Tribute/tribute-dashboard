@@ -5,7 +5,7 @@ import {
   AccountBalanceWallet,
   Send,
   CallReceived,
-  Settings,
+  Settings
 } from '@material-ui/icons';
 import tribute_logo_dark from '../assets/tribute-logo-dark.png';
 import faucet_on from '../assets/faucet-on.png';
@@ -33,111 +33,111 @@ import unicef from '../assets/unicef.jpeg';
 export const ICONS = {
   faucetOn: {
     type: 'image',
-    src: faucet_on,
+    src: faucet_on
   },
   faucetOff: {
     type: 'image',
-    src: faucet_off,
+    src: faucet_off
   },
   receiveMoney: {
     type: 'image',
-    src: receive_money,
+    src: receive_money
   },
   waterwheel: {
     type: 'image',
-    src: waterwheel,
+    src: waterwheel
   },
   waterwheelOff: {
     type: 'image',
-    src: waterwheel_off,
+    src: waterwheel_off
   },
   iceCubes: {
     type: 'image',
-    src: ice_cubes,
+    src: ice_cubes
   },
   cached: {
     type: 'muiIcon',
-    component: <Cached />,
+    component: <Cached />
   },
   accountBalanceWallet: {
     type: 'muiIcon',
-    component: <AccountBalanceWallet />,
+    component: <AccountBalanceWallet />
   },
   send: {
     type: 'muiIcon',
-    component: <Send />,
+    component: <Send />
   },
   callReceived: {
     type: 'muiIcon',
-    component: <CallReceived />,
+    component: <CallReceived />
   },
   settings: {
     type: 'muiIcon',
-    component: <Settings />,
+    component: <Settings />
   },
   logo: {
     type: 'image',
-    src: tribute_logo_dark,
+    src: tribute_logo_dark
   },
   baseCurrency: {
     type: 'image',
-    src: tribute_token,
+    src: tribute_token
   },
   headerLogo: {
     type: 'image',
-    src: tribute_logo_white,
+    src: tribute_logo_white
   },
   superMariano: {
     type: 'image',
-    src: super_mariano,
+    src: super_mariano
   },
   defiant: {
     type: 'image',
-    src: defiant,
+    src: defiant
   },
   oneClickDapp: {
     type: 'image',
-    src: one_click_dapp,
+    src: one_click_dapp
   },
 
   convertDollarTribute: {
     type: 'image',
-    src: convert_dollar_tribute,
+    src: convert_dollar_tribute
   },
   convertDaiTribute: {
     type: 'image',
-    src: convert_dai_tribute,
+    src: convert_dai_tribute
   },
   tributeToken: {
     type: 'image',
-    src: tribute_token,
+    src: tribute_token
   },
   wallet: {
     type: 'image',
-    src: wallet,
+    src: wallet
   },
   walletWhite: {
     type: 'image',
-    src: wallet_white,
+    src: wallet_white
   },
   kyber: {
     type: 'image',
-    src: kyber,
+    src: kyber
   },
   coinbase: {
     type: 'image',
-    src: coinbase,
+    src: coinbase
   },
   wyre: {
     type: 'image',
-    src: wyre,
+    src: wyre
   },
   qr: {
     type: 'image',
-    src: qr,
+    src: qr
   },
   unicef: {
     type: 'image',
-    src: unicef,
-  },
+    src: unicef
+  }
 };

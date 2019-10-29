@@ -6,7 +6,7 @@ import {
   Grid,
   TextField,
   Modal,
-  ModalContent,
+  ModalContent
 } from '@material-ui/core';
 import { createUseStyles } from 'react-jss';
 import { Context } from '../context';
@@ -15,7 +15,7 @@ import {
   CustomTable,
   ProviderCard,
   SectionHeader,
-  Scanner,
+  Scanner
 } from '../general';
 import { getEtherscanLink, getShortAddress } from '../helpers/utils';
 
@@ -23,52 +23,52 @@ import { DISCOVERABLE_PROVIDERS } from '../helpers/constants';
 
 const useStyles = createUseStyles({
   container: {
-    paddingTop: 20,
+    paddingTop: 20
   },
   contentContainer: {
     paddingTop: 10,
-    justifyContent: 'center',
+    justifyContent: 'center'
   },
   headerImage: {
     height: 40,
-    margin: '0 22px 0 22px',
+    margin: '0 22px 0 22px'
   },
   headerImageLarge: {
     height: 80,
-    marginRight: 10,
+    marginRight: 10
   },
   headerContainer: {
     display: 'flex',
-    alignItems: 'center',
+    alignItems: 'center'
   },
   baseCurrencyIcon: {
     top: 3,
-    height: 20,
+    height: 20
   },
   divider: {
-    marginTop: 20,
+    marginTop: 20
   },
   unclaimedTributeContainer: {
     alignItems: 'center',
     display: 'flex',
     margin: 20,
     padding: 20,
-    borderRadius: 10,
+    borderRadius: 10
   },
   redeemButton: {
     right: 0,
-    marginLeft: 20,
+    marginLeft: 20
   },
   buttonIcon: {
-    height: 25,
+    height: 25
   },
   addressInputContainer: {
     display: 'flex',
-    margin: '10px 0 0px 0',
+    margin: '10px 0 0px 0'
   },
   sendTributeButton: {
-    margin: '10px 0 0 0',
-  },
+    margin: '10px 0 0 0'
+  }
 });
 
 const endButton = (address, context) => (
@@ -79,7 +79,7 @@ const endButton = (address, context) => (
       context.tribute.endFlow(address);
     }}
   >
-      End Tribute
+    End Tribute
   </Button>
 );
 
@@ -88,7 +88,7 @@ const Sending = () => {
   const classes = useStyles();
   const [values, setValues] = useState({
     address: '',
-    amount: '',
+    amount: ''
   });
 
   const [open, setOpen] = useState(false);
@@ -100,7 +100,7 @@ const Sending = () => {
     setOpen(false);
   };
 
-  const setAddress = (address) => {
+  const setAddress = address => {
     setValues({ ...values, address });
   };
 
@@ -114,17 +114,17 @@ const Sending = () => {
         let recipient = address;
         const amount = Math.round(userDetails.allocations.proportions[index]);
         // Check if the address is known and provide the name
-        Object.keys(DISCOVERABLE_PROVIDERS).forEach((provider) => {
+        Object.keys(DISCOVERABLE_PROVIDERS).forEach(provider => {
           if (DISCOVERABLE_PROVIDERS[provider].address === address) {
             recipient = DISCOVERABLE_PROVIDERS[provider].name;
           }
         });
         return [recipient, amount, endButton(address, context)];
-      },
+      }
     );
   }
 
-  const handleChange = (name) => (event) => {
+  const handleChange = name => event => {
     setValues({ ...values, [name]: event.target.value });
   };
 
@@ -159,7 +159,7 @@ const Sending = () => {
       <SectionHeader text="Discover" icon="tributeButton" />
       <Container className={classes.contentContainer}>
         <Grid container>
-          {Object.keys(DISCOVERABLE_PROVIDERS).map((provider) => (
+          {Object.keys(DISCOVERABLE_PROVIDERS).map(provider => (
             <Grid item key={provider}>
               <ProviderCard provider={DISCOVERABLE_PROVIDERS[provider]} />
             </Grid>
@@ -194,13 +194,13 @@ const Sending = () => {
           <Modal
             open={open}
             style={{
-              paddingTop: '3rem',
+              paddingTop: '3rem'
             }}
           >
             <Scanner
               handleClose={handleClose}
               setAddress={setAddress}
-              onError={(error) => {
+              onError={error => {
                 this.changeAlert('danger', error);
               }}
             />
@@ -216,7 +216,8 @@ const Sending = () => {
         />
         <br />
         <Button
-          onClick={() => context.tribute.startFlow(values.address, values.amount)}
+          onClick={() =>
+            context.tribute.startFlow(values.address, values.amount)}
           size="large"
           type="submit"
           variant="contained"
@@ -224,7 +225,7 @@ const Sending = () => {
           style={{ margin: '10px 0 10px', backgroundColor: '#1b1c4c' }}
           className={classes.sendTributeButton}
         >
-            Send Tribute
+          Send Tribute
         </Button>
       </Container>
     </Container>

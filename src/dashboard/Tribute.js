@@ -17,11 +17,11 @@ export default class Tribute {
 
     // approve DAI
     const amountToTribute_BN = bigNumberify(amountToTribute).mul(
-      bigNumberify(10).pow(decimals_rDAI),
+      bigNumberify(10).pow(decimals_rDAI)
     );
     await this.DAIContract.approve(
       this.rDAIContract.address,
-      amountToTribute_BN,
+      amountToTribute_BN
     );
 
     // get rDAI balance
@@ -29,21 +29,23 @@ export default class Tribute {
     const balance_BN = rDAIBalance_BN.div(bigNumberify(10).pow(decimals_rDAI));
 
     const currentHat = await this.rDAIContract.getHatByAddress(
-      this.userAddress,
+      this.userAddress
     );
     const SELF_HAT_ID = await this.rDAIContract.SELF_HAT_ID;
 
     const { recipients, proportions } = currentHat;
 
     // calculate proportions whole numbers
-    const portionWholeNum = proportions.map((portion) => bigNumberify(portion)
-      .mul(balance_BN)
-      .div(this.PROPORTION_BASE));
+    const portionWholeNum = proportions.map(portion =>
+      bigNumberify(portion)
+        .mul(balance_BN)
+        .div(this.PROPORTION_BASE)
+    );
 
     // convert to object mapping
     const recipientMap = {};
     recipients.forEach(
-      (address, i) => (recipientMap[address.toLowerCase()] = portionWholeNum[i]),
+      (address, i) => (recipientMap[address.toLowerCase()] = portionWholeNum[i])
     );
 
     const userBal = recipientMap[this.userAddress]
@@ -56,7 +58,7 @@ export default class Tribute {
       this.rDAIContract.mintWithNewHat(
         amountToTribute_BN,
         Object.keys(recipientMap),
-        Object.values(recipientMap),
+        Object.values(recipientMap)
       );
     }, 10000);
   }
@@ -72,12 +74,12 @@ export default class Tribute {
     // Balance
     const rDAIBalance_BN = await this.rDAIContract.balanceOf(this.userAddress);
     const unclaimedBalance_BN = await this.rDAIContract.interestPayableOf(
-      this.userAddress,
+      this.userAddress
     );
 
     // Check if the user has a hat
     const currentHat = await this.rDAIContract.getHatByAddress(
-      this.userAddress,
+      this.userAddress
     );
 
     let { recipients, proportions } = currentHat;
@@ -89,11 +91,13 @@ export default class Tribute {
       unallocatedBalance = rDAIBalance_BN;
     } else {
       // set all recepients to lower case to allow searching
-      recipients = currentHat.recipients.map((r) => r.toLowerCase());
+      recipients = currentHat.recipients.map(r => r.toLowerCase());
 
-      portionWholeNum = proportions.map((portion) => bigNumberify(portion)
-        .mul(rDAIBalance_BN)
-        .div(this.PROPORTION_BASE));
+      portionWholeNum = proportions.map(portion =>
+        bigNumberify(portion)
+          .mul(rDAIBalance_BN)
+          .div(this.PROPORTION_BASE)
+      );
       const userIdx = recipients.indexOf(this.userAddress.toLowerCase());
 
       // check if user exists
@@ -110,12 +114,16 @@ export default class Tribute {
 
     return {
       allocations: {
-        recipients: recipients.map((recipient) => ethers.utils.getAddress(recipient)),
-        proportions: portionWholeNum.map((portion) => formatUnits(portion, decimals_rDAI)),
+        recipients: recipients.map(recipient =>
+          ethers.utils.getAddress(recipient)
+        ),
+        proportions: portionWholeNum.map(portion =>
+          formatUnits(portion, decimals_rDAI)
+        )
       },
       balance: formatUnits(rDAIBalance_BN, decimals_rDAI),
       unallocated_balance: formatUnits(unallocatedBalance, decimals_rDAI),
-      unclaimed_balance: formatUnits(unclaimedBalance_BN, decimals_rDAI),
+      unclaimed_balance: formatUnits(unclaimedBalance_BN, decimals_rDAI)
     };
   }
 
@@ -129,22 +137,24 @@ export default class Tribute {
     const balance_BN = rDAIBalance_BN.div(bigNumberify(10).pow(decimals_rDAI));
 
     const currentHat = await this.rDAIContract.getHatByAddress(
-      this.userAddress,
+      this.userAddress
     );
     const SELF_HAT_ID = await this.rDAIContract.SELF_HAT_ID;
 
     const { recipients, proportions } = currentHat;
 
     // calculate proportions whole numbers
-    const portionWholeNum = proportions.map((portion) => bigNumberify(portion)
-      .mul(balance_BN)
-      .div(this.PROPORTION_BASE));
+    const portionWholeNum = proportions.map(portion =>
+      bigNumberify(portion)
+        .mul(balance_BN)
+        .div(this.PROPORTION_BASE)
+    );
 
     // turn recipients and proportions into map
     // convert to object mapping
     const recipientMap = {};
     recipients.forEach(
-      (address, i) => (recipientMap[address.toLowerCase()] = portionWholeNum[i]),
+      (address, i) => (recipientMap[address.toLowerCase()] = portionWholeNum[i])
     );
 
     // validate if hat !exist
@@ -187,7 +197,7 @@ export default class Tribute {
     await this.rDAIContract.createHat(
       Object.keys(recipientMap),
       Object.values(recipientMap),
-      true,
+      true
     );
   }
 
@@ -201,29 +211,33 @@ export default class Tribute {
     const balance_BN = rDAIBalance_BN.div(bigNumberify(10).pow(decimals_rDAI));
 
     const currentHat = await this.rDAIContract.getHatByAddress(
-      this.userAddress,
+      this.userAddress
     );
     const SELF_HAT_ID = await this.rDAIContract.SELF_HAT_ID;
 
     const { recipients, proportions } = currentHat;
 
     // calculate proportions whole numbers
-    const portionWholeNum = proportions.map((portion) => bigNumberify(portion)
-      .mul(balance_BN)
-      .div(this.PROPORTION_BASE));
+    const portionWholeNum = proportions.map(portion =>
+      bigNumberify(portion)
+        .mul(balance_BN)
+        .div(this.PROPORTION_BASE)
+    );
 
     // turn recipients and proportions into map
     // convert to object mapping
     const recipientMap = {};
     recipients.forEach(
-      (address, i) => (recipientMap[address.toLowerCase()] = portionWholeNum[i]),
+      (address, i) => (recipientMap[address.toLowerCase()] = portionWholeNum[i])
     );
 
     // validate if hat !exist
-    if (currentHat.hatID.eq(SELF_HAT_ID) || currentHat.hatID.isZero()) throw 'No flows to end';
+    if (currentHat.hatID.eq(SELF_HAT_ID) || currentHat.hatID.isZero())
+      throw 'No flows to end';
 
     // validate if there are amounts left in user portion
-    if (!(addressToRemove.toLowerCase() in recipientMap)) throw `address: ${addressToRemove} does not exist`;
+    if (!(addressToRemove.toLowerCase() in recipientMap))
+      throw `address: ${addressToRemove} does not exist`;
 
     const userBal = recipientMap[this.userAddress]
       ? recipientMap[this.userAddress]
@@ -248,7 +262,7 @@ export default class Tribute {
     await this.rDAIContract.createHat(
       Object.keys(recipientMap),
       Object.values(recipientMap),
-      true,
+      true
     );
   }
 

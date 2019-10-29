@@ -8,13 +8,11 @@ import {
   Container,
   Divider,
   Paper,
-  Button,
+  Button
 } from '@material-ui/core';
 import { createUseStyles } from 'react-jss';
 import { Context } from '../context';
-import {
-  Icon, CustomTable, SectionHeader, Scanner,
-} from '../general';
+import { Icon, CustomTable, SectionHeader, Scanner } from '../general';
 import { CONTRACTS } from '../helpers/constants';
 import DAIabi from '../../contracts/dai';
 import rDAIabi from '../../contracts/rDai';
@@ -22,38 +20,38 @@ import Tribute from '../Tribute';
 
 const useStyles = createUseStyles({
   container: {
-    paddingTop: 20,
+    paddingTop: 20
   },
   redeemButton: {
     right: 0,
-    marginLeft: 20,
+    marginLeft: 20
   },
   contentContainer: {
-    paddingTop: 10,
+    paddingTop: 10
   },
   baseCurrencyIcon: {
     top: 3,
-    height: 20,
+    height: 20
   },
 
   divider: {
-    marginTop: 20,
+    marginTop: 20
   },
   unclaimedTributeContainer: {
     alignItems: 'center',
     justifyContent: 'space-between',
     display: 'flex',
     padding: 20,
-    borderRadius: 10,
+    borderRadius: 10
   },
   redeemButton: {
     right: 0,
-    marginLeft: 20,
+    marginLeft: 20
   },
   buttonIcon: {
     height: 25,
-    paddingRight: 10,
-  },
+    paddingRight: 10
+  }
 });
 
 const Receiving = () => {
@@ -62,10 +60,10 @@ const Receiving = () => {
   const { userDetails } = context;
   const [values, setValues] = useState({
     address: '',
-    externalUserInterest: '(scan to load)',
+    externalUserInterest: '(scan to load)'
   });
 
-  const handleChange = (name) => (event) => {
+  const handleChange = name => event => {
     setValues({ ...values, [name]: event.target.value });
   };
 
@@ -78,7 +76,7 @@ const Receiving = () => {
     setOpen(false);
   };
 
-  const setAddress = async (address) => {
+  const setAddress = async address => {
     let trimmedAddress = await address;
     if (address.indexOf('ethereum:') > -1) {
       trimmedAddress = address.substr(9, address.length - 1);
@@ -86,24 +84,24 @@ const Receiving = () => {
     setValues({ ...values, address: trimmedAddress });
     if (trimmedAddress.length > 41) {
       const walletProvider = new ethers.providers.Web3Provider(
-        window.web3.currentProvider,
+        window.web3.currentProvider
       );
       // connect to contracts on the network
       const rDAIContract = new ethers.Contract(
         CONTRACTS.rtoken.kovan,
         rDAIabi,
-        walletProvider,
+        walletProvider
       );
       const DAIContract = new ethers.Contract(
         CONTRACTS.dai.kovan,
         DAIabi,
-        walletProvider,
+        walletProvider
       );
       const tribute = new Tribute(
         DAIContract,
         rDAIContract,
         walletProvider,
-        trimmedAddress,
+        trimmedAddress
       );
       const userDetails = await tribute.getInfo();
       const externalUserInterest = userDetails.unclaimedTribute;
@@ -126,10 +124,10 @@ const Receiving = () => {
         <Paper elevation={5} className={classes.unclaimedTributeContainer}>
           <Typography variant="body1">
             <b>{selfTribute}</b>
-            {' '}
+{' '}
             <Icon name="baseCurrency" className={classes.baseCurrencyIcon} />
-            {' '}
-              from your principal are generating interest for you.
+{' '}
+            from your principal are generating interest for you.
           </Typography>
         </Paper>
         <Divider className={classes.divider} />
@@ -168,10 +166,9 @@ const Receiving = () => {
       <Container className={classes.contentContainer}>
         <Paper elevation={5} className={classes.unclaimedTributeContainer}>
           <Typography variant="body1">
-              Ready to claim:
-            {' '}
-            <b>{unclaimedTribute}</b>
-            {' '}
+            Ready to claim: 
+{' '}
+<b>{unclaimedTribute}</b>{' '}
             <Icon name="baseCurrency" className={classes.baseCurrencyIcon} />
           </Typography>
 
@@ -184,7 +181,7 @@ const Receiving = () => {
               className={classes.redeemButton}
             >
               <Icon name="receiveMoney" className={classes.buttonIcon} />
-                Claim
+              Claim
             </Button>
           </div>
         </Paper>
@@ -205,7 +202,7 @@ const Receiving = () => {
                 id="outlined-dense"
                 margin="dense"
                 value={values.address}
-                onChange={(e) => {
+                onChange={e => {
                   setAddress(e.target.value);
                 }}
               />
@@ -221,13 +218,13 @@ const Receiving = () => {
               <Modal
                 open={open}
                 style={{
-                  paddingTop: '3rem',
+                  paddingTop: '3rem'
                 }}
               >
                 <Scanner
                   handleClose={handleClose}
                   setAddress={setAddress}
-                  onError={(error) => {
+                  onError={error => {
                     this.changeAlert('danger', error);
                   }}
                 />
@@ -235,10 +232,9 @@ const Receiving = () => {
             </div>
             <div style={{ marginTop: 4 }}>
               <Typography variant="body1">
-                  Ready to claim:
-                {' '}
-                <b>{values.externalUserInterest}</b>
-                {' '}
+                Ready to claim: 
+{' '}
+<b>{values.externalUserInterest}</b>{' '}
                 <Icon
                   name="baseCurrency"
                   className={classes.baseCurrencyIcon}
@@ -249,14 +245,15 @@ const Receiving = () => {
 
           <div>
             <Button
-              onClick={() => context.tribute.claimTributeOnBehalfOf(values.address)}
+              onClick={() =>
+                context.tribute.claimTributeOnBehalfOf(values.address)}
               variant="contained"
               color="primary"
               style={{ backgroundColor: '#1b1c4c' }}
               className={classes.redeemButton}
             >
               <Icon name="receiveMoney" className={classes.buttonIcon} />
-                Claim
+              Claim
             </Button>
           </div>
         </Paper>

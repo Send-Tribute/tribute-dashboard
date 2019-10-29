@@ -10,13 +10,13 @@ const useStyles = createUseStyles({
     backgroundColor: '#1b1c4c',
     width: '100%',
     display: 'flex',
-    justifyContent: 'center',
+    justifyContent: 'center'
   },
   icon: {
     color: '#FAFAFA',
     marginRight: 10,
-    marginTop: 10,
-  },
+    marginTop: 10
+  }
 });
 
 export default function Footer() {

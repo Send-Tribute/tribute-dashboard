@@ -11,15 +11,16 @@ export default function TabsMenu() {
     setContext({ ...context, selectedTab: TABS.ordering[tab] });
   };
 
-  const getTabs = () => TABS.ordering.map((tab, index) =>
-  // return <Tab label={tab} icon={TABS.icons[0]} />;
-    (
+  const getTabs = () =>
+    TABS.ordering.map((tab, index) => (
+      // return <Tab label={tab} icon={TABS.icons[0]} />;
       <Tab label={tab} key={index} icon={<Icon name={TABS.icons[tab]} />} />
     ));
 
-  const currentTab = context.selectedTab !== undefined
-    ? TABS.ordering.indexOf(context.selectedTab)
-    : TABS.ordering.indexOf(TABS.default);
+  const currentTab =
+    context.selectedTab !== undefined
+      ? TABS.ordering.indexOf(context.selectedTab)
+      : TABS.ordering.indexOf(TABS.default);
 
   return (
     <Tabs variant="fullWidth" value={currentTab} onChange={handleTabChange}>

@@ -13,8 +13,8 @@ import { Icon } from '../../general';
 const useStyles = createUseStyles({
   icon: {
     width: 30,
-    marginLeft: 10,
-  },
+    marginLeft: 10
+  }
 });
 
 export default function EnableWeb3Button() {
@@ -33,48 +33,46 @@ export default function EnableWeb3Button() {
       const address = await window.ethereum.enable();
       console.log(`address ${address}`);
 
-      setContext((state) => ({
-
+      setContext(state => ({
         ...state,
         isConnected: true,
-        address,
+        address
       }));
 
       try {
         if (
-          typeof window.ethereum !== 'undefined'
-          || typeof window.web3 !== 'undefined'
+          typeof window.ethereum !== 'undefined' ||
+          typeof window.web3 !== 'undefined'
         ) {
           const walletProvider = new ethers.providers.Web3Provider(
-            window.web3.currentProvider,
+            window.web3.currentProvider
           );
 
           // connect to contracts on the network
           const rDAIContract = new ethers.Contract(
             CONTRACTS.rtoken.kovan,
             rDAIabi,
-            walletProvider,
+            walletProvider
           );
           const DAIContract = new ethers.Contract(
             CONTRACTS.dai.kovan,
             DAIabi,
-            walletProvider,
+            walletProvider
           );
           const tribute = new Tribute(
             DAIContract,
             rDAIContract,
             walletProvider,
-            address,
+            address
           );
           const userDetails = await tribute.getInfo();
           console.log(userDetails);
-          setContext((state) => ({
-
+          setContext(state => ({
             ...state,
             tribute,
             userDetails,
             isConnected: false,
-            provider: walletProvider,
+            provider: walletProvider
           }));
         }
       } catch (error) {

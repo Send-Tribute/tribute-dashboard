@@ -7,5 +7,5 @@ ReactDOM.render(
   <Provider>
     <Dashboard />
   </Provider>,
-  document.getElementById('app'),
+  document.getElementById('app')
 );

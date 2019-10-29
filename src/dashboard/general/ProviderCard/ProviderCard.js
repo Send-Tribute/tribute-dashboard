@@ -6,7 +6,7 @@ import {
   CardMedia,
   Typography,
   Chip,
-  Button,
+  Button
 } from '@material-ui/core';
 import PropTypes from 'prop-types';
 import { createUseStyles } from 'react-jss';
@@ -17,38 +17,36 @@ const useStyles = createUseStyles({
   card: {
     maxWidth: 345,
     margin: 10,
-    justifyContent: 'center',
+    justifyContent: 'center'
   },
   media: {
     height: 160,
-    overflow: 'hidden',
+    overflow: 'hidden'
   },
   image: { width: '100%', height: '100%' },
   chipContainer: {
     marginTop: 5,
     display: 'flex',
     justifyContent: 'center',
-    flexWrap: 'wrap',
+    flexWrap: 'wrap'
   },
   chip: {
-    margin: 3,
+    margin: 3
   },
   addressButton: {
-    textTransform: 'none',
+    textTransform: 'none'
   },
   address: {
-    marginTop: 10,
+    marginTop: 10
   },
   description: {
-    height: 50,
-  },
+    height: 50
+  }
 });
 
 const ProviderCard = ({ provider }) => {
   const classes = useStyles();
-  const {
-    name, address, website, tags, description, image,
-  } = provider;
+  const { name, address, website, tags, description, image } = provider;
   return (
     <Card className={classes.card}>
       <CardMedia className={classes.media} title={name}>
@@ -64,7 +62,7 @@ const ProviderCard = ({ provider }) => {
           </Typography>
         </div>
         <div className={classes.chipContainer}>
-          {tags.map((tag) => (
+          {tags.map(tag => (
             <Chip key={tag} label={tag} className={classes.chip} />
           ))}
         </div>
@@ -89,7 +87,7 @@ const ProviderCard = ({ provider }) => {
           onClick={() => {
             window.open(
               `https://kovan.etherscan.io/address/${address}`,
-              '_blank',
+              '_blank'
             );
           }}
         >
@@ -107,8 +105,8 @@ ProviderCard.propTypes = {
     website: PropTypes.string.isRequired,
     tags: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired,
     description: PropTypes.string.isRequired,
-    image: PropTypes.string.isRequired,
-  }).isRequired,
+    image: PropTypes.string.isRequired
+  }).isRequired
 };
 
 export default ProviderCard;

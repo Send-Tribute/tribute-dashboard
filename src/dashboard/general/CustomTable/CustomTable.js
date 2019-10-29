@@ -6,7 +6,7 @@ import {
   TableCell,
   TableRow,
   Paper,
-  Typography,
+  Typography
 } from '@material-ui/core';
 import PropTypes from 'prop-types';
 import { createUseStyles } from 'react-jss';
@@ -15,9 +15,9 @@ const useStyles = createUseStyles({
   root: {
     width: '100%',
     marginTop: 10,
-    overflowX: 'auto',
+    overflowX: 'auto'
   },
-  table: {},
+  table: {}
 });
 
 const CustomTable = ({ headings, rows }) => {
@@ -59,7 +59,7 @@ const CustomTable = ({ headings, rows }) => {
 
 CustomTable.propTypes = {
   headings: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired,
-  rows: PropTypes.arrayOf(PropTypes.node.isRequired).isRequired,
+  rows: PropTypes.arrayOf(PropTypes.node.isRequired).isRequired
 };
 
 export default CustomTable;

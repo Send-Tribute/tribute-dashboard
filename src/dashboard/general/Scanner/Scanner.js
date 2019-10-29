@@ -18,7 +18,7 @@ class Scanner extends Component {
       browser: '',
       legacyMode: defaultToLegacyMode,
       scanFail: false,
-      isLoading: false,
+      isLoading: false
     };
     this.handleScan = this.handleScan.bind(this);
   }
@@ -63,10 +63,10 @@ class Scanner extends Component {
   }
 
   legacyHandleChange(e, results) {
-    results.forEach((result) => {
+    results.forEach(result => {
       const [e, file] = result;
       const reader = new FileReader();
-      reader.onload = (e) => {
+      reader.onload = e => {
         console.log('');
         this.setState({ imageData: e.target.result });
         Jimp.read(
@@ -74,7 +74,7 @@ class Scanner extends Component {
             e.target.result
               .replace(/^data:image\/png;base64,/, '')
               .replace(/^data:image\/jpeg;base64,/, ''),
-            'base64',
+            'base64'
           ),
           (err, image) => {
             if (err) {
@@ -105,7 +105,7 @@ class Scanner extends Component {
             } else {
               qr.decode(image.bitmap);
             }
-          },
+          }
         );
         //  })
       };
@@ -123,7 +123,7 @@ class Scanner extends Component {
             left: 0,
             top: 0,
             maxWidth: '100%',
-            opacity: 0.7,
+            opacity: 0.7
           }}
           src={this.state.imageData}
         />
@@ -145,7 +145,7 @@ class Scanner extends Component {
             opacity: 0.9,
             width: '100%',
             height: 1,
-            fontWeight: 'bold',
+            fontWeight: 'bold'
           }}
         />
       );
@@ -166,7 +166,7 @@ class Scanner extends Component {
             opacity: 0.9,
             width: '100%',
             height: '100%',
-            fontWeight: 'bold',
+            fontWeight: 'bold'
           }}
         >
           <div style={{ textAlign: 'center', paddingTop: '15%' }}>
@@ -182,7 +182,7 @@ class Scanner extends Component {
               textAlign: 'center',
               padding: '10%',
               paddingTop: '15%',
-              fontSize: 16,
+              fontSize: 16
             }}
           >
             <div>{this.state.scanFail}</div>
@@ -222,7 +222,7 @@ class Scanner extends Component {
                 width: '100%',
                 height: '100%',
                 color: '#FFFFFF',
-                cursor: 'pointer',
+                cursor: 'pointer'
               }}
             >
               <div style={{ textAlign: 'center', paddingTop: '15%' }}>
@@ -240,7 +240,7 @@ class Scanner extends Component {
                     border: '1px solid #888888',
                     opacity: 0.25,
                     maxWidth: '30%',
-                    maxHight: '30%',
+                    maxHight: '30%'
                   }}
                 />
               </div>
@@ -253,9 +253,9 @@ class Scanner extends Component {
                   <div className="content ops row">
                     <button className="btn btn-large w-100">
                       <i className="fas fa-camera" />
-                      {' '}
+{' '}
 Take Picture
-                    </button>
+</button>
                   </div>
                 </div>
               </div>
@@ -275,7 +275,7 @@ Take Picture
           bottom: 0,
           zIndex: 5,
           margin: '0 auto !important',
-          background: '#000000',
+          background: '#000000'
         }}
       >
         <div
@@ -287,7 +287,7 @@ Take Picture
             fontSize: 80,
             paddingRight: 20,
             color: '#FFFFFF',
-            cursor: 'pointer',
+            cursor: 'pointer'
           }}
           onClick={this.onClose}
         >
@@ -302,13 +302,12 @@ Take Picture
             fontSize: 12,
             left: 20,
             color: '#FFFFFF',
-            opacity: 0.333,
+            opacity: 0.333
           }}
         >
           {navigator.userAgent}
-          {' '}
--
-          {JSON.stringify(navigator.mediaDevices)}
+{' '}
+-{JSON.stringify(navigator.mediaDevices)}
         </div>
         {displayedImage}
         {failMessage}
