@@ -22,6 +22,9 @@ export default class Tribute {
       this.rDAIContract.address,
       amountToTribute_BN
     );
+    setTimeout(() => {
+      return;
+    }, 13000);
 
     // get rDAI balance
     const rDAIBalance_BN = await this.rDAIContract.balanceOf(this.userAddress);
