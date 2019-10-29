@@ -14,8 +14,12 @@ const Icon = ({ name, className }) => {
   }
   return <img alt={name} src={ICONS.logo.src} className={className} />;
 };
+
+Icon.defaultProps = {
+  className: ''
+};
 Icon.propTypes = {
   name: PropTypes.string.isRequired,
-  className: PropTypes.shape({}).isRequired
+  className: PropTypes.string
 };
 export default Icon;

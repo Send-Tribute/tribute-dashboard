@@ -14,7 +14,9 @@ const useStyles = createUseStyles({
   },
   icon: {
     color: '#FAFAFA',
-    marginRight: 10,
+    marginRight: 10
+  },
+  iconContainer: {
     marginTop: 10
   }
 });
@@ -28,15 +30,17 @@ export default function Footer() {
         <a
           style={{ color: '#FAFAFA' }}
           target="_blank"
+          rel="noopener noreferrer"
           href="https://sendtribute.io"
         >
           SendTribute.io
         </a>
       </Typography>
-      <div className="icons-social" className={classes.icon}>
+      <div className={classes.iconContainer}>
         <a
           className={classes.icon}
           target="_blank"
+          rel="noopener noreferrer"
           href="https://github.com/Send-Tribute"
         >
           <i className="fab fa-github" />
@@ -44,6 +48,7 @@ export default function Footer() {
         <a
           className={classes.icon}
           target="_blank"
+          rel="noopener noreferrer"
           href="https://twitter.com/send_tribute"
         >
           <i className="fab fa-twitter" />
@@ -51,6 +56,7 @@ export default function Footer() {
         <a
           className={classes.icon}
           target="_blank"
+          rel="noopener noreferrer"
           href="https://tributeforum.io"
         >
           <i className="fab fa-discourse" />
