@@ -10,7 +10,6 @@ import {
 import tribute_logo_dark from '../assets/tribute-logo-dark.png';
 import faucet_on from '../assets/faucet-on.png';
 import faucet_off from '../assets/faucet-off.png';
-import dai from '../assets/dai.png';
 import super_mariano from '../assets/super-mariano.jpeg';
 import defiant from '../assets/defiant.png';
 import one_click_dapp from '../assets/one-click-dapp.png';
@@ -18,7 +17,6 @@ import receive_money from '../assets/receive-money.png';
 import ice_cubes from '../assets/ice-cubes.png';
 import waterwheel from '../assets/waterwheel.png';
 import waterwheel_off from '../assets/waterwheel-off.png';
-import tribute_token from '../assets/tribute-logo-dark.png';
 import tribute_logo_white from '../assets/white-logo.png';
 import convert_dai_tribute from '../assets/convert-dai-tribute.png';
 import convert_dollar_tribute from '../assets/convert-dollar-tribute.png';
@@ -30,7 +28,7 @@ import wyre from '../assets/wyre.png';
 import qr from '../assets/qr.png';
 import unicef from '../assets/unicef.jpeg';
 
-export const ICONS = {
+const ICONS = {
   faucetOn: {
     type: 'image',
     src: faucet_on
@@ -81,7 +79,7 @@ export const ICONS = {
   },
   baseCurrency: {
     type: 'image',
-    src: tribute_token
+    src: tribute_logo_dark
   },
   headerLogo: {
     type: 'image',
@@ -110,7 +108,7 @@ export const ICONS = {
   },
   tributeToken: {
     type: 'image',
-    src: tribute_token
+    src: tribute_logo_dark
   },
   wallet: {
     type: 'image',
@@ -141,3 +139,5 @@ export const ICONS = {
     src: unicef
   }
 };
+
+export default ICONS;

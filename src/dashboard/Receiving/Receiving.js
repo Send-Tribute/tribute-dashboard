@@ -168,7 +168,8 @@ const Receiving = () => {
           <Typography variant="body1">
             Ready to claim: 
 {' '}
-<b>{unclaimedTribute}</b>{' '}
+<b>{unclaimedTribute}</b>
+            {' '}
             <Icon name="baseCurrency" className={classes.baseCurrencyIcon} />
           </Typography>
 
@@ -234,7 +235,8 @@ const Receiving = () => {
               <Typography variant="body1">
                 Ready to claim: 
 {' '}
-<b>{values.externalUserInterest}</b>{' '}
+<b>{values.externalUserInterest}</b>
+                {' '}
                 <Icon
                   name="baseCurrency"
                   className={classes.baseCurrencyIcon}

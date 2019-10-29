@@ -307,7 +307,8 @@ Take Picture
         >
           {navigator.userAgent}
 {' '}
--{JSON.stringify(navigator.mediaDevices)}
+-
+{JSON.stringify(navigator.mediaDevices)}
         </div>
         {displayedImage}
         {failMessage}

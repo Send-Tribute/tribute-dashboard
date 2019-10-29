@@ -109,7 +109,8 @@ const Wallet = () => {
           <Typography variant="body1">
             You have generated a total of 
 {' '}
-<b>{tributeBalance}</b>{' '}
+<b>{tributeBalance}</b>
+            {' '}
             <Icon name="baseCurrency" className={classes.baseCurrencyIcon} />
 {' '}
             Tribute.
@@ -117,7 +118,8 @@ const Wallet = () => {
             <br />
             From that total, 
 {' '}
-<b>{unallocatedTribute}</b>{' '}
+<b>{unallocatedTribute}</b>
+            {' '}
             <Icon name="baseCurrency" className={classes.baseCurrencyIcon} />
 {' '}
             Tribute is unallocated.
@@ -241,7 +243,8 @@ const Wallet = () => {
               <br />
               <br />
 {' '}
-You can obtain Kovan ETH from a faucet{' '}
+You can obtain Kovan ETH from a faucet
+{' '}
               <a href="https://faucet.kovan.network/" target="_blank">
                 here
               </a>
@@ -265,7 +268,8 @@ You can obtain Kovan ETH from a faucet{' '}
 <br />
               <br />
               <b>DAI (Kovan)</b>
-: 0xbF7A7169562078c96f0eC1A8aFD6aE50f12e5A99{' '}
+: 0xbF7A7169562078c96f0eC1A8aFD6aE50f12e5A99
+{' '}
               <br />
               <CopyToClipboard text="0xbF7A7169562078c96f0eC1A8aFD6aE50f12e5A99">
                 <Button

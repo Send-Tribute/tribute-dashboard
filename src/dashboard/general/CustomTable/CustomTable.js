@@ -5,8 +5,7 @@ import {
   TableHead,
   TableCell,
   TableRow,
-  Paper,
-  Typography
+  Paper
 } from '@material-ui/core';
 import PropTypes from 'prop-types';
 import { createUseStyles } from 'react-jss';
@@ -25,8 +24,8 @@ const CustomTable = ({ headings, rows }) => {
 
   let head = <TableCell />;
   if (headings && headings.length) {
-    head = headings.map((heading, index) => (
-      <TableCell align="center" key={index}>
+    head = headings.map(heading => (
+      <TableCell align="center" key={heading}>
         {heading}
       </TableCell>
     ));

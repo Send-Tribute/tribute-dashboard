@@ -31,14 +31,6 @@ export const CONTRACTS = {
 };
 
 export const DISCOVERABLE_PROVIDERS = {
-  unicef: {
-    image: 'unicef',
-    name: 'UNICEF France',
-    description: 'Donate to UNICEF using cryptocurrency',
-    address: '0xA59B29d7dbC9794d1e7f45123C48b2b8d0a34636',
-    website: 'https://www.unicef.fr/',
-    tags: ['charity', 'tax-deductible', 'humanitarian']
-  },
   oneClickDapp: {
     name: 'One Click Dapp',
     address: '0x9492510BbCB93B6992d8b7Bb67888558E12DCac4',
@@ -59,7 +51,7 @@ export const DISCOVERABLE_PROVIDERS = {
     name: 'UNICEF',
     description:
       'Protecting the rights of every child, no matter how disadvantaged',
-    address: '0xe179269981E841129e07623720f32f55FF0AF9AB',
+    address: '0xA59B29d7dbC9794d1e7f45123C48b2b8d0a34636',
     website: 'https://www.unicef.org/',
     tags: ['charity', 'tax-deductible', 'humanitarian'],
     image: 'unicef'
