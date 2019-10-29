@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect } from 'react';
+import React, { useContext, useState } from 'react';
 import { ethers } from 'ethers';
 
 import {
@@ -12,7 +12,7 @@ import {
 } from '@material-ui/core';
 import { createUseStyles } from 'react-jss';
 import { Context } from '../context';
-import { Icon, CustomTable, SectionHeader, Scanner } from '../general';
+import { Icon, SectionHeader, Scanner } from '../general';
 import { CONTRACTS } from '../helpers/constants';
 import DAIabi from '../../contracts/dai';
 import rDAIabi from '../../contracts/rDai';
@@ -44,10 +44,6 @@ const useStyles = createUseStyles({
     padding: 20,
     borderRadius: 10
   },
-  redeemButton: {
-    right: 0,
-    marginLeft: 20
-  },
   buttonIcon: {
     height: 25,
     paddingRight: 10
@@ -55,17 +51,13 @@ const useStyles = createUseStyles({
 });
 
 const Receiving = () => {
-  const [context, setContext] = useContext(Context);
+  const [context] = useContext(Context);
   const classes = useStyles();
   const { userDetails } = context;
   const [values, setValues] = useState({
     address: '',
     externalUserInterest: '(scan to load)'
   });
-
-  const handleChange = name => event => {
-    setValues({ ...values, [name]: event.target.value });
-  };
 
   const [open, setOpen] = useState(false);
   const handleOpen = () => {
@@ -103,8 +95,8 @@ const Receiving = () => {
         walletProvider,
         trimmedAddress
       );
-      const userDetails = await tribute.getInfo();
-      const externalUserInterest = userDetails.unclaimedTribute;
+      const externalUserDetails = await tribute.getInfo();
+      const externalUserInterest = externalUserDetails.unclaimedTribute;
       console.log(externalUserInterest);
       setValues({ ...values, externalUserInterest });
     }
@@ -133,31 +125,31 @@ const Receiving = () => {
     </Container>
   );
 
-  const getActiveInflows = () => (
-    <Container className={classes.container}>
-      <SectionHeader text="Active Tributes" icon="faucetOn" />
-      <Container className={classes.contentContainer}>
-        <CustomTable
-          headings={['Sender', 'Tribute Amount']}
-          rows={[[1, 2], [1, 2], [1, 2]]}
-        />
+  // const getActiveInflows = () => (
+  //   <Container className={classes.container}>
+  //     <SectionHeader text="Active Tributes" icon="faucetOn" />
+  //     <Container className={classes.contentContainer}>
+  //       <CustomTable
+  //         headings={['Sender', 'Tribute Amount']}
+  //         rows={[[1, 2], [1, 2], [1, 2]]}
+  //       />
+  //
+  //       <Divider className={classes.divider} />
+  //     </Container>
+  //   </Container>
+  // );
 
-        <Divider className={classes.divider} />
-      </Container>
-    </Container>
-  );
-
-  const getInactiveInflows = () => (
-    <Container className={classes.container}>
-      <SectionHeader text="Inactive Tributes" icon="faucetOff" />
-      <Container className={classes.contentContainer}>
-        <CustomTable
-          headings={['Sender', 'Tribute Amount']}
-          rows={[[1, 2], [1, 2], [1, 2]]}
-        />
-      </Container>
-    </Container>
-  );
+  // const getInactiveInflows = () => (
+  //   <Container className={classes.container}>
+  //     <SectionHeader text="Inactive Tributes" icon="faucetOff" />
+  //     <Container className={classes.contentContainer}>
+  //       <CustomTable
+  //         headings={['Sender', 'Tribute Amount']}
+  //         rows={[[1, 2], [1, 2], [1, 2]]}
+  //       />
+  //     </Container>
+  //   </Container>
+  // );
 
   const getClaimTribute = () => (
     <Container className={classes.container}>
@@ -221,7 +213,7 @@ const Receiving = () => {
                   handleClose={handleClose}
                   setAddress={setAddress}
                   onError={error => {
-                    this.changeAlert('danger', error);
+                    console.log(error);
                   }}
                 />
               </Modal>
@@ -239,8 +231,9 @@ const Receiving = () => {
 
           <div>
             <Button
-              onClick={() =>
-                context.tribute.claimTributeOnBehalfOf(values.address)}
+              onClick={() => {
+                context.tribute.claimTributeOnBehalfOf(values.address);
+              }}
               variant="contained"
               color="primary"
               style={{ backgroundColor: '#1b1c4c' }}

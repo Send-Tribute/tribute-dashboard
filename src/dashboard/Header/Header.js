@@ -1,7 +1,6 @@
-import React, { useContext } from 'react';
-import { AppBar, Toolbar, Typography } from '@material-ui/core';
+import React from 'react';
+import { AppBar, Toolbar } from '@material-ui/core';
 import { createUseStyles } from 'react-jss';
-import { Context } from '../context';
 import TabsMenu from './TabsMenu';
 import EnableWeb3Button from './EnableWeb3Button';
 import tribute_logo from '../assets/tribute-logo.png';
@@ -25,7 +24,6 @@ const useStyles = createUseStyles({
 });
 
 export default function Header() {
-  const [context, setContext] = useContext(Context);
   const classes = useStyles();
 
   const getUserDetails = () => {
@@ -48,7 +46,7 @@ export default function Header() {
         className={classes.appBar}
       >
         <Toolbar>
-          <img src={tribute_logo} className={classes.logo} />
+          <img alt="Tribute logo" src={tribute_logo} className={classes.logo} />
           {getUserDetails()}
         </Toolbar>
         <TabsMenu />

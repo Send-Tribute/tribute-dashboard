@@ -1,6 +1,5 @@
 import React, { useContext, useState } from 'react';
 import {
-  Grid,
   Typography,
   Container,
   Divider,
@@ -11,10 +10,7 @@ import {
 import { createUseStyles } from 'react-jss';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { Context } from '../context';
-import { Icon, CustomTable, SectionHeader } from '../general';
-import { getEtherscanLink } from '../helpers/utils';
-
-import { FIAT_GATEWAYS, CRYPTO_EXCHANGES } from '../helpers/constants';
+import { Icon, SectionHeader } from '../general';
 
 const useStyles = createUseStyles({
   container: {
@@ -81,7 +77,7 @@ const useStyles = createUseStyles({
 });
 
 const Wallet = () => {
-  const [context, setContext] = useContext(Context);
+  const [context] = useContext(Context);
   const classes = useStyles();
   const { userDetails } = context;
 
@@ -121,28 +117,28 @@ const Wallet = () => {
       </Container>
     </Container>
   );
-  const getWallet = () => (
-    <Container className={classes.container}>
-      <SectionHeader text="My Tribute Wallet" icon="wallet" />
-      <Container className={classes.contentContainer}>
-        <Grid container spacing={3} className={classes.walletGrid}>
-          <Grid item>
-            <CustomTable
-              headings={['Principal', 'Tribute-Enabled']}
-              rows={[[getEtherscanLink('1', 'kovan'), 2], [1, 2], [1, 2]]}
-            />
-          </Grid>
-          <Grid item>
-            <CustomTable
-              headings={['Interest Source', 'Current APR']}
-              rows={[[getEtherscanLink('1', 'kovan'), 2], [1, 2], [1, 2]]}
-            />
-          </Grid>
-        </Grid>
-        <Divider className={classes.divider} />
-      </Container>
-    </Container>
-  );
+  // const getWallet = () => (
+  //   <Container className={classes.container}>
+  //     <SectionHeader text="My Tribute Wallet" icon="wallet" />
+  //     <Container className={classes.contentContainer}>
+  //       <Grid container spacing={3} className={classes.walletGrid}>
+  //         <Grid item>
+  //           <CustomTable
+  //             headings={['Principal', 'Tribute-Enabled']}
+  //             rows={[[getEtherscanLink('1', 'kovan'), 2], [1, 2], [1, 2]]}
+  //           />
+  //         </Grid>
+  //         <Grid item>
+  //           <CustomTable
+  //             headings={['Interest Source', 'Current APR']}
+  //             rows={[[getEtherscanLink('1', 'kovan'), 2], [1, 2], [1, 2]]}
+  //           />
+  //         </Grid>
+  //       </Grid>
+  //       <Divider className={classes.divider} />
+  //     </Container>
+  //   </Container>
+  // );
 
   const getExchanges = () => (
     <Container className={classes.container}>
@@ -159,7 +155,11 @@ const Wallet = () => {
             <br />
             <br />
             More information is{' '}
-            <a href="https://redeem.money/" target="_blank">
+            <a
+              href="https://redeem.money/"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
               here
             </a>
             .
@@ -232,13 +232,21 @@ const Wallet = () => {
               Kovan ETH and Kovan DAI.
               <br />
               <br /> You can obtain Kovan ETH from a faucet{' '}
-              <a href="https://faucet.kovan.network/" target="_blank">
+              <a
+                href="https://faucet.kovan.network/"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
                 here
               </a>
               . You will need to use your GitHub login. <br />
               <br />
               You can obtain Kovan DAI via the Compound faucet{' '}
-              <a href="https://app.compound.finance/asset/cDAI" target="_blank">
+              <a
+                href="https://app.compound.finance/asset/cDAI"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
                 here
               </a>
               . You will need to first click “Enable DAI“ before accessing the

@@ -3,7 +3,7 @@ import { ethers } from 'ethers';
 import { Button, Typography } from '@material-ui/core';
 import { createUseStyles } from 'react-jss';
 import { Context } from '../../context';
-import { TABS, CONTRACTS } from '../../helpers/constants';
+import { CONTRACTS } from '../../helpers/constants';
 
 import DAIabi from '../../../contracts/dai';
 import rDAIabi from '../../../contracts/rDai';
@@ -65,12 +65,12 @@ export default function EnableWeb3Button() {
             walletProvider,
             address
           );
-          const userDetails = await tribute.getInfo();
-          console.log(userDetails);
+          const externalUserDetails = await tribute.getInfo();
+          console.log(externalUserDetails);
           setContext(state => ({
             ...state,
             tribute,
-            userDetails,
+            userDetails: externalUserDetails,
             isConnected: false,
             provider: walletProvider
           }));
