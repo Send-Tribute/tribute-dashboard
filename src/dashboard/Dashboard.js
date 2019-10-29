@@ -1,13 +1,12 @@
 import React, { useEffect, useContext } from 'react';
 import { ethers } from 'ethers';
 import { Context } from './context';
-import Footer from './Footer.js';
-import Header from './Header/Header.js';
-import Sending from './Sending/Sending.js';
-import Wallet from './Wallet/Wallet.js';
-import Receiving from './Receiving/Receiving.js';
-import Settings from './Settings/Settings.js';
-import rToken from '../contracts/rDai.json';
+import Footer from './Footer';
+import Header from './Header/Header';
+import Sending from './Sending/Sending';
+import Wallet from './Wallet/Wallet';
+import Receiving from './Receiving/Receiving';
+import Settings from './Settings/Settings';
 
 import DAIabi from '../contracts/dai';
 import rDAIabi from '../contracts/rDai';
@@ -17,8 +16,6 @@ import { TABS, CONTRACTS } from './helpers/constants';
 
 export default function Dashboard() {
   const [context, setContext] = useContext(Context);
-
-  const user = {};
 
   if (typeof window.ethereum !== 'undefined') {
     window.ethereum.on('accountsChanged', accounts => {
@@ -89,7 +86,7 @@ export default function Dashboard() {
           }));
         }
       } else {
-        setContext(state => ({
+        setContext(() => ({
           error: 'Web3 Loading Error: no window.ethereum'
         }));
       }
