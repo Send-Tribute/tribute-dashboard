@@ -8,11 +8,12 @@ const DAI_Kovan = "0xC4375B7De8af5a38a93548eb8453a498222C4fF2"
 contract('TESTING', async (accounts) => {
 
   let tribute
+  let rDAIContract
 
     before(async() => {
       console.log("Using account: " + accounts[0])
       const provider = new ethers.providers.JsonRpcProvider("http://localhost:8545")
-      const rDAIContract = new ethers.Contract(
+      rDAIContract = new ethers.Contract(
         rDAI_Kovan,
         rDAI_abi,
         provider.getSigner()
@@ -29,11 +30,38 @@ contract('TESTING', async (accounts) => {
       );
     });
 
-    describe("Yolo", async() => {
-        it("test", async() => {
-          let val = await tribute.getInfo()
-          console.log(val)
-        })
+    describe("Test Tribute", async() => {
+      it("Test getInfo", async() => {
+        let output = await rDAIContract.getHatByAddress("0xb893D8F6779842959C1dfC3095b1c62ceAA16703")
+        console.log(output)
+
+        let val = await tribute.getInfo()
+        console.log(val)
+        assert.isOk(val.allocations, "no allocation field")
+        assert.isOk(val.allocations.recipients, "no recipients field")
+        assert.isOk(val.allocations.proportions, "no proportions field")
+        assert.isOk(val.balance, "no balance field")
+        assert.isOk(val.unallocated_balance, "no unallocated balance field")
+        assert.isOk(val.unclaimed_balance, "no unclaimed balance field")
+      })
+
+      it("Test generate", async() => {
+        let amountToIncrease = 5
+        let before = await tribute.getInfo()
+        await tribute.generate(amountToIncrease)
+        let after = await tribute.getInfo()
+
+        assert.equal(
+          parseFloat(before.balance) + amountToIncrease,
+          parseFloat(after.balance),
+          "improper balances"
+        )
+        assert.equal(
+          parseFloat(before.unallocated_balance) + amountToIncrease,
+          parseFloat(after.unallocated_balance),
+          "improper unallocated balance"
+        )
+      })
     })
 
 //    describe("Test Describe", async() => {
