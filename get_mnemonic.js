@@ -1,2 +1,2 @@
 require('dotenv').config()
-console.log(process.env.MNENOMIC)
+console.log(process.env.MNEMONIC)
