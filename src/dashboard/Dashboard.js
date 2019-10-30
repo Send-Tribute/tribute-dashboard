@@ -76,11 +76,7 @@ export default function Dashboard() {
               DAIabi,
               walletProvider.getSigner()
             );
-            const tribute = new Tribute(
-              DAIContract,
-              rDAIContract,
-              address[0]
-            );
+            const tribute = new Tribute(DAIContract, rDAIContract, address[0]);
             const userDetails = await tribute.getInfo();
             console.log(userDetails);
             setContext(state => {

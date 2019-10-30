@@ -1,5 +1,7 @@
 import React, { useContext, useState, useEffect } from 'react';
 import { Context } from '../context';
+import { ethers } from 'ethers';
+
 import {
   Typography,
   TextField,
@@ -11,6 +13,10 @@ import {
 } from '@material-ui/core';
 import { createUseStyles } from 'react-jss';
 import { Icon, CustomTable, SectionHeader, Scanner } from '../general';
+import { CONTRACTS } from '../helpers/constants';
+import DAIabi from '../../contracts/dai';
+import rDAIabi from '../../contracts/rDai';
+import Tribute from '../Tribute';
 
 const useStyles = createUseStyles({
   container: {
@@ -71,16 +77,37 @@ const Receiving = () => {
   };
 
   const setAddress = async address => {
-    let trimmedAddress = address;
+    let trimmedAddress = await address;
     if (address.indexOf('ethereum:') > -1) {
       trimmedAddress = address.substr(9, address.length - 1);
     }
-    const externalUserDetails = await context.tribute.getInfo(
-      trimmedAddress
-    );
-    console.log(externalUserDetails.unclaimedTribute);
-    const externalUserInterest = externalUserDetails.unclaimedTribute;
-    setValues({ ...values, address: trimmedAddress, externalUserInterest });
+    setValues({ ...values, address: trimmedAddress });
+    if (trimmedAddress.length > 41) {
+      let walletProvider = new ethers.providers.Web3Provider(
+        window.web3.currentProvider
+      );
+      // connect to contracts on the network
+      const rDAIContract = new ethers.Contract(
+        CONTRACTS.rtoken.kovan,
+        rDAIabi,
+        walletProvider
+      );
+      const DAIContract = new ethers.Contract(
+        CONTRACTS.dai.kovan,
+        DAIabi,
+        walletProvider
+      );
+      const tribute = new Tribute(
+        DAIContract,
+        rDAIContract,
+        walletProvider,
+        trimmedAddress
+      );
+      const userDetails = await tribute.getInfo();
+      const externalUserInterest = userDetails.unclaimedTribute;
+      console.log(externalUserInterest);
+      setValues({ ...values, externalUserInterest });
+    }
   };
 
   let selfTribute = '(enable wallet) ';
@@ -171,7 +198,7 @@ const Receiving = () => {
       <Container className={classes.container}>
         <Container className={classes.contentContainer}>
           <Paper elevation={5} className={classes.unclaimedTributeContainer}>
-            <div className={classes.leftContainer}>
+            <div>
               <Typography variant="body1">Claim on behalf of:</Typography>
               <div style={{ display: 'flex' }}>
                 <TextField
@@ -180,7 +207,9 @@ const Receiving = () => {
                   id="outlined-dense"
                   margin="dense"
                   value={values.address}
-                  onChange={handleChange('address')}
+                  onChange={e => {
+                    setAddress(e.target.value);
+                  }}
                 />
                 <Button
                   variant="contained"
