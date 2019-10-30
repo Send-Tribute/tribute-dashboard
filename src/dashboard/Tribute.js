@@ -52,14 +52,19 @@ export default class Tribute {
       : balance_BN;
 
     recipientMap[this.userAddress] = userBal.add(bigNumberify(amountToTribute));
-    await setTimeout(() => {
-      // Delay for Metamask Mobile back-to-back tx issues
-      this.rDAIContract.mintWithNewHat(
-        amountToTribute_BN,
-        Object.keys(recipientMap),
-        Object.values(recipientMap)
-      );
-    }, 10000);
+
+    // remove addresses that have 0 flow
+    for (let [address, portion_BN] of Object.entries(recipientMap)) {
+      if (portion_BN.eq(ethers.constants.Zero)) {
+        delete recipientMap[address];
+      }
+    }
+
+    await this.rDAIContract.mintWithNewHat(
+      amountToTribute_BN,
+      Object.keys(recipientMap),
+      Object.values(recipientMap)
+    );
   }
 
   // reedemm all your rdai to dai
