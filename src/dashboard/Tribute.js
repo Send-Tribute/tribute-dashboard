@@ -43,6 +43,13 @@ export default class Tribute {
 
     recipientMap[this.userAddress] = userBal.add(bigNumberify(amountToTribute));
 
+    // remove addresses that have 0 flow
+    for (let [address, portion_BN] of Object.entries(recipientMap)) {
+        if (portion_BN.eq(ethers.constants.Zero)) {
+            delete recipientMap[address];
+        }
+    }
+
     await this.rDAIContract.mintWithNewHat(
       amountToTribute_BN,
       Object.keys(recipientMap),
