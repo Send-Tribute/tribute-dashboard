@@ -75,12 +75,21 @@ const Receiving = () => {
     if (address.indexOf('ethereum:') > -1) {
       trimmedAddress = address.substr(9, address.length - 1);
     }
-    const externalUserDetails = await context.tribute.getInfo(
-      trimmedAddress
-    );
-    console.log(externalUserDetails.unclaimedTribute);
-    const externalUserInterest = externalUserDetails.unclaimedTribute;
-    setValues({ ...values, address: trimmedAddress, externalUserInterest });
+    if (trimmedAddress.length > 41) {
+      const unclaimedTribute = await context.tribute.getUnclaimedAmount(
+        trimmedAddress
+      );
+      setValues({
+        ...values,
+        externalUserInterest: unclaimedTribute,
+        address: trimmedAddress
+      });
+      return
+    }
+    setValues({
+      ...values,
+      address: trimmedAddress
+    });
   };
 
   let selfTribute = '(enable wallet) ';
@@ -180,7 +189,9 @@ const Receiving = () => {
                   id="outlined-dense"
                   margin="dense"
                   value={values.address}
-                  onChange={handleChange('address')}
+                  onChange={e => {
+                    setAddress(e.target.value);
+                  }}
                 />
                 <Button
                   variant="contained"
