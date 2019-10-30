@@ -10,6 +10,7 @@ import {
 import { createUseStyles } from 'react-jss';
 import { SectionHeader } from '../general';
 import { getEtherscanLink } from '../helpers/utils';
+import { CopyToClipboard } from 'react-copy-to-clipboard';
 
 const useStyles = createUseStyles({
   container: {
@@ -56,29 +57,84 @@ export default function Settings(props) {
               '0xea718e4602125407fafcb721b7d760ad9652dfe7',
               'kovan'
             )}{' '}
+            <CopyToClipboard
+              text={'0xea718e4602125407fafcb721b7d760ad9652dfe7'}
+            >
+              <Button
+                style={{
+                  margin: '10px 0 10px',
+                  backgroundColor: '#1b1c4c',
+                  marginLeft: 10
+                }}
+                variant="contained"
+                color="primary"
+              >
+                Copy
+              </Button>
+            </CopyToClipboard>
             <br />
             DAI:{' '}
             {getEtherscanLink(
               '0xbF7A7169562078c96f0eC1A8aFD6aE50f12e5A99',
               'kovan'
-            )}{' '}
-            0xbF7A7169562078c96f0eC1A8aFD6aE50f12e5A99
+            )}
+            <CopyToClipboard
+              text={'0xbF7A7169562078c96f0eC1A8aFD6aE50f12e5A99'}
+            >
+              <Button
+                style={{
+                  margin: '10px 0 10px',
+                  backgroundColor: '#1b1c4c',
+                  marginLeft: 10
+                }}
+                variant="contained"
+                color="primary"
+              >
+                Copy
+              </Button>
+            </CopyToClipboard>
             <br />
             cDAI:{' '}
             {getEtherscanLink(
               '0x0a1e4d0b5c71b955c0a5993023fc48ba6e380496',
               'kovan'
             )}
+            <CopyToClipboard
+              text={'0x0a1e4d0b5c71b955c0a5993023fc48ba6e380496'}
+            >
+              <Button
+                style={{
+                  margin: '10px 0 10px',
+                  backgroundColor: '#1b1c4c',
+                  marginLeft: 10
+                }}
+                variant="contained"
+                color="primary"
+              >
+                Copy
+              </Button>
+            </CopyToClipboard>
             <br />
             daiCompoundAllocationStrategy:{' '}
             {getEtherscanLink(
               '0xb4377efc05bd28be8e6510629538e54eba2d74e3',
               'kovan'
             )}
-            <br />
-            <a href="https://app.compound.finance/asset/cDAI" target="_blank">
-              DAI Faucet{' '}
-            </a>
+            <CopyToClipboard
+              text={'0xb4377efc05bd28be8e6510629538e54eba2d74e3'}
+            >
+              <Button
+                style={{
+                  margin: '10px 0 10px',
+                  backgroundColor: '#1b1c4c',
+                  marginLeft: 10
+                }}
+                variant="contained"
+                color="primary"
+              >
+                Copy
+              </Button>
+            </CopyToClipboard>
           </Typography>
         </Container>
       </Container>

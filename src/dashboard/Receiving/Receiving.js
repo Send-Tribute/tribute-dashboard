@@ -1,5 +1,7 @@
 import React, { useContext, useState, useEffect } from 'react';
 import { Context } from '../context';
+import { ethers } from 'ethers';
+
 import {
   Typography,
   TextField,
@@ -11,6 +13,10 @@ import {
 } from '@material-ui/core';
 import { createUseStyles } from 'react-jss';
 import { Icon, CustomTable, SectionHeader, Scanner } from '../general';
+import { CONTRACTS } from '../helpers/constants';
+import DAIabi from '../../contracts/dai';
+import rDAIabi from '../../contracts/rDai';
+import Tribute from '../Tribute';
 
 const useStyles = createUseStyles({
   container: {
@@ -71,7 +77,7 @@ const Receiving = () => {
   };
 
   const setAddress = async address => {
-    let trimmedAddress = address;
+    let trimmedAddress = await address;
     if (address.indexOf('ethereum:') > -1) {
       trimmedAddress = address.substr(9, address.length - 1);
     }
@@ -180,7 +186,7 @@ const Receiving = () => {
       <Container className={classes.container}>
         <Container className={classes.contentContainer}>
           <Paper elevation={5} className={classes.unclaimedTributeContainer}>
-            <div className={classes.leftContainer}>
+            <div>
               <Typography variant="body1">Claim on behalf of:</Typography>
               <div style={{ display: 'flex' }}>
                 <TextField

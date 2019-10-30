@@ -12,7 +12,8 @@ import { createUseStyles } from 'react-jss';
 
 const useStyles = createUseStyles({
   icon: {
-    width: 30
+    width: 30,
+    marginLeft: 10
   }
 });
 
