@@ -5,13 +5,14 @@ const DAI_abi = require('../src/contracts/dai.json')
 const Tribute = require('../src/dashboard/Tribute')
 const rDAI_Kovan = "0xeA718E4602125407fAfcb721b7D760aD9652dfe7"
 const DAI_Kovan = "0xbF7A7169562078c96f0eC1A8aFD6aE50f12e5A99"
+const randomAccount = "0xE752CA6E0daFAC4e98B50F127f3aaDfae7f8cEA2"
+const amountToFlow = 10
 
 contract('TESTING', async (accounts) => {
 
   let tribute
   let rDAIContract
   let DAIContract
-  let randomAccount = "0xE752CA6E0daFAC4e98B50F127f3aaDfae7f8cEA2"
 
     before(async() => {
       console.log("Using account: " + accounts[0])
@@ -68,7 +69,6 @@ contract('TESTING', async (accounts) => {
       })
 
       it("Test startFlow", async() => {
-        let amountToFlow = 10
         let before = await tribute.getInfo()
         await tribute.startFlow(randomAccount, amountToFlow)
         let after = await tribute.getInfo()
@@ -83,19 +83,17 @@ contract('TESTING', async (accounts) => {
         )
       })
 
-      it.skip("Test endFlow", async() => {
+      it("Test endFlow", async() => {
         let before = await tribute.getInfo()
         await tribute.endFlow(randomAccount)
         let after = await tribute.getInfo()
 
+        let before_unallocated = new BigNumber(before.unallocated_balance)
+        let after_unallocated = new BigNumber(after.unallocated_balance)
+
         assert.equal(
-          parseFloat(before.balance) - amountToFlow,
-          parseFloat(after.balance),
-          "improper balances"
-        )
-        assert.equal(
-          parseFloat(before.unallocated_balance) - amountToFlow,
-          parseFloat(after.unallocated_balance),
+          before_unallocated.plus(amountToFlow).toFixed(2),
+          after_unallocated.toFixed(2),
           "improper unallocated balance"
         )
       })
