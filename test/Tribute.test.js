@@ -3,12 +3,14 @@ const rDAI_abi = require('../src/contracts/rDai.json')
 const DAI_abi = require('../src/contracts/dai.json')
 const Tribute = require('../src/dashboard/Tribute')
 const rDAI_Kovan = "0xeA718E4602125407fAfcb721b7D760aD9652dfe7"
-const DAI_Kovan = "0xC4375B7De8af5a38a93548eb8453a498222C4fF2"
+const DAI_Kovan = "0xbF7A7169562078c96f0eC1A8aFD6aE50f12e5A99"
 
 contract('TESTING', async (accounts) => {
 
   let tribute
   let rDAIContract
+  let DAIContract
+  let randomAccount = "0xE752CA6E0daFAC4e98B50F127f3aaDfae7f8cEA2"
 
     before(async() => {
       console.log("Using account: " + accounts[0])
@@ -18,7 +20,7 @@ contract('TESTING', async (accounts) => {
         rDAI_abi,
         provider.getSigner()
       );
-      const DAIContract = new ethers.Contract(
+      DAIContract = new ethers.Contract(
         DAI_Kovan,
         DAI_abi,
         provider.getSigner()
@@ -32,11 +34,7 @@ contract('TESTING', async (accounts) => {
 
     describe("Test Tribute", async() => {
       it("Test getInfo", async() => {
-        let output = await rDAIContract.getHatByAddress("0xb893D8F6779842959C1dfC3095b1c62ceAA16703")
-        console.log(output)
-
         let val = await tribute.getInfo()
-        console.log(val)
         assert.isOk(val.allocations, "no allocation field")
         assert.isOk(val.allocations.recipients, "no recipients field")
         assert.isOk(val.allocations.proportions, "no proportions field")
@@ -46,7 +44,7 @@ contract('TESTING', async (accounts) => {
       })
 
       it("Test generate", async() => {
-        let amountToIncrease = 5
+        let amountToIncrease = 70
         let before = await tribute.getInfo()
         await tribute.generate(amountToIncrease)
         let after = await tribute.getInfo()
@@ -58,6 +56,27 @@ contract('TESTING', async (accounts) => {
         )
         assert.equal(
           parseFloat(before.unallocated_balance) + amountToIncrease,
+          parseFloat(after.unallocated_balance),
+          "improper unallocated balance"
+        )
+      })
+
+      it("Test startFlow", async() => {
+        let amountToFlow = 10
+        let before = await tribute.getInfo()
+        await tribute.startFlow(randomAccount, amountToFlow)
+        let after = await tribute.getInfo()
+
+        console.log(before)
+        console.log(after)
+
+        assert.equal(
+          parseFloat(before.balance) + amountToFlow,
+          parseFloat(after.balance),
+          "improper balances"
+        )
+        assert.equal(
+          parseFloat(before.unallocated_balance) + amountToFlow,
           parseFloat(after.unallocated_balance),
           "improper unallocated balance"
         )
