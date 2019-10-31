@@ -1,4 +1,5 @@
 const ethers = require('ethers')
+const BigNumber = require('bignumber.js')
 const rDAI_abi = require('../src/contracts/rDai.json')
 const DAI_abi = require('../src/contracts/dai.json')
 const Tribute = require('../src/dashboard/Tribute')
@@ -49,14 +50,19 @@ contract('TESTING', async (accounts) => {
         await tribute.generate(amountToIncrease)
         let after = await tribute.getInfo()
 
+        let before_balance = new BigNumber(before.balance)
+        let after_balance = new BigNumber(after.balance)
+        let before_unallocated = new BigNumber(before.unallocated_balance)
+        let after_unallocated = new BigNumber(after.unallocated_balance)
+
         assert.equal(
-          parseFloat(before.balance) + amountToIncrease,
-          parseFloat(after.balance),
+          before_balance.plus(amountToIncrease).toFixed(2),
+          after_balance.toFixed(2),
           "improper balances"
         )
         assert.equal(
-          parseFloat(before.unallocated_balance) + amountToIncrease,
-          parseFloat(after.unallocated_balance),
+          before_balance.plus(amountToIncrease).toFixed(2),
+          after_balance.toFixed(2),
           "improper unallocated balance"
         )
       })
@@ -67,16 +73,28 @@ contract('TESTING', async (accounts) => {
         await tribute.startFlow(randomAccount, amountToFlow)
         let after = await tribute.getInfo()
 
-        console.log(before)
-        console.log(after)
+        let before_unallocated = new BigNumber(before.unallocated_balance)
+        let after_unallocated = new BigNumber(after.unallocated_balance)
 
         assert.equal(
-          parseFloat(before.balance) + amountToFlow,
+          before_unallocated.sub(amountToFlow).toFixed(2),
+          after_unallocated.toFixed(2),
+          "improper unallocated balance"
+        )
+      })
+
+      it.skip("Test endFlow", async() => {
+        let before = await tribute.getInfo()
+        await tribute.endFlow(randomAccount)
+        let after = await tribute.getInfo()
+
+        assert.equal(
+          parseFloat(before.balance) - amountToFlow,
           parseFloat(after.balance),
           "improper balances"
         )
         assert.equal(
-          parseFloat(before.unallocated_balance) + amountToFlow,
+          parseFloat(before.unallocated_balance) - amountToFlow,
           parseFloat(after.unallocated_balance),
           "improper unallocated balance"
         )
