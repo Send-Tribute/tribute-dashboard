@@ -81,33 +81,21 @@ const Receiving = () => {
     if (address.indexOf('ethereum:') > -1) {
       trimmedAddress = address.substr(9, address.length - 1);
     }
-    setValues({ ...values, address: trimmedAddress });
     if (trimmedAddress.length > 41) {
-      let walletProvider = new ethers.providers.Web3Provider(
-        window.web3.currentProvider
-      );
-      // connect to contracts on the network
-      const rDAIContract = new ethers.Contract(
-        CONTRACTS.rtoken.kovan,
-        rDAIabi,
-        walletProvider
-      );
-      const DAIContract = new ethers.Contract(
-        CONTRACTS.dai.kovan,
-        DAIabi,
-        walletProvider
-      );
-      const tribute = new Tribute(
-        DAIContract,
-        rDAIContract,
-        walletProvider,
+      const unclaimedTribute = await context.tribute.getUnclaimedAmount(
         trimmedAddress
       );
-      const userDetails = await tribute.getInfo();
-      const externalUserInterest = userDetails.unclaimedTribute;
-      console.log(externalUserInterest);
-      setValues({ ...values, externalUserInterest });
+      setValues({
+        ...values,
+        externalUserInterest: unclaimedTribute,
+        address: trimmedAddress
+      });
+      return
     }
+    setValues({
+      ...values,
+      address: trimmedAddress
+    });
   };
 
   let selfTribute = '(enable wallet) ';
