@@ -5,17 +5,18 @@ const DAI_abi = require('../src/contracts/dai.json')
 const Tribute = require('../src/dashboard/Tribute')
 const rDAI_Kovan = "0xeA718E4602125407fAfcb721b7D760aD9652dfe7"
 const DAI_Kovan = "0xbF7A7169562078c96f0eC1A8aFD6aE50f12e5A99"
-const randomAccount = "0xE752CA6E0daFAC4e98B50F127f3aaDfae7f8cEA2"
 const amountToFlow = 10
 
 contract('TESTING', async (accounts) => {
 
+  const owner = accounts[0]
+  const randomAccount = accounts[4]
   let tribute
   let rDAIContract
   let DAIContract
 
     before(async() => {
-      console.log("Using account: " + accounts[0])
+      console.log("Using account: " + owner)
       const provider = new ethers.providers.JsonRpcProvider("http://localhost:8545")
       rDAIContract = new ethers.Contract(
         rDAI_Kovan,
@@ -62,8 +63,8 @@ contract('TESTING', async (accounts) => {
           "improper balances"
         )
         assert.equal(
-          before_balance.plus(amountToIncrease).toFixed(2),
-          after_balance.toFixed(2),
+          before_unallocated.plus(amountToIncrease).toFixed(2),
+          after_unallocated.toFixed(2),
           "improper unallocated balance"
         )
       })
@@ -97,21 +98,42 @@ contract('TESTING', async (accounts) => {
           "improper unallocated balance"
         )
       })
-    })
 
-//    describe("Test Describe", async() => {
-//      it("getHatByAddress", async () => {
-//        let val = await contract.getHatByAddress(accounts[0])
-//        console.log(val.hatID.toNumber())
-//      });
-//
-//      it("changeHat", async () => {
-//        await contract.changeHat(48)
-//      });
-//
-//      it("getHatByAddress", async () => {
-//        let val = await contract.getHatByAddress(accounts[0])
-//        console.log(val.hatID.toNumber())
-//      });
-//  });
+      it("Test getUnclaimedAmount()", async() => {
+        let unclaimedAmount = await tribute.getUnclaimedAmount(owner)
+        let unclaimedAmount_BN = new BigNumber(unclaimedAmount)
+        console.log(unclaimedAmount_BN.toFixed(27))
+        //TOOD: should be > 0
+      })
+
+      it("Test claimAmount()", async() => {
+        await tribute.claimAmount(owner)
+        let unclaimedAmount = await tribute.getUnclaimedAmount(owner)
+        let unclaimedAmount_BN = new BigNumber(unclaimedAmount)
+        console.log(unclaimedAmount_BN.toFixed(27))
+        //TOOD: should be > 0
+      })
+
+      it("Test disable()", async() => {
+        let before = await tribute.getInfo()
+        await tribute.disable()
+        let after = await tribute.getInfo()
+
+        let before_balance = new BigNumber(before.balance)
+        let after_balance = new BigNumber(after.balance)
+        let before_unallocated = new BigNumber(before.unallocated_balance)
+        let after_unallocated = new BigNumber(after.unallocated_balance)
+
+        assert.equal(
+          before_balance.sub(before_balance).toFixed(2),
+          after_balance.toFixed(2),
+          "improper balances"
+        )
+        assert.equal(
+          before_unallocated.sub(before_unallocated).toFixed(2),
+          after_unallocated.toFixed(2),
+          "improper unallocated balance"
+        )
+      })
+    })
 });
