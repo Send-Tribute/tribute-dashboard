@@ -97,18 +97,6 @@ contract('TESTING', async (accounts) => {
         )
       })
 
-      it("Test getUnclaimedAmount()", async() => {
-        let unclaimedAmount = await tribute.getUnclaimedAmount(owner)
-        let unclaimedAmount_BN = new BigNumber(unclaimedAmount)
-        let unexpected_BN = new BigNumber(0)
-
-        assert.notEqual(
-          unclaimedAmount_BN.toFixed(18),
-          unexpected_BN.toFixed(18),
-          "unclaimed amount should exist"
-        )
-      })
-
       it("Test claimAmount()", async() => {
         await tribute.claimAmount(owner)
         let unclaimedAmount = await tribute.getUnclaimedAmount(owner)

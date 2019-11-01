@@ -72,18 +72,18 @@ class Tribute {
     await this.rDAIContract.redeemAll();
   }
 
-  async getInfo() {
+  async getInfo(address) {
     let decimals_rDAI = await this.rDAIContract.decimals();
 
     // Balance
-    const rDAIBalance_BN = await this.rDAIContract.balanceOf(this.userAddress);
+    const rDAIBalance_BN = await this.rDAIContract.balanceOf(address);
     let unclaimedBalance_BN = await this.rDAIContract.interestPayableOf(
-      this.userAddress
+      address
     );
 
     // Check if the user has a hat
     const currentHat = await this.rDAIContract.getHatByAddress(
-      this.userAddress
+      address
     );
 
     let { recipients, proportions } = currentHat;
@@ -102,7 +102,7 @@ class Tribute {
           .mul(rDAIBalance_BN)
           .div(this.PROPORTION_BASE);
       });
-      let userIdx = recipients.indexOf(this.userAddress.toLowerCase());
+      let userIdx = recipients.indexOf(address.toLowerCase());
 
       //check if user exists
       if (userIdx < 0) {
@@ -268,13 +268,6 @@ class Tribute {
       Object.values(recipientMap),
       true
     );
-  }
-
-  async getUnclaimedAmount(address) {
-    const decimals_rDAI = await this.rDAIContract.decimals();
-    const response = await this.rDAIContract.interestPayableOf(address);
-    const output = formatUnits(response, decimals_rDAI)
-    return output;
   }
 
   async claimAmount(address) {
