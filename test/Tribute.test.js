@@ -102,16 +102,25 @@ contract('TESTING', async (accounts) => {
       it("Test getUnclaimedAmount()", async() => {
         let unclaimedAmount = await tribute.getUnclaimedAmount(owner)
         let unclaimedAmount_BN = new BigNumber(unclaimedAmount)
-        console.log(unclaimedAmount_BN.toFixed(27))
-        //TOOD: should be > 0
+
+        assert.notEqual(
+          unclaimedAmount_BN.toFixed(18),
+          (new BigNumber(0)).toFixed(0),
+          "unclaimed amount should be 0"
+        )
       })
 
       it("Test claimAmount()", async() => {
         await tribute.claimAmount(owner)
         let unclaimedAmount = await tribute.getUnclaimedAmount(owner)
         let unclaimedAmount_BN = new BigNumber(unclaimedAmount)
-        console.log(unclaimedAmount_BN.toFixed(27))
-        //TOOD: should be > 0
+        let expected_BN = new BigNumber(0)
+
+        assert.equal(
+          unclaimedAmount_BN.toFixed(18),
+          expected_BN.toFixed(18),
+          "unclaimed amount should be 0"
+        )
       })
 
       it("Test disable()", async() => {
