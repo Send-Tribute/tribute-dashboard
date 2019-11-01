@@ -100,9 +100,7 @@ contract('TESTING', async (accounts) => {
       it("Test getUnclaimedAmount()", async() => {
         let unclaimedAmount = await tribute.getUnclaimedAmount(owner)
         let unclaimedAmount_BN = new BigNumber(unclaimedAmount)
-        let expected_BN = new BigNumber(0)
 
-        //for some reason the amount is 0. I assert that it exists for now.
         assert.isOk(
           unclaimedAmount_BN.toFixed(18),
           "unclaimed amount should exist"
