@@ -12,18 +12,16 @@ contract('TESTING', async (accounts) => {
   const owner = accounts[0]
   const randomAccount = accounts[4]
   let tribute
-  let rDAIContract
-  let DAIContract
 
     before(async() => {
       console.log("Using account: " + owner)
       const provider = new ethers.providers.JsonRpcProvider("http://localhost:8545")
-      rDAIContract = new ethers.Contract(
+      const rDAIContract = new ethers.Contract(
         rDAI_Kovan,
         rDAI_abi,
         provider.getSigner()
       );
-      DAIContract = new ethers.Contract(
+      const DAIContract = new ethers.Contract(
         DAI_Kovan,
         DAI_abi,
         provider.getSigner()
