@@ -1,8 +1,8 @@
-import 'babel-polyfill';
-import { ethers } from 'ethers';
+require('babel-polyfill')
+const ethers = require('ethers');
 const { bigNumberify, formatUnits } = ethers.utils;
 
-export default class Tribute {
+class Tribute {
   constructor(DAIContract, rDAIContract, userAddress) {
     this.DAIContract = DAIContract;
     this.rDAIContract = rDAIContract;
@@ -284,3 +284,5 @@ export default class Tribute {
     await this.rDAIContract.payInterest(address);
   }
 }
+
+module.exports = Tribute;
