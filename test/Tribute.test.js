@@ -5,7 +5,8 @@ const DAI_abi = require('../src/contracts/dai.json')
 const Tribute = require('../src/dashboard/Tribute')
 const rDAI_Kovan = "0xeA718E4602125407fAfcb721b7D760aD9652dfe7"
 const DAI_Kovan = "0xbF7A7169562078c96f0eC1A8aFD6aE50f12e5A99"
-const amountToFlow = 10
+const amountToGenerate = 500
+const amountToFlow = 50
 
 contract('TESTING', async (accounts) => {
 
@@ -45,9 +46,8 @@ contract('TESTING', async (accounts) => {
       })
 
       it("Test generate", async() => {
-        let amountToIncrease = 70
         let before = await tribute.getInfo()
-        await tribute.generate(amountToIncrease)
+        await tribute.generate(amountToGenerate)
         let after = await tribute.getInfo()
 
         let before_balance = new BigNumber(before.balance)
@@ -56,12 +56,12 @@ contract('TESTING', async (accounts) => {
         let after_unallocated = new BigNumber(after.unallocated_balance)
 
         assert.equal(
-          before_balance.plus(amountToIncrease).toFixed(2),
+          before_balance.plus(amountToGenerate).toFixed(2),
           after_balance.toFixed(2),
           "improper balances"
         )
         assert.equal(
-          before_unallocated.plus(amountToIncrease).toFixed(2),
+          before_unallocated.plus(amountToGenerate).toFixed(2),
           after_unallocated.toFixed(2),
           "improper unallocated balance"
         )
@@ -125,6 +125,9 @@ contract('TESTING', async (accounts) => {
         let before = await tribute.getInfo()
         await tribute.disable()
         let after = await tribute.getInfo()
+
+        console.log(before)
+        console.log(after)
 
         let before_balance = new BigNumber(before.balance)
         let after_balance = new BigNumber(after.balance)
