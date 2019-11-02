@@ -54,7 +54,6 @@ class Tribute {
     const currentHat = await this.rDAIContract.getHatByAddress(
       this.userAddress
     );
-    const SELF_HAT_ID = await this.get_SELF_HAT_ID();
 
     const { recipients, proportions } = currentHat;
 
