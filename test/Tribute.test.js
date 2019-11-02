@@ -36,7 +36,7 @@ contract('TESTING', async (accounts) => {
 
     describe("Test Tribute", async() => {
       it("Test getInfo", async() => {
-        let val = await tribute.getInfo()
+        let val = await tribute.getInfo(owner)
         assert.isOk(val.allocations, "no allocation field")
         assert.isOk(val.allocations.recipients, "no recipients field")
         assert.isOk(val.allocations.proportions, "no proportions field")
@@ -46,9 +46,9 @@ contract('TESTING', async (accounts) => {
       })
 
       it("Test generate", async() => {
-        let before = await tribute.getInfo()
+        let before = await tribute.getInfo(owner)
         await tribute.generate(amountToGenerate)
-        let after = await tribute.getInfo()
+        let after = await tribute.getInfo(owner)
 
         let before_balance = new BigNumber(before.balance)
         let after_balance = new BigNumber(after.balance)
@@ -68,9 +68,9 @@ contract('TESTING', async (accounts) => {
       })
 
       it("Test startFlow", async() => {
-        let before = await tribute.getInfo()
+        let before = await tribute.getInfo(owner)
         await tribute.startFlow(randomAccount, amountToFlow)
-        let after = await tribute.getInfo()
+        let after = await tribute.getInfo(owner)
 
         let before_unallocated = new BigNumber(before.unallocated_balance)
         let after_unallocated = new BigNumber(after.unallocated_balance)
@@ -83,9 +83,9 @@ contract('TESTING', async (accounts) => {
       })
 
       it("Test endFlow", async() => {
-        let before = await tribute.getInfo()
+        let before = await tribute.getInfo(owner)
         await tribute.endFlow(randomAccount)
-        let after = await tribute.getInfo()
+        let after = await tribute.getInfo(owner)
 
         let before_unallocated = new BigNumber(before.unallocated_balance)
         let after_unallocated = new BigNumber(after.unallocated_balance)
@@ -111,9 +111,9 @@ contract('TESTING', async (accounts) => {
       })
 
       it("Test disable()", async() => {
-        let before = await tribute.getInfo()
+        let before = await tribute.getInfo(owner)
         await tribute.disable()
-        let after = await tribute.getInfo()
+        let after = await tribute.getInfo(owner)
 
         let before_balance = new BigNumber(before.balance)
         let after_balance = new BigNumber(after.balance)

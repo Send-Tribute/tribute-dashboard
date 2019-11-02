@@ -5,18 +5,42 @@ const { bigNumberify, formatUnits } = ethers.utils;
 class Tribute {
   constructor(DAIContract, rDAIContract, userAddress) {
     this.DAIContract = DAIContract;
+    this.DAI_DECIMALS = null;
     this.rDAIContract = rDAIContract;
+    this.rDAI_DECIMALS = null;
+    this.SELF_HAT_ID = null
     this.userAddress = userAddress.toLowerCase();
     this.PROPORTION_BASE = bigNumberify('0xFFFFFFFF');
   }
 
+  async get_DAI_DECIMALS() {
+    if(this.DAI_DECIMALS === null) {
+      this.DAI_DECIMALS = await this.DAIContract.decimals();
+    }
+    return this.DAI_DECIMALS;
+  }
+
+  async get_rDAI_DECIMALS() {
+    if(this.rDAI_DECIMALS === null) {
+      this.rDAI_DECIMALS = await this.rDAIContract.decimals();
+    }
+    return this.rDAI_DECIMALS;
+  }
+
+  async get_SELF_HAT_ID() {
+    if(this.SELF_HAT_ID === null) {
+      this.SELF_HAT_ID = await this.rDAIContract.SELF_HAT_ID;
+    }
+    return this.SELF_HAT_ID;
+  }
+
   async generate(amountToTribute) {
-    const decimals_DAI = await this.DAIContract.decimals();
-    const decimals_rDAI = await this.rDAIContract.decimals();
+    const DAI_DECIMALS = await this.get_DAI_DECIMALS();
+    const rDAI_DECIMALS = await this.get_rDAI_DECIMALS();
 
     // approve DAI
     const amountToTribute_BN = bigNumberify(amountToTribute).mul(
-      bigNumberify(10).pow(decimals_rDAI)
+      bigNumberify(10).pow(rDAI_DECIMALS)
     );
     await this.DAIContract.approve(
       this.rDAIContract.address,
@@ -25,12 +49,12 @@ class Tribute {
 
     // get rDAI balance
     const rDAIBalance_BN = await this.rDAIContract.balanceOf(this.userAddress);
-    const balance_BN = rDAIBalance_BN.div(bigNumberify(10).pow(decimals_rDAI));
+    const balance_BN = rDAIBalance_BN.div(bigNumberify(10).pow(rDAI_DECIMALS));
 
     const currentHat = await this.rDAIContract.getHatByAddress(
       this.userAddress
     );
-    const SELF_HAT_ID = await this.rDAIContract.SELF_HAT_ID;
+    const SELF_HAT_ID = await this.get_SELF_HAT_ID();
 
     const { recipients, proportions } = currentHat;
 
@@ -67,13 +91,12 @@ class Tribute {
     );
   }
 
-  // reedemm all your rdai to dai
   async disable() {
     await this.rDAIContract.redeemAll();
   }
 
   async getInfo(address) {
-    let decimals_rDAI = await this.rDAIContract.decimals();
+    const rDAI_DECIMALS = await this.get_rDAI_DECIMALS();
 
     // Balance
     const rDAIBalance_BN = await this.rDAIContract.balanceOf(address);
@@ -122,28 +145,28 @@ class Tribute {
           ethers.utils.getAddress(recipient)
         ),
         proportions: portionWholeNum.map(portion =>
-          formatUnits(portion, decimals_rDAI)
+          formatUnits(portion, rDAI_DECIMALS)
         )
       },
-      balance: formatUnits(rDAIBalance_BN, decimals_rDAI),
-      unallocated_balance: formatUnits(unallocatedBalance, decimals_rDAI),
-      unclaimed_balance: formatUnits(unclaimedBalance_BN, decimals_rDAI)
+      balance: formatUnits(rDAIBalance_BN, rDAI_DECIMALS),
+      unallocated_balance: formatUnits(unallocatedBalance, rDAI_DECIMALS),
+      unclaimed_balance: formatUnits(unclaimedBalance_BN, rDAI_DECIMALS)
     };
   }
 
   async startFlow(recipientAddress, amount) {
     let amount_BN = bigNumberify(amount);
 
-    const decimals_rDAI = await this.rDAIContract.decimals();
+    const rDAI_DECIMALS = await this.get_rDAI_DECIMALS();
 
     // getBalance
     const rDAIBalance_BN = await this.rDAIContract.balanceOf(this.userAddress);
-    const balance_BN = rDAIBalance_BN.div(bigNumberify(10).pow(decimals_rDAI));
+    const balance_BN = rDAIBalance_BN.div(bigNumberify(10).pow(rDAI_DECIMALS));
 
     const currentHat = await this.rDAIContract.getHatByAddress(
       this.userAddress
     );
-    const SELF_HAT_ID = await this.rDAIContract.SELF_HAT_ID;
+    const SELF_HAT_ID = await this.get_SELF_HAT_ID();
 
     const { recipients, proportions } = currentHat;
 
@@ -205,19 +228,17 @@ class Tribute {
     );
   }
 
-  // removes rDai interest assigned to addressToRemove
-  // and reflows it back to self
   async endFlow(addressToRemove) {
-    const decimals_rDAI = await this.rDAIContract.decimals();
+    const rDAI_DECIMALS = await this.rDAIContract.decimals();
 
     // getBalance
     const rDAIBalance_BN = await this.rDAIContract.balanceOf(this.userAddress);
-    const balance_BN = rDAIBalance_BN.div(bigNumberify(10).pow(decimals_rDAI));
+    const balance_BN = rDAIBalance_BN.div(bigNumberify(10).pow(rDAI_DECIMALS));
 
     const currentHat = await this.rDAIContract.getHatByAddress(
       this.userAddress
     );
-    const SELF_HAT_ID = await this.rDAIContract.SELF_HAT_ID;
+    const SELF_HAT_ID = await this.get_SELF_HAT_ID();
 
     const { recipients, proportions } = currentHat;
 
