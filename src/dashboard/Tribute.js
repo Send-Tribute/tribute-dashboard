@@ -222,7 +222,6 @@ class Tribute {
     //set values
     recipientMap[this.userAddress] = userBal;
     recipientMap[recipientAddress.toLowerCase()] = recipientBal;
-
     recipientMap = this.removeAddressesWithZeroFlow(recipientMap); 
 
     //update to new hat values
@@ -234,7 +233,7 @@ class Tribute {
   }
 
   async endFlow(addressToRemove) {
-    const rDAI_DECIMALS = await this.rDAIContract.decimals();
+    const rDAI_DECIMALS = await this.get_rDAI_DECIMALS();
 
     // getBalance
     const rDAIBalance_BN = await this.rDAIContract.balanceOf(this.userAddress);
@@ -280,7 +279,6 @@ class Tribute {
     //update and set values between user and recipient
     recipientMap[this.userAddress] = userBal.add(recipientBal);
     recipientMap[addressToRemove.toLowerCase()] = ethers.constants.Zero;
-
     recipientMap = this.removeAddressesWithZeroFlow(recipientMap);
 
     //update to new hat values
