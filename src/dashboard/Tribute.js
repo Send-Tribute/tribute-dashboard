@@ -34,6 +34,24 @@ class Tribute {
     return this.SELF_HAT_ID;
   }
 
+  calculateProportionWholeNumbers(proportions, balance_BN) {
+    let portionWholeNum = proportions.map(portion => {
+      return bigNumberify(portion)
+        .mul(balance_BN)
+        .div(this.PROPORTION_BASE);
+    });
+    return portionWholeNum;
+  }
+
+  removeAddressesWithZeroFlow(recipientMap) {
+    for (let [address, portion_BN] of Object.entries(recipientMap)) {
+      if (portion_BN.eq(ethers.constants.Zero)) {
+        delete recipientMap[address];
+      }
+    }
+    return recipientMap;
+  }
+
   async generate(amountToTribute) {
     const DAI_DECIMALS = await this.get_DAI_DECIMALS();
     const rDAI_DECIMALS = await this.get_rDAI_DECIMALS();
@@ -57,12 +75,7 @@ class Tribute {
 
     const { recipients, proportions } = currentHat;
 
-    // calculate proportions whole numbers
-    let portionWholeNum = proportions.map(portion => {
-      return bigNumberify(portion)
-        .mul(balance_BN)
-        .div(this.PROPORTION_BASE);
-    });
+    let portionWholeNum = this.calculateProportionWholeNumbers(proportions, balance_BN);
 
     // convert to object mapping
     let recipientMap = {};
@@ -75,13 +88,7 @@ class Tribute {
       : balance_BN;
 
     recipientMap[this.userAddress] = userBal.add(bigNumberify(amountToTribute));
-
-    // remove addresses that have 0 flow
-    for (let [address, portion_BN] of Object.entries(recipientMap)) {
-      if (portion_BN.eq(ethers.constants.Zero)) {
-        delete recipientMap[address];
-      }
-    }
+    recipientMap = this.removeAddressesWithZeroFlow(recipientMap)
 
     await this.rDAIContract.mintWithNewHat(
       amountToTribute_BN,
@@ -151,24 +158,6 @@ class Tribute {
       unallocated_balance: formatUnits(unallocatedBalance, rDAI_DECIMALS),
       unclaimed_balance: formatUnits(unclaimedBalance_BN, rDAI_DECIMALS)
     };
-  }
-
-  removeAddressesWithZeroFlow(recipientMap) {
-    for (let [address, portion_BN] of Object.entries(recipientMap)) {
-      if (portion_BN.eq(ethers.constants.Zero)) {
-        delete recipientMap[address];
-      }
-    }
-    return recipientMap;
-  }
-
-  calculateProportionWholeNumbers(proportions, balance_BN) {
-    let portionWholeNum = proportions.map(portion => {
-      return bigNumberify(portion)
-        .mul(balance_BN)
-        .div(this.PROPORTION_BASE);
-    });
-    return portionWholeNum;
   }
 
   async startFlow(recipientAddress, amount) {
