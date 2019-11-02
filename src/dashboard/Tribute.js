@@ -163,6 +163,15 @@ class Tribute {
     return recipientMap;
   }
 
+  calculateProportionWholeNumbers(proportions, balance_BN) {
+    let portionWholeNum = proportions.map(portion => {
+      return bigNumberify(portion)
+        .mul(balance_BN)
+        .div(this.PROPORTION_BASE);
+    });
+    return portionWholeNum;
+  }
+
   async startFlow(recipientAddress, amount) {
     let amount_BN = bigNumberify(amount);
 
@@ -179,12 +188,7 @@ class Tribute {
 
     const { recipients, proportions } = currentHat;
 
-    // calculate proportions whole numbers
-    let portionWholeNum = proportions.map(portion => {
-      return bigNumberify(portion)
-        .mul(balance_BN)
-        .div(this.PROPORTION_BASE);
-    });
+    let portionWholeNum = this.calculateProportionWholeNumbers(proportions, balance_BN);
 
     //turn recipients and proportions into map
     // convert to object mapping
@@ -246,12 +250,7 @@ class Tribute {
 
     const { recipients, proportions } = currentHat;
 
-    // calculate proportions whole numbers
-    let portionWholeNum = proportions.map(portion => {
-      return bigNumberify(portion)
-        .mul(balance_BN)
-        .div(this.PROPORTION_BASE);
-    });
+    let portionWholeNum = this.calculateProportionWholeNumbers(proportions, balance_BN)
 
     //turn recipients and proportions into map
     // convert to object mapping
