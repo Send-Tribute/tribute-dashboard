@@ -154,6 +154,15 @@ class Tribute {
     };
   }
 
+  removeAddressesWithZeroFlow(recipientMap) {
+    for (let [address, portion_BN] of Object.entries(recipientMap)) {
+      if (portion_BN.eq(ethers.constants.Zero)) {
+        delete recipientMap[address];
+      }
+    }
+    return recipientMap;
+  }
+
   async startFlow(recipientAddress, amount) {
     let amount_BN = bigNumberify(amount);
 
@@ -214,12 +223,8 @@ class Tribute {
     recipientMap[this.userAddress] = userBal;
     recipientMap[recipientAddress.toLowerCase()] = recipientBal;
 
-    // remove addresses that have 0 flow
-    for (let [address, portion_BN] of Object.entries(recipientMap)) {
-      if (portion_BN.eq(ethers.constants.Zero)) {
-        delete recipientMap[address];
-      }
-    }
+    recipientMap = this.removeAddressesWithZeroFlow(recipientMap); 
+
     //update to new hat values
     await this.rDAIContract.createHat(
       Object.keys(recipientMap),
@@ -276,12 +281,7 @@ class Tribute {
     recipientMap[this.userAddress] = userBal.add(recipientBal);
     recipientMap[addressToRemove.toLowerCase()] = ethers.constants.Zero;
 
-    // remove addresses that have 0 flow
-    for (let [address, portion_BN] of Object.entries(recipientMap)) {
-      if (portion_BN.eq(ethers.constants.Zero)) {
-        delete recipientMap[address];
-      }
-    }
+    recipientMap = this.removeAddressesWithZeroFlow(recipientMap);
 
     //update to new hat values
     await this.rDAIContract.createHat(
