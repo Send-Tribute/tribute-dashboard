@@ -183,7 +183,6 @@ class Tribute {
     const currentHat = await this.rDAIContract.getHatByAddress(
       this.userAddress
     );
-    const SELF_HAT_ID = await this.get_SELF_HAT_ID();
 
     const { recipients, proportions } = currentHat;
 
@@ -197,6 +196,7 @@ class Tribute {
     );
 
     //validate if hat !exist
+    const SELF_HAT_ID = await this.get_SELF_HAT_ID();
     if (currentHat.hatID.eq(SELF_HAT_ID) || currentHat.hatID.isZero()) {
       //if balance < amount
       if (balance_BN.lt(amount_BN)) throw 'insuffient balance';
@@ -245,7 +245,6 @@ class Tribute {
     const currentHat = await this.rDAIContract.getHatByAddress(
       this.userAddress
     );
-    const SELF_HAT_ID = await this.get_SELF_HAT_ID();
 
     const { recipients, proportions } = currentHat;
 
@@ -259,6 +258,7 @@ class Tribute {
     );
 
     // validate if hat !exist
+    const SELF_HAT_ID = await this.get_SELF_HAT_ID();
     if (currentHat.hatID.eq(SELF_HAT_ID) || currentHat.hatID.isZero())
       throw 'No flows to end';
 
