@@ -99,7 +99,8 @@ contract('TESTING', async (accounts) => {
 
       it("Test claimAmount()", async() => {
         await tribute.claimAmount(owner)
-        let unclaimedAmount = await tribute.getUnclaimedAmount(owner)
+        let info = await tribute.getInfo(owner)
+        let unclaimedAmount = await info.unclaimed_balance
         let unclaimedAmount_BN = new BigNumber(unclaimedAmount)
         let expected_BN = new BigNumber(0)
 
