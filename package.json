@@ -16,7 +16,7 @@
   },
   "scripts": {
     "start": "yarn update-abis; parcel public/dashboard.html",
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "echo \"Error: no test specified\"",
     "build": "parcel build public/dashboard.html public/widget.html --out-dir dist",
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook",
