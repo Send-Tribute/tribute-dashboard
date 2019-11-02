@@ -52,6 +52,13 @@ class Tribute {
     return recipientMap;
   }
 
+  async get_rDAIBalance(address) {
+    const rDAI_DECIMALS = await this.get_rDAI_DECIMALS();
+    const rDAIBalance_BN = await this.rDAIContract.balanceOf(address);
+    const balance_BN = rDAIBalance_BN.div(bigNumberify(10).pow(rDAI_DECIMALS));
+    return balance_BN;
+  }
+
   async generate(amountToTransfer) {
     const DAI_DECIMALS = await this.get_DAI_DECIMALS();
     const rDAI_DECIMALS = await this.get_rDAI_DECIMALS();
@@ -65,9 +72,7 @@ class Tribute {
       amountToTransfer_BN
     );
 
-    // get rDAI balance
-    const rDAIBalance_BN = await this.rDAIContract.balanceOf(this.userAddress);
-    const balance_BN = rDAIBalance_BN.div(bigNumberify(10).pow(rDAI_DECIMALS));
+    const balance_BN = await this.get_rDAIBalance(this.userAddress)
 
     const currentHat = await this.rDAIContract.getHatByAddress(
       this.userAddress
@@ -165,9 +170,7 @@ class Tribute {
 
     const rDAI_DECIMALS = await this.get_rDAI_DECIMALS();
 
-    // getBalance
-    const rDAIBalance_BN = await this.rDAIContract.balanceOf(this.userAddress);
-    const balance_BN = rDAIBalance_BN.div(bigNumberify(10).pow(rDAI_DECIMALS));
+    const balance_BN = await this.get_rDAIBalance(this.userAddress)
 
     const currentHat = await this.rDAIContract.getHatByAddress(
       this.userAddress
@@ -227,9 +230,7 @@ class Tribute {
   async endFlow(addressToRemove) {
     const rDAI_DECIMALS = await this.get_rDAI_DECIMALS();
 
-    // getBalance
-    const rDAIBalance_BN = await this.rDAIContract.balanceOf(this.userAddress);
-    const balance_BN = rDAIBalance_BN.div(bigNumberify(10).pow(rDAI_DECIMALS));
+    const balance_BN = await this.get_rDAIBalance(this.userAddress)
 
     const currentHat = await this.rDAIContract.getHatByAddress(
       this.userAddress
