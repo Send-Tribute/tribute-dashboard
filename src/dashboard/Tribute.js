@@ -52,17 +52,17 @@ class Tribute {
     return recipientMap;
   }
 
-  async generate(amountToTribute) {
+  async generate(amountToTransfer) {
     const DAI_DECIMALS = await this.get_DAI_DECIMALS();
     const rDAI_DECIMALS = await this.get_rDAI_DECIMALS();
 
     // approve DAI
-    const amountToTribute_BN = bigNumberify(amountToTribute).mul(
+    const amountToTransfer_BN = bigNumberify(amountToTransfer).mul(
       bigNumberify(10).pow(rDAI_DECIMALS)
     );
     await this.DAIContract.approve(
       this.rDAIContract.address,
-      amountToTribute_BN
+      amountToTransfer_BN
     );
 
     // get rDAI balance
@@ -87,11 +87,11 @@ class Tribute {
       ? recipientMap[this.userAddress]
       : balance_BN;
 
-    recipientMap[this.userAddress] = userBal.add(bigNumberify(amountToTribute));
+    recipientMap[this.userAddress] = userBal.add(bigNumberify(amountToTransfer));
     recipientMap = this.removeAddressesWithZeroFlow(recipientMap)
 
     await this.rDAIContract.mintWithNewHat(
-      amountToTribute_BN,
+      amountToTransfer_BN,
       Object.keys(recipientMap),
       Object.values(recipientMap)
     );
