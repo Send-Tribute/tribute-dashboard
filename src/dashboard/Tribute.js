@@ -34,7 +34,7 @@ class Tribute {
     return this.SELF_HAT_ID;
   }
 
-  calculateProportionWholeNumbers(proportions, balance_BN) {
+  _calculateProportionWholeNumbers(proportions, balance_BN) {
     let portionWholeNum = proportions.map(portion => {
       return bigNumberify(portion)
         .mul(balance_BN)
@@ -43,7 +43,7 @@ class Tribute {
     return portionWholeNum;
   }
 
-  removeAddressesWithZeroFlow(recipientMap) {
+  _removeAddressesWithZeroFlow(recipientMap) {
     for (let [address, portion_BN] of Object.entries(recipientMap)) {
       if (portion_BN.eq(ethers.constants.Zero)) {
         delete recipientMap[address];
@@ -54,8 +54,8 @@ class Tribute {
 
   async get_rDAIBalance(address) {
     const rDAI_DECIMALS = await this.get_rDAI_DECIMALS();
-    const rDAIBalance_BN = await this.rDAIContract.balanceOf(address);
-    const balance_BN = rDAIBalance_BN.div(bigNumberify(10).pow(rDAI_DECIMALS));
+    let balance_BN = await this.rDAIContract.balanceOf(address);
+    balance_BN = balance_BN.div(bigNumberify(10).pow(rDAI_DECIMALS));
     return balance_BN;
   }
 
@@ -80,7 +80,7 @@ class Tribute {
 
     const { recipients, proportions } = currentHat;
 
-    let portionWholeNum = this.calculateProportionWholeNumbers(proportions, balance_BN);
+    let portionWholeNum = this._calculateProportionWholeNumbers(proportions, balance_BN);
 
     // convert to object mapping
     let recipientMap = {};
@@ -93,7 +93,7 @@ class Tribute {
       : balance_BN;
 
     recipientMap[this.userAddress] = userBal.add(bigNumberify(amountToTransfer));
-    recipientMap = this.removeAddressesWithZeroFlow(recipientMap)
+    recipientMap = this._removeAddressesWithZeroFlow(recipientMap)
 
     await this.rDAIContract.mintWithNewHat(
       amountToTransfer_BN,
@@ -107,10 +107,7 @@ class Tribute {
   }
 
   async getInfo(address) {
-    const rDAI_DECIMALS = await this.get_rDAI_DECIMALS();
-
-    // Balance
-    const rDAIBalance_BN = await this.rDAIContract.balanceOf(address);
+    const balance_BN = await this.rDAIContract.balanceOf(address);
     let unclaimedBalance_BN = await this.rDAIContract.interestPayableOf(
       address
     );
@@ -126,16 +123,13 @@ class Tribute {
 
     //check if hat is empty
     if (recipients.length === 0) {
-      unallocatedBalance = rDAIBalance_BN;
+      unallocatedBalance = balance_BN;
     } else {
       // set all recepients to lower case to allow searching
       recipients = currentHat.recipients.map(r => r.toLowerCase());
 
-      portionWholeNum = proportions.map(portion => {
-        return bigNumberify(portion)
-          .mul(rDAIBalance_BN)
-          .div(this.PROPORTION_BASE);
-      });
+      portionWholeNum = this._calculateProportionWholeNumbers(proportions, balance_BN);
+
       let userIdx = recipients.indexOf(address.toLowerCase());
 
       //check if user exists
@@ -150,6 +144,8 @@ class Tribute {
       }
     }
 
+    const rDAI_DECIMALS = await this.get_rDAI_DECIMALS();
+
     return {
       allocations: {
         recipients: recipients.map(recipient =>
@@ -159,7 +155,7 @@ class Tribute {
           formatUnits(portion, rDAI_DECIMALS)
         )
       },
-      balance: formatUnits(rDAIBalance_BN, rDAI_DECIMALS),
+      balance: formatUnits(balance_BN, rDAI_DECIMALS),
       unallocated_balance: formatUnits(unallocatedBalance, rDAI_DECIMALS),
       unclaimed_balance: formatUnits(unclaimedBalance_BN, rDAI_DECIMALS)
     };
@@ -178,7 +174,7 @@ class Tribute {
 
     const { recipients, proportions } = currentHat;
 
-    let portionWholeNum = this.calculateProportionWholeNumbers(proportions, balance_BN);
+    let portionWholeNum = this._calculateProportionWholeNumbers(proportions, balance_BN);
 
     //turn recipients and proportions into map
     // convert to object mapping
@@ -217,7 +213,7 @@ class Tribute {
     //set values
     recipientMap[this.userAddress] = userBal;
     recipientMap[recipientAddress.toLowerCase()] = recipientBal;
-    recipientMap = this.removeAddressesWithZeroFlow(recipientMap); 
+    recipientMap = this._removeAddressesWithZeroFlow(recipientMap); 
 
     //update to new hat values
     await this.rDAIContract.createHat(
@@ -238,7 +234,7 @@ class Tribute {
 
     const { recipients, proportions } = currentHat;
 
-    let portionWholeNum = this.calculateProportionWholeNumbers(proportions, balance_BN)
+    let portionWholeNum = this._calculateProportionWholeNumbers(proportions, balance_BN)
 
     //turn recipients and proportions into map
     // convert to object mapping
@@ -267,7 +263,7 @@ class Tribute {
     //update and set values between user and recipient
     recipientMap[this.userAddress] = userBal.add(recipientBal);
     recipientMap[addressToRemove.toLowerCase()] = ethers.constants.Zero;
-    recipientMap = this.removeAddressesWithZeroFlow(recipientMap);
+    recipientMap = this._removeAddressesWithZeroFlow(recipientMap);
 
     //update to new hat values
     await this.rDAIContract.createHat(
