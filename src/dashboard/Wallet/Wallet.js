@@ -8,11 +8,9 @@ import {
   Button
 } from '@material-ui/core';
 import { createUseStyles } from 'react-jss';
-import { Icon, CustomTable, SectionHeader } from '../general';
-import { getEtherscanLink } from '../helpers/utils';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
-
-import { FIAT_GATEWAYS, CRYPTO_EXCHANGES } from '../helpers/constants';
+import { Context } from '../context';
+import { Icon, SectionHeader } from '../general';
 
 const useStyles = createUseStyles({
   container: {
@@ -158,7 +156,11 @@ const Wallet = () => {
               <br />
               <br />
               More information is{' '}
-              <a href="https://redeem.money/" target="_blank">
+              <a
+                href="https://redeem.money/"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
                 here
               </a>
               .
@@ -218,8 +220,8 @@ const Wallet = () => {
           </Paper>
         </Container>
       </Container>
-    </Container>
-  );
+    );
+  };
 
   const getFiatGateways = () => {
     return (
@@ -233,7 +235,11 @@ const Wallet = () => {
                 Kovan ETH and Kovan DAI.
                 <br />
                 <br /> You can obtain Kovan ETH from a faucet{' '}
-                <a href="https://faucet.kovan.network/" target="_blank">
+                <a
+                  href="https://faucet.kovan.network/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
                   here
                 </a>
                 . You will need to use your GitHub login. <br />
@@ -242,6 +248,7 @@ const Wallet = () => {
                 <a
                   href="https://app.compound.finance/asset/cDAI"
                   target="_blank"
+                  rel="noopener noreferrer"
                 >
                   here
                 </a>
@@ -253,9 +260,7 @@ const Wallet = () => {
                 <br />
                 <b>DAI (Kovan)</b>: 0xbF7A7169562078c96f0eC1A8aFD6aE50f12e5A99{' '}
                 <br />
-                <CopyToClipboard
-                  text={'0xbF7A7169562078c96f0eC1A8aFD6aE50f12e5A99'}
-                >
+                <CopyToClipboard text="0xbF7A7169562078c96f0eC1A8aFD6aE50f12e5A99">
                   <Button
                     style={{
                       margin: '10px 0 10px',
@@ -270,9 +275,7 @@ const Wallet = () => {
                 <br />
                 <b>rDAI (Kovan)</b>: 0xeA718E4602125407fAfcb721b7D760aD9652dfe7
                 <br />
-                <CopyToClipboard
-                  text={'0xeA718E4602125407fAfcb721b7D760aD9652dfe7'}
-                >
+                <CopyToClipboard text="0xeA718E4602125407fAfcb721b7D760aD9652dfe7">
                   <Button
                     style={{
                       margin: '10px 0 10px',
@@ -289,8 +292,8 @@ const Wallet = () => {
           </Paper>
         </Container>
       </Container>
-    </Container>
-  );
+    );
+  };
 
   return (
     <div>
