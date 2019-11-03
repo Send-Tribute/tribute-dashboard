@@ -1,12 +1,5 @@
 import React from 'react';
-import {
-  Grid,
-  Typography,
-  Container,
-  Divider,
-  Paper,
-  Button
-} from '@material-ui/core';
+import { Typography, Container, Button } from '@material-ui/core';
 import { createUseStyles } from 'react-jss';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { SectionHeader } from '../general';
@@ -44,7 +37,7 @@ const useStyles = createUseStyles({
   }
 });
 
-export default function Settings(props) {
+export default function Settings() {
   const classes = useStyles();
   return (
     <div>
