@@ -1,6 +1,6 @@
-require('babel-polyfill')
+require('babel-polyfill');
 const ethers = require('ethers');
-const { bigNumberify, formatUnits } = ethers.utils;
+const { parseUnits, bigNumberify, formatUnits } = ethers.utils;
 
 class Tribute {
   constructor(DAIContract, rDAIContract, userAddress) {
@@ -35,12 +35,23 @@ class Tribute {
   }
 
   _calculateProportionWholeNumbers(proportions, balance_BN) {
-    let portionWholeNum = proportions.map(portion => {
-      return bigNumberify(portion)
-        .mul(balance_BN)
-        .div(this.PROPORTION_BASE);
+    return proportions.map(portion => {
+      //let p_num = 435975214.1594
+      //let p = parseUnits(p_num.toString(), 18)
+      //console.log("portion: " + p.toString())
+      //let b = parseUnits("12345.010132100000000000", 18)
+      //console.log("balance: " + b.toString())
+
+      //portion by balance gives expanded form
+      //let portion_BN = p.mul(b)
+      console.log(portion.toString())
+      let portion_BN = bigNumberify(portion).mul(balance_BN)
+      console.log(portion_BN.toString())
+      //take expanded form and reduce to proportion whole number
+      portion_BN = portion_BN.div(this.PROPORTION_BASE)
+      console.log("portion whole: " + portion_BN.toString())
+      return portion_BN
     });
-    return portionWholeNum;
   }
 
   _removeAddressesWithZeroFlow(recipientMap) {
@@ -52,27 +63,21 @@ class Tribute {
     return recipientMap;
   }
 
-  async get_rDAIBalance(address) {
-    const rDAI_DECIMALS = await this.get_rDAI_DECIMALS();
-    let balance_BN = await this.rDAIContract.balanceOf(address);
-    balance_BN = balance_BN.div(bigNumberify(10).pow(rDAI_DECIMALS));
-    return balance_BN;
-  }
+  async generate(amountToTransferString) {
 
-  async generate(amountToTransfer) {
     const DAI_DECIMALS = await this.get_DAI_DECIMALS();
-    const rDAI_DECIMALS = await this.get_rDAI_DECIMALS();
 
     // approve DAI
-    const amountToTransfer_BN = bigNumberify(amountToTransfer).mul(
-      bigNumberify(10).pow(rDAI_DECIMALS)
-    );
+    const amountToTransfer_BN = parseUnits(amountToTransferString, DAI_DECIMALS)
+    console.log("amount to transfer: " + amountToTransfer_BN.toString())
+
     await this.DAIContract.approve(
       this.rDAIContract.address,
       amountToTransfer_BN
     );
 
-    const balance_BN = await this.get_rDAIBalance(this.userAddress)
+    let balance_BN = await this.rDAIContract.balanceOf(this.userAddress);
+    console.log("existing balance: " + balance_BN.toString())
 
     const currentHat = await this.rDAIContract.getHatByAddress(
       this.userAddress
@@ -92,13 +97,30 @@ class Tribute {
       ? recipientMap[this.userAddress]
       : balance_BN;
 
-    recipientMap[this.userAddress] = userBal.add(bigNumberify(amountToTransfer));
+    //add the amount to existing balance in the proportion form
+    recipientMap[this.userAddress] = userBal.add(amountToTransfer_BN);
     recipientMap = this._removeAddressesWithZeroFlow(recipientMap)
+
+    console.log("new balance: " + recipientMap[this.userAddress].toString())
+
+    //I HAVE A NEW BALANCE BUT IT'S TOOOO LONG it needs to fit into uint32
+    let newRecipients = Object.keys(recipientMap)
+    let newProportions = Object.values(recipientMap).map(
+      value => {
+        //14 allows 4 decimals of precision
+        let val = value.div(bigNumberify(10).pow(14))
+        console.log("reduced: " + val.toNumber())
+        return val.toNumber()
+      }
+    )
+
+    console.log(newRecipients)
+    console.log(newProportions)
 
     await this.rDAIContract.mintWithNewHat(
       amountToTransfer_BN,
-      Object.keys(recipientMap),
-      Object.values(recipientMap)
+      newRecipients,
+      newProportions
     );
   }
 
@@ -116,6 +138,9 @@ class Tribute {
     const currentHat = await this.rDAIContract.getHatByAddress(
       address
     );
+
+    console.log("current hat")
+    console.log(currentHat)
 
     let { recipients, proportions } = currentHat;
     let unallocatedBalance;
@@ -166,7 +191,7 @@ class Tribute {
 
     const rDAI_DECIMALS = await this.get_rDAI_DECIMALS();
 
-    const balance_BN = await this.get_rDAIBalance(this.userAddress)
+    let balance_BN = await this.rDAIContract.balanceOf(this.userAddress);
 
     const currentHat = await this.rDAIContract.getHatByAddress(
       this.userAddress
@@ -215,10 +240,13 @@ class Tribute {
     recipientMap[recipientAddress.toLowerCase()] = recipientBal;
     recipientMap = this._removeAddressesWithZeroFlow(recipientMap); 
 
+    let newRecipients = Object.keys(recipientMap)
+    let newProportions = Object.values(recipientMap).map(value => this.reduce_BN(value))
+
     //update to new hat values
     await this.rDAIContract.createHat(
-      Object.keys(recipientMap),
-      Object.values(recipientMap),
+      newRecipients,
+      newProportions,
       true
     );
   }
@@ -226,7 +254,7 @@ class Tribute {
   async endFlow(addressToRemove) {
     const rDAI_DECIMALS = await this.get_rDAI_DECIMALS();
 
-    const balance_BN = await this.get_rDAIBalance(this.userAddress)
+    let balance_BN = await this.rDAIContract.balanceOf(this.userAddress);
 
     const currentHat = await this.rDAIContract.getHatByAddress(
       this.userAddress

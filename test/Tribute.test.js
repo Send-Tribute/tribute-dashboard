@@ -5,7 +5,7 @@ const DAI_abi = require('../src/contracts/dai.json')
 const Tribute = require('../src/dashboard/Tribute')
 const rDAI_Kovan = "0xeA718E4602125407fAfcb721b7D760aD9652dfe7"
 const DAI_Kovan = "0xbF7A7169562078c96f0eC1A8aFD6aE50f12e5A99"
-const amountToGenerate = 500
+const amountToTransfer = "500.325"
 const amountToFlow = 50
 
 contract('TESTING', async (accounts) => {
@@ -45,10 +45,12 @@ contract('TESTING', async (accounts) => {
         assert.isOk(val.unclaimed_balance, "no unclaimed balance field")
       })
 
-      it("Test generate", async() => {
+      it.only("Test generate", async() => {
         let before = await tribute.getInfo(owner)
-        await tribute.generate(amountToGenerate)
+        console.log(before)
+        await tribute.generate(amountToTransfer)
         let after = await tribute.getInfo(owner)
+        console.log(after)
 
         let before_balance = new BigNumber(before.balance)
         let after_balance = new BigNumber(after.balance)
@@ -56,12 +58,12 @@ contract('TESTING', async (accounts) => {
         let after_unallocated = new BigNumber(after.unallocated_balance)
 
         assert.equal(
-          before_balance.plus(amountToGenerate).toFixed(2),
+          before_balance.plus(amountToTransfer).toFixed(2),
           after_balance.toFixed(2),
           "improper balances"
         )
         assert.equal(
-          before_unallocated.plus(amountToGenerate).toFixed(2),
+          before_unallocated.plus(amountToTransfer).toFixed(2),
           after_unallocated.toFixed(2),
           "improper unallocated balance"
         )
