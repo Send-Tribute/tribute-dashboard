@@ -9,13 +9,7 @@ import {
 } from '@material-ui/core';
 import { createUseStyles } from 'react-jss';
 import { Context } from '../context';
-import {
-  Icon,
-  CustomTable,
-  ProviderCard,
-  SectionHeader,
-  Scanner
-} from '../general';
+import { CustomTable, ProviderCard, SectionHeader, Scanner } from '../general';
 
 import { DISCOVERABLE_PROVIDERS } from '../helpers/constants';
 
@@ -188,7 +182,7 @@ const Sending = () => {
               handleOpen();
             }}
           >
-            <Icon name="qr" className={classes.buttonIcon} />
+            Send Tribute
           </Button>
           <Modal
             open={open}

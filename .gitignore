@@ -6,3 +6,5 @@ src/contracts/*.json
 yarn-error.log
 *.notes.*
 package-lock.json
+*.swp
+.env

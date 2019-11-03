@@ -73,34 +73,21 @@ const Receiving = () => {
     if (address.indexOf('ethereum:') > -1) {
       trimmedAddress = address.substr(9, address.length - 1);
     }
-    setValues({ ...values, address: trimmedAddress });
     if (trimmedAddress.length > 41) {
-      const walletProvider = new ethers.providers.Web3Provider(
-        window.web3.currentProvider
-      );
-      // connect to contracts on the network
-      const rDAIContract = new ethers.Contract(
-        CONTRACTS.rtoken.kovan,
-        rDAIabi,
-        walletProvider
-      );
-      const DAIContract = new ethers.Contract(
-        CONTRACTS.dai.kovan,
-        DAIabi,
-        walletProvider
-      );
-      const tribute = new Tribute(
-        DAIContract,
-        rDAIContract,
-        walletProvider,
+      const unclaimedTribute = await context.tribute.getUnclaimedAmount(
         trimmedAddress
       );
-      const externalUserDetails = await tribute.getInfo();
-      const externalUserInterest = externalUserDetails.unclaimedTribute;
-      // eslint-disable-next-line no-console
-      console.log(externalUserInterest);
-      setValues({ ...values, externalUserInterest });
+      setValues({
+        ...values,
+        externalUserInterest: unclaimedTribute,
+        address: trimmedAddress
+      });
+      return
     }
+    setValues({
+      ...values,
+      address: trimmedAddress
+    });
   };
 
   let selfTribute = '(enable wallet) ';
@@ -220,12 +207,29 @@ const Receiving = () => {
                 />
               </Modal>
             </div>
-            <div style={{ marginTop: 4 }}>
-              <Typography variant="body1">
-                Ready to claim: <b>{values.externalUserInterest}</b>{' '}
-                <Icon
-                  name="baseCurrency"
-                  className={classes.baseCurrencyIcon}
+          </Paper>
+        </Container>
+      </Container>
+    );
+  };
+
+  const getClaimOnBehalfOf = () => {
+    return (
+      <Container className={classes.container}>
+        <Container className={classes.contentContainer}>
+          <Paper elevation={5} className={classes.unclaimedTributeContainer}>
+            <div>
+              <Typography variant="body1">Claim on behalf of:</Typography>
+              <div style={{ display: 'flex' }}>
+                <TextField
+                  variant="outlined"
+                  label="Address"
+                  id="outlined-dense"
+                  margin="dense"
+                  value={values.address}
+                  onChange={e => {
+                    setAddress(e.target.value);
+                  }}
                 />
               </Typography>
             </div>

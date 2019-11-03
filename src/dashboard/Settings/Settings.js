@@ -1,9 +1,16 @@
 import React from 'react';
-import { Typography, Container, Button } from '@material-ui/core';
+import {
+  Grid,
+  Typography,
+  Container,
+  Divider,
+  Paper,
+  Button
+} from '@material-ui/core';
 import { createUseStyles } from 'react-jss';
-import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { SectionHeader } from '../general';
 import { getEtherscanLink } from '../helpers/utils';
+import { CopyToClipboard } from 'react-copy-to-clipboard';
 
 const useStyles = createUseStyles({
   container: {
@@ -37,7 +44,7 @@ const useStyles = createUseStyles({
   }
 });
 
-export default function Settings() {
+export default function Settings(props) {
   const classes = useStyles();
   return (
     <div>
@@ -50,7 +57,9 @@ export default function Settings() {
               '0xea718e4602125407fafcb721b7d760ad9652dfe7',
               'kovan'
             )}{' '}
-            <CopyToClipboard text="0xea718e4602125407fafcb721b7d760ad9652dfe7">
+            <CopyToClipboard
+              text={'0xea718e4602125407fafcb721b7d760ad9652dfe7'}
+            >
               <Button
                 style={{
                   margin: '10px 0 10px',
@@ -69,7 +78,9 @@ export default function Settings() {
               '0xbF7A7169562078c96f0eC1A8aFD6aE50f12e5A99',
               'kovan'
             )}
-            <CopyToClipboard text="0xbF7A7169562078c96f0eC1A8aFD6aE50f12e5A99">
+            <CopyToClipboard
+              text={'0xbF7A7169562078c96f0eC1A8aFD6aE50f12e5A99'}
+            >
               <Button
                 style={{
                   margin: '10px 0 10px',
@@ -88,7 +99,9 @@ export default function Settings() {
               '0x0a1e4d0b5c71b955c0a5993023fc48ba6e380496',
               'kovan'
             )}
-            <CopyToClipboard text="0x0a1e4d0b5c71b955c0a5993023fc48ba6e380496">
+            <CopyToClipboard
+              text={'0x0a1e4d0b5c71b955c0a5993023fc48ba6e380496'}
+            >
               <Button
                 style={{
                   margin: '10px 0 10px',
@@ -107,7 +120,9 @@ export default function Settings() {
               '0xb4377efc05bd28be8e6510629538e54eba2d74e3',
               'kovan'
             )}
-            <CopyToClipboard text="0xb4377efc05bd28be8e6510629538e54eba2d74e3">
+            <CopyToClipboard
+              text={'0xb4377efc05bd28be8e6510629538e54eba2d74e3'}
+            >
               <Button
                 style={{
                   margin: '10px 0 10px',

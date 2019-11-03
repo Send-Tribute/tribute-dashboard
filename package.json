@@ -15,17 +15,18 @@
     "url": "https://github.com/Send-Tribute/tribute-rDAI/issues"
   },
   "scripts": {
-    "start": "yarn update-abis; parcel public/dashboard.html",
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "parcel build public/dashboard.html public/widget.html --out-dir dist",
-    "storybook": "start-storybook -p 6006",
-    "build-storybook": "build-storybook",
     "update-rdai-abi": "curl -s -X GET \"https://api-kovan.etherscan.io/api?module=contract&action=getabi&address=$npm_package_contracts_kovan_rDai\" | ./node_modules/node-jq/bin/jq -r \"[.result][0]\" > src/contracts/rDai.json",
     "update-cdai-abi": "curl -s -X GET \"https://api-kovan.etherscan.io/api?module=contract&action=getabi&address=$npm_package_contracts_kovan_cDai\" | ./node_modules/node-jq/bin/jq -r \"[.result][0]\" > src/contracts/cDai.json",
     "update-dai-abi": "curl -s -X GET \"https://api-kovan.etherscan.io/api?module=contract&action=getabi&address=$npm_package_contracts_kovan_dai\" | ./node_modules/node-jq/bin/jq -r \"[.result][0]\" > src/contracts/dai.json",
     "update-dai-strat-abi": "curl -s -X GET \"https://api-kovan.etherscan.io/api?module=contract&action=getabi&address=$npm_package_contracts_kovan_dai\" | ./node_modules/node-jq/bin/jq -r \"[.result][0]\" > src/contracts/dai-strat.json",
     "update-abis": "yarn update-rdai-abi; yarn update-cdai-abi; yarn update-dai-abi; yarn update-dai-strat-abi",
-    "lint": "eslint ./src --fix"
+    "lint": "eslint ./src --fix",
+    "start": "parcel public/dashboard.html public/widget.html",
+    "ganache_fork": "ganache-cli -f $(node get_infura.js) -m \"$(node get_mnemonic.js)\"",
+    "build": "parcel build public/dashboard.html public/widget.html --out-dir dist",
+    "storybook": "start-storybook -p 6006",
+    "build-storybook": "build-storybook",
+    "deploy": "npm run build && surge ./dist https://tribute-dash1.surge.sh"
   },
   "contracts": {
     "kovan": {
@@ -39,7 +40,10 @@
     "@material-ui/core": "^4.5.0",
     "@material-ui/icons": "^4.4.3",
     "babel-polyfill": "^6.26.0",
+    "bignumber.js": "github:frozeman/bignumber.js-nolookahead",
     "context": "^0.0.1",
+    "dotenv": "^8.2.0",
+    "ethereumjs-abi": "^0.6.5",
     "ethers": "^4.0.37",
     "express": "^4.17.1",
     "jimp": "^0.8.4",
