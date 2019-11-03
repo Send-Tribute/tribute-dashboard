@@ -16,7 +16,7 @@ import { Icon, CustomTable, SectionHeader, Scanner } from '../general';
 import { CONTRACTS } from '../helpers/constants';
 import DAIabi from '../../contracts/dai';
 import rDAIabi from '../../contracts/rDai';
-import Tribute from '../Tribute';
+import Tribute from 'tribute-utils';
 
 const useStyles = createUseStyles({
   container: {
@@ -90,7 +90,7 @@ const Receiving = () => {
         externalUserInterest: unclaimedTribute,
         address: trimmedAddress
       });
-      return
+      return;
     }
     setValues({
       ...values,

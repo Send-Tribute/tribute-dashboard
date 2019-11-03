@@ -6,7 +6,7 @@ import { Button, Typography } from '@material-ui/core';
 import { CONTRACTS } from '../../helpers/constants';
 import DAIabi from '../../../contracts/dai';
 import rDAIabi from '../../../contracts/rDai';
-import Tribute from '../../Tribute';
+import Tribute from 'tribute-utils';
 import { Icon } from '../../general';
 import { createUseStyles } from 'react-jss';
 

@@ -21,7 +21,7 @@
     "update-dai-strat-abi": "curl -s -X GET \"https://api-kovan.etherscan.io/api?module=contract&action=getabi&address=$npm_package_contracts_kovan_dai\" | ./node_modules/node-jq/bin/jq -r \"[.result][0]\" > src/contracts/dai-strat.json",
     "update-abis": "yarn update-rdai-abi; yarn update-cdai-abi; yarn update-dai-abi; yarn update-dai-strat-abi",
     "lint": "eslint ./src --fix",
-    "start": "parcel public/dashboard.html public/widget.html",
+    "start": "parcel public/dashboard.html",
     "ganache_fork": "ganache-cli -f $(node get_infura.js) -m \"$(node get_mnemonic.js)\"",
     "build": "parcel build public/dashboard.html public/widget.html --out-dir dist",
     "storybook": "start-storybook -p 6006",
@@ -56,7 +56,8 @@
     "react-file-reader-input": "^2.0.0",
     "react-jss": "^10.0.0",
     "react-loading": "^2.0.3",
-    "react-qr-reader": "^2.2.1"
+    "react-qr-reader": "^2.2.1",
+    "tribute-utils": "0.0.1"
   },
   "devDependencies": {
     "@storybook/addon-actions": "^5.2.1",

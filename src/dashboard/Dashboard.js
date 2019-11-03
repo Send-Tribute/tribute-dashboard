@@ -11,7 +11,7 @@ import rToken from '../contracts/rDai.json';
 
 import DAIabi from '../contracts/dai';
 import rDAIabi from '../contracts/rDai';
-import Tribute from './Tribute';
+import Tribute from 'tribute-utils';
 
 import { TABS, CONTRACTS } from './helpers/constants';
 
