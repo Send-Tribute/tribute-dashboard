@@ -1,5 +1,4 @@
 import React, { useContext, useState } from 'react';
-import { ethers } from 'ethers';
 
 import {
   Typography,
@@ -13,10 +12,6 @@ import {
 import { createUseStyles } from 'react-jss';
 import { Context } from '../context';
 import { Icon, SectionHeader, Scanner } from '../general';
-import { CONTRACTS } from '../helpers/constants';
-import DAIabi from '../../contracts/dai';
-import rDAIabi from '../../contracts/rDai';
-import Tribute from '../Tribute';
 
 const useStyles = createUseStyles({
   container: {
@@ -33,7 +28,6 @@ const useStyles = createUseStyles({
     top: 3,
     height: 20
   },
-
   divider: {
     marginTop: 20
   },
@@ -82,7 +76,7 @@ const Receiving = () => {
         externalUserInterest: unclaimedTribute,
         address: trimmedAddress
       });
-      return
+      return;
     }
     setValues({
       ...values,
@@ -97,115 +91,75 @@ const Receiving = () => {
     unclaimedTribute = userDetails.unclaimed_balance;
   }
 
-  const getSelfTribute = () => (
-    <Container className={classes.container}>
-      <SectionHeader text="Self Tribute" icon="cached" />
-      <Container className={classes.contentContainer}>
-        <Paper elevation={5} className={classes.unclaimedTributeContainer}>
-          <Typography variant="body1">
-            <b>{selfTribute}</b>{' '}
-            <Icon name="baseCurrency" className={classes.baseCurrencyIcon} />{' '}
-            from your principal are generating interest for you.
-          </Typography>
-        </Paper>
-        <Divider className={classes.divider} />
+  const getSelfTribute = () => {
+    return (
+      <Container className={classes.container}>
+        <SectionHeader text="Self Tribute" icon="cached" />
+        <Container className={classes.contentContainer}>
+          <Paper elevation={5} className={classes.unclaimedTributeContainer}>
+            <Typography variant="body1">
+              <b>{selfTribute}</b>{' '}
+              <Icon name="baseCurrency" className={classes.baseCurrencyIcon} />{' '}
+              from your principal are generating interest for you.
+            </Typography>
+          </Paper>
+          <Divider className={classes.divider} />
+        </Container>
       </Container>
-    </Container>
-  );
+    );
+  };
 
-  // const getActiveInflows = () => (
-  //   <Container className={classes.container}>
-  //     <SectionHeader text="Active Tributes" icon="faucetOn" />
-  //     <Container className={classes.contentContainer}>
-  //       <CustomTable
-  //         headings={['Sender', 'Tribute Amount']}
-  //         rows={[[1, 2], [1, 2], [1, 2]]}
-  //       />
+  // const getActiveInflows = () => {
+  //   return (
+  //     <Container className={classes.container}>
+  //       <SectionHeader text="Active Tributes" icon="faucetOn" />
+  //       <Container className={classes.contentContainer}>
+  //         <CustomTable
+  //           headings={['Sender', 'Tribute Amount']}
+  //           rows={[[1, 2], [1, 2], [1, 2]]}
+  //         />
   //
-  //       <Divider className={classes.divider} />
+  //         <Divider className={classes.divider} />
+  //       </Container>
   //     </Container>
-  //   </Container>
-  // );
-
-  // const getInactiveInflows = () => (
-  //   <Container className={classes.container}>
-  //     <SectionHeader text="Inactive Tributes" icon="faucetOff" />
-  //     <Container className={classes.contentContainer}>
-  //       <CustomTable
-  //         headings={['Sender', 'Tribute Amount']}
-  //         rows={[[1, 2], [1, 2], [1, 2]]}
-  //       />
+  //   );
+  // };
+  //
+  // const getInactiveInflows = () => {
+  //   return (
+  //     <Container className={classes.container}>
+  //       <SectionHeader text="Inactive Tributes" icon="faucetOff" />
+  //       <Container className={classes.contentContainer}>
+  //         <CustomTable
+  //           headings={['Sender', 'Tribute Amount']}
+  //           rows={[[1, 2], [1, 2], [1, 2]]}
+  //         />
+  //       </Container>
   //     </Container>
-  //   </Container>
-  // );
+  //   );
+  // };
 
-  const getClaimTribute = () => (
-    <Container className={classes.container}>
-      <Container className={classes.contentContainer}>
-        <Paper elevation={5} className={classes.unclaimedTributeContainer}>
-          <Typography variant="body1">
-            Ready to claim: <b>{unclaimedTribute}</b>{' '}
-            <Icon name="baseCurrency" className={classes.baseCurrencyIcon} />
-          </Typography>
+  const getClaimTribute = () => {
+    return (
+      <Container className={classes.container}>
+        <Container className={classes.contentContainer}>
+          <Paper elevation={5} className={classes.unclaimedTributeContainer}>
+            <Typography variant="body1">
+              Ready to claim: <b>{unclaimedTribute}</b>{' '}
+              <Icon name="baseCurrency" className={classes.baseCurrencyIcon} />
+            </Typography>
 
-          <div>
-            <Button
-              onClick={() => context.tribute.claimAmount(context.address[0])}
-              variant="contained"
-              color="primary"
-              style={{ backgroundColor: '#1b1c4c' }}
-              className={classes.redeemButton}
-            >
-              <Icon name="receiveMoney" className={classes.buttonIcon} />
-              Claim
-            </Button>
-          </div>
-        </Paper>
-      </Container>
-    </Container>
-  );
-
-  const getClaimOnBehalfOf = () => (
-    <Container className={classes.container}>
-      <Container className={classes.contentContainer}>
-        <Paper elevation={5} className={classes.unclaimedTributeContainer}>
-          <div>
-            <Typography variant="body1">Claim on behalf of:</Typography>
-            <div style={{ display: 'flex' }}>
-              <TextField
-                variant="outlined"
-                label="Address"
-                id="outlined-dense"
-                margin="dense"
-                value={values.address}
-                onChange={e => {
-                  setAddress(e.target.value);
-                }}
-              />
+            <div>
               <Button
+                onClick={() => context.tribute.claimAmount(context.address[0])}
                 variant="contained"
-                style={{ padding: '0 0 0 0', margin: '0 0 0 10px' }}
-                onClick={() => {
-                  handleOpen();
-                }}
+                color="primary"
+                style={{ backgroundColor: '#1b1c4c' }}
+                className={classes.redeemButton}
               >
-                <Icon name="qr" className={classes.buttonIcon} />
+                <Icon name="receiveMoney" className={classes.buttonIcon} />
+                Claim
               </Button>
-              <Modal
-                open={open}
-                style={{
-                  paddingTop: '3rem'
-                }}
-              >
-                <Scanner
-                  handleClose={handleClose}
-                  setAddress={setAddress}
-                  onError={error => {
-                    // eslint-disable-next-line no-console
-                    console.log(error);
-                  }}
-                />
-              </Modal>
             </div>
           </Paper>
         </Container>
@@ -231,28 +185,61 @@ const Receiving = () => {
                     setAddress(e.target.value);
                   }}
                 />
-              </Typography>
+                <Button
+                  variant="contained"
+                  style={{ padding: '0 0 0 0', margin: '0 0 0 10px' }}
+                  onClick={() => {
+                    handleOpen();
+                  }}
+                >
+                  <Icon name="qr" className={classes.buttonIcon} />
+                </Button>
+                <Modal
+                  open={open}
+                  style={{
+                    paddingTop: '3rem'
+                  }}
+                >
+                  <Scanner
+                    handleClose={handleClose}
+                    setAddress={setAddress}
+                    onError={error => {
+                      // eslint-disable-next-line no-console
+                      console.log(error);
+                    }}
+                  />
+                </Modal>
+              </div>
+              <div style={{ marginTop: 4 }}>
+                <Typography variant="body1">
+                  Ready to claim: <b>{values.externalUserInterest}</b>{' '}
+                  <Icon
+                    name="baseCurrency"
+                    className={classes.baseCurrencyIcon}
+                  />
+                </Typography>
+              </div>
             </div>
-          </div>
 
-          <div>
-            <Button
-              onClick={() => {
-                context.tribute.claimTributeOnBehalfOf(values.address);
-              }}
-              variant="contained"
-              color="primary"
-              style={{ backgroundColor: '#1b1c4c' }}
-              className={classes.redeemButton}
-            >
-              <Icon name="receiveMoney" className={classes.buttonIcon} />
-              Claim
-            </Button>
-          </div>
-        </Paper>
+            <div>
+              <Button
+                onClick={() =>
+                  context.tribute.claimTributeOnBehalfOf(values.address)
+                }
+                variant="contained"
+                color="primary"
+                style={{ backgroundColor: '#1b1c4c' }}
+                className={classes.redeemButton}
+              >
+                <Icon name="receiveMoney" className={classes.buttonIcon} />
+                Claim
+              </Button>
+            </div>
+          </Paper>
+        </Container>
       </Container>
-    </Container>
-  );
+    );
+  };
 
   return (
     <div>
