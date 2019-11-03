@@ -97,6 +97,7 @@ const Receiving = () => {
       );
       const externalUserDetails = await tribute.getInfo();
       const externalUserInterest = externalUserDetails.unclaimedTribute;
+      // eslint-disable-next-line no-console
       console.log(externalUserInterest);
       setValues({ ...values, externalUserInterest });
     }
@@ -213,6 +214,7 @@ const Receiving = () => {
                   handleClose={handleClose}
                   setAddress={setAddress}
                   onError={error => {
+                    // eslint-disable-next-line no-console
                     console.log(error);
                   }}
                 />

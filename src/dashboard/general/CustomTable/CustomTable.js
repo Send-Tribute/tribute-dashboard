@@ -34,9 +34,9 @@ const CustomTable = ({ headings, rows }) => {
   let bodyRows = <TableRow />;
   if (rows && rows.length) {
     bodyRows = rows.map((row, i) => (
-      <TableRow key={i}>
+      <TableRow key={`${row[i].item + i}`}>
         {row.map((item, j) => (
-          <TableCell align="center" key={j}>
+          <TableCell align="center" key={`${item + j}`}>
             {item}
           </TableCell>
         ))}

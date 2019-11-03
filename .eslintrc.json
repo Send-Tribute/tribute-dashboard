@@ -17,6 +17,7 @@
   },
   "plugins": ["react"],
   "rules": {
+    "react/jsx-curly-newline": "off",
     "camelcase": "off",
     "react/jsx-one-expression-per-line": "off",
     "prettier/prettier": "error",

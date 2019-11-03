@@ -17,11 +17,14 @@ import { TABS, CONTRACTS } from './helpers/constants';
 export default function Dashboard() {
   const [context, setContext] = useContext(Context);
 
+  const { selectedTab } = context;
+
   if (typeof window.ethereum !== 'undefined') {
     window.ethereum.on('accountsChanged', accounts => {
       // should update context when user change is detected
       if (context.address && context.address !== accounts[0]) {
         setContext(state => ({ ...state, address: accounts[0] }));
+        // eslint-disable-next-line no-console
         console.log(`Address was updated ${accounts[0]}`);
       }
     });
@@ -33,6 +36,7 @@ export default function Dashboard() {
         let address = '';
         try {
           address = await window.ethereum.enable();
+          // eslint-disable-next-line no-console
           console.log(`address ${address}`);
         } catch (error) {
           setContext(state => ({
@@ -69,6 +73,7 @@ export default function Dashboard() {
             );
             const tribute = new Tribute(DAIContract, rDAIContract, address[0]);
             const userDetails = await tribute.getInfo();
+            // eslint-disable-next-line no-console
             console.log(userDetails);
             setContext(state => ({
               ...state,
@@ -79,6 +84,7 @@ export default function Dashboard() {
             }));
           }
         } catch (error) {
+          // eslint-disable-next-line no-console
           console.log('Web3 Loading Error: ', error.message);
           setContext(state => ({
             ...state,
@@ -96,7 +102,7 @@ export default function Dashboard() {
 
   function getContent() {
     // let [selectedTab, setSelectedTab] = useState();
-    const tabName = context.selectedTab ? context.selectedTab : TABS.default;
+    const tabName = selectedTab || TABS.default;
     if (tabName === 'sending') return <Sending />;
     if (tabName === 'receiving') return <Receiving />;
     if (tabName === 'settings') return <Settings />;

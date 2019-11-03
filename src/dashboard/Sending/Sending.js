@@ -105,6 +105,7 @@ const Sending = () => {
   const { userDetails } = context;
 
   let activeTributeRows = [['(enable wallet) ']];
+  // eslint-disable-next-line no-console
   console.log(userDetails);
   if (userDetails && userDetails.allocations.recipients) {
     activeTributeRows = userDetails.allocations.recipients.map(
@@ -199,7 +200,8 @@ const Sending = () => {
               handleClose={handleClose}
               setAddress={setAddress}
               onError={error => {
-                this.changeAlert('danger', error);
+                // eslint-disable-next-line no-console
+                console.log(error);
               }}
             />
           </Modal>

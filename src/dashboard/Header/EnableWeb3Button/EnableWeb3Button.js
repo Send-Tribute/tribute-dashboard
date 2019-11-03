@@ -31,6 +31,7 @@ export default function EnableWeb3Button() {
     // 1. enable metamask
     if (window.ethereum) {
       const address = await window.ethereum.enable();
+      // eslint-disable-next-line no-console
       console.log(`address ${address}`);
 
       setContext(state => ({
@@ -66,6 +67,7 @@ export default function EnableWeb3Button() {
             address
           );
           const externalUserDetails = await tribute.getInfo();
+          // eslint-disable-next-line no-console
           console.log(externalUserDetails);
           setContext(state => ({
             ...state,
@@ -76,6 +78,7 @@ export default function EnableWeb3Button() {
           }));
         }
       } catch (error) {
+        // eslint-disable-next-line no-console
         console.log('Web3 Loading Error: ', error.message);
       }
     }
