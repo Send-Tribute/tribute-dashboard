@@ -2,6 +2,6 @@ language: node_js
 node_js:
   - '10'
 after_success:
-  - ./scripts/send.sh success $DISCORD_WEBHOOK_URL
+  - ./travis-notification-discord.sh success $DISCORD_WEBHOOK_URL
 after_failure:
-  - ./scripts/send.sh failure $DISCORD_WEBHOOK_URL
+  - ./travis-notification-discord.sh failure $DISCORD_WEBHOOK_URL
