@@ -9,9 +9,10 @@ import {
   Button
 } from '@material-ui/core';
 import PropTypes from 'prop-types';
-import Icon from '../Icon';
 import { createUseStyles } from 'react-jss';
+import Icon from '../Icon';
 import { getShortAddress } from '../../helpers/utils';
+
 const useStyles = createUseStyles({
   card: {
     maxWidth: 345,

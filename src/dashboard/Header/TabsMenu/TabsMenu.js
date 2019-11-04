@@ -1,28 +1,29 @@
 import React, { useContext } from 'react';
+import { Tab, Tabs } from '@material-ui/core';
 import { Context } from '../../context';
 import { TABS } from '../../helpers/constants';
-import { Tab, Tabs } from '@material-ui/core';
 import Icon from '../../general/Icon';
 
 export default function TabsMenu() {
   const [context, setContext] = useContext(Context);
-
+  const { selectedTab } = context;
   const handleTabChange = (event, tab) => {
     setContext({ ...context, selectedTab: TABS.ordering[tab] });
   };
 
-  const getTabs = () => {
-    return TABS.ordering.map((tab, index) => {
+  const getTabs = () =>
+    TABS.ordering.map((tab, index) => (
       // return <Tab label={tab} icon={TABS.icons[0]} />;
-      return (
-        <Tab label={tab} key={index} icon={<Icon name={TABS.icons[tab]} />} />
-      );
-    });
-  };
+      <Tab
+        label={tab}
+        key={`${index + index}`}
+        icon={<Icon name={TABS.icons[tab]} />}
+      />
+    ));
 
   const currentTab =
-    context.selectedTab !== undefined
-      ? TABS.ordering.indexOf(context.selectedTab)
+    selectedTab !== undefined
+      ? TABS.ordering.indexOf(selectedTab)
       : TABS.ordering.indexOf(TABS.default);
 
   return (

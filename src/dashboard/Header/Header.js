@@ -1,10 +1,9 @@
-import React, { useContext } from 'react';
-import { Context } from '../context';
-import { AppBar, Toolbar, Typography } from '@material-ui/core';
-import TabsMenu from './TabsMenu/';
-import EnableWeb3Button from './EnableWeb3Button/';
-import tribute_logo from '../assets/tribute-logo.png';
+import React from 'react';
+import { AppBar, Toolbar } from '@material-ui/core';
 import { createUseStyles } from 'react-jss';
+import TabsMenu from './TabsMenu';
+import EnableWeb3Button from './EnableWeb3Button';
+import tribute_logo from '../assets/tribute-logo.png';
 
 const useStyles = createUseStyles({
   root: {
@@ -25,11 +24,10 @@ const useStyles = createUseStyles({
 });
 
 export default function Header() {
-  const [context, setContext] = useContext(Context);
   const classes = useStyles();
 
   const getUserDetails = () => {
-    let details = (
+    const details = (
       <div style={{ position: 'absolute', right: 10, top: 10 }}>
         <EnableWeb3Button className={classes.web3Button} />
       </div>
@@ -48,7 +46,7 @@ export default function Header() {
         className={classes.appBar}
       >
         <Toolbar>
-          <img src={tribute_logo} className={classes.logo} />
+          <img alt="Tribute logo" src={tribute_logo} className={classes.logo} />
           {getUserDetails()}
         </Toolbar>
         <TabsMenu />

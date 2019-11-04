@@ -20,6 +20,7 @@
     "update-dai-abi": "curl -s -X GET \"https://api-kovan.etherscan.io/api?module=contract&action=getabi&address=$npm_package_contracts_kovan_dai\" | ./node_modules/node-jq/bin/jq -r \"[.result][0]\" > src/contracts/dai.json",
     "update-dai-strat-abi": "curl -s -X GET \"https://api-kovan.etherscan.io/api?module=contract&action=getabi&address=$npm_package_contracts_kovan_dai\" | ./node_modules/node-jq/bin/jq -r \"[.result][0]\" > src/contracts/dai-strat.json",
     "update-abis": "yarn update-rdai-abi; yarn update-cdai-abi; yarn update-dai-abi; yarn update-dai-strat-abi",
+    "test": "echo \"Error: no test specified\"",
     "lint": "eslint ./src --fix",
     "start": "parcel public/dashboard.html public/widget.html",
     "ganache_fork": "ganache-cli -f $(node get_infura.js) -m \"$(node get_mnemonic.js)\"",
@@ -70,7 +71,15 @@
     "babel-preset-env": "^1.7.0",
     "babel-preset-react": "^6.24.1",
     "eslint": "^6.6.0",
-    "parcel-bundler": "^1.12.4"
+    "eslint-config-airbnb": "^18.0.1",
+    "eslint-config-prettier": "^6.5.0",
+    "eslint-plugin-import": "^2.18.2",
+    "eslint-plugin-jsx-a11y": "^6.2.3",
+    "eslint-plugin-prettier": "^3.1.1",
+    "eslint-plugin-react": "^7.16.0",
+    "husky": "^3.0.9",
+    "parcel-bundler": "^1.12.4",
+    "prettier-eslint": "^9.0.0"
   },
   "husky": {
     "hooks": {

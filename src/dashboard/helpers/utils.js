@@ -10,7 +10,11 @@ export const getShortAddress = address => {
 
 export const getEtherscanLink = (address, network) => {
   return (
-    <a href={`${NETWORKS[network].etherscan}${address}`} target="_blank">
+    <a
+      href={`${NETWORKS[network].etherscan}${address}`}
+      target="_blank"
+      rel="noopener noreferrer"
+    >
       {address}
     </a>
   );

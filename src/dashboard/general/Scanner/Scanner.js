@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import QrReader from 'react-qr-reader';
 import FileReaderInput from 'react-file-reader-input';
 import QrCode from 'qrcode-reader';
-var Jimp = require('jimp');
+
+const Jimp = require('jimp');
 
 class Scanner extends Component {
   constructor(props) {
@@ -21,42 +22,50 @@ class Scanner extends Component {
     };
     this.handleScan = this.handleScan.bind(this);
   }
+
   stopRecording() {
     this.setState({ delay: false });
   }
+
   onImageLoad(data) {
     console.log(data);
   }
+
   handleScan(data) {
     if (data) {
       setTimeout(() => {
         this.props.setAddress(data);
         this.props.handleClose();
-        //maybe they just scanned an address?
+        // maybe they just scanned an address?
       }, 100);
     }
   }
+
   chooseDeviceId(a, b) {
     console.log('choose', a, b);
   }
+
   handleError(error) {
     console.error(error);
     this.setState({ legacyMode: true });
     this.props.onError(error);
   }
+
   onClose() {
     this.props.handleClose();
   }
-  //componentDidMount(){
+
+  // componentDidMount(){
   //  this.setState({scanFail:"TEST"})
-  //}
+  // }
   componentWillUnmount() {
     this.props.handleClose();
   }
+
   legacyHandleChange(e, results) {
     results.forEach(result => {
       const [e, file] = result;
-      let reader = new FileReader();
+      const reader = new FileReader();
       reader.onload = e => {
         console.log('');
         this.setState({ imageData: e.target.result });
@@ -73,7 +82,7 @@ class Scanner extends Component {
               console.error('ERR1', err);
               this.setState({ scanFail: err.toString() });
             }
-            var qr = new QrCode();
+            const qr = new QrCode();
             qr.callback = (err, value) => {
               this.setState({ isLoading: false });
               if (err) {
@@ -92,7 +101,7 @@ class Scanner extends Component {
               }
             };
             if (!image || !image.bitmap) {
-              //this.setState({extraFail:JSON.stringify(e.target.result)})
+              // this.setState({extraFail:JSON.stringify(e.target.result)})
             } else {
               qr.decode(image.bitmap);
             }
@@ -103,6 +112,7 @@ class Scanner extends Component {
       reader.readAsDataURL(file);
     });
   }
+
   render() {
     let displayedImage = '';
     if (this.state.imageData) {
@@ -137,7 +147,7 @@ class Scanner extends Component {
             height: 1,
             fontWeight: 'bold'
           }}
-        ></div>
+        />
       );
     }
 
@@ -221,7 +231,7 @@ class Scanner extends Component {
                 </div>
                 <img
                   // src={qrimage}
-                  src={'./'}
+                  src="./"
                   style={{
                     position: 'absolute',
                     left: '36%',
@@ -293,7 +303,7 @@ class Scanner extends Component {
             opacity: 0.333
           }}
         >
-          {navigator.userAgent} - {JSON.stringify(navigator.mediaDevices)}
+          {navigator.userAgent} -{JSON.stringify(navigator.mediaDevices)}
         </div>
         {displayedImage}
         {failMessage}

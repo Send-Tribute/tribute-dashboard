@@ -5,11 +5,11 @@ import {
   TableHead,
   TableCell,
   TableRow,
-  Paper,
-  Typography
+  Paper
 } from '@material-ui/core';
 import PropTypes from 'prop-types';
 import { createUseStyles } from 'react-jss';
+
 const useStyles = createUseStyles({
   root: {
     width: '100%',
@@ -24,30 +24,24 @@ const CustomTable = ({ headings, rows }) => {
 
   let head = <TableCell />;
   if (headings && headings.length) {
-    head = headings.map((heading, index) => {
-      return (
-        <TableCell align="center" key={index}>
-          {heading}
-        </TableCell>
-      );
-    });
+    head = headings.map(heading => (
+      <TableCell align="center" key={heading}>
+        {heading}
+      </TableCell>
+    ));
   }
 
   let bodyRows = <TableRow />;
   if (rows && rows.length) {
-    bodyRows = rows.map((row, i) => {
-      return (
-        <TableRow key={i}>
-          {row.map((item, j) => {
-            return (
-              <TableCell align="center" key={j}>
-                {item}
-              </TableCell>
-            );
-          })}
-        </TableRow>
-      );
-    });
+    bodyRows = rows.map((row, i) => (
+      <TableRow key={`${row[i].item + i}`}>
+        {row.map((item, j) => (
+          <TableCell align="center" key={`${item + j}`}>
+            {item}
+          </TableCell>
+        ))}
+      </TableRow>
+    ));
   }
 
   return (

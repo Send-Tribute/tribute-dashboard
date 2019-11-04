@@ -1,16 +1,17 @@
 import React, { useState, createContext } from 'react';
+import PropTypes from 'prop-types';
 
 const Context = createContext();
 
-const Provider = (props) => {
-  const [state, setState] = useState({}); //this overrides context state
+const Provider = ({ children }) => {
+  const [state, setState] = useState({}); // this overrides context state
   return (
-    <Context.Provider value={[state, setState]}>
-      {props.children}
-    </Context.Provider>
+    <Context.Provider value={[state, setState]}>{children}</Context.Provider>
   );
-}
-
+};
+Provider.propTypes = {
+  children: PropTypes.node.isRequired
+};
 export { Context, Provider };
 
 /*
