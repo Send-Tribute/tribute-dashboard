@@ -72,7 +72,7 @@ export default function Dashboard() {
               walletProvider.getSigner()
             );
             const tribute = new Tribute(DAIContract, rDAIContract, address[0]);
-            const userDetails = await tribute.getInfo();
+            const userDetails = await tribute.getInfo(address[0]);
             // eslint-disable-next-line no-console
             console.log(userDetails);
             setContext(state => ({

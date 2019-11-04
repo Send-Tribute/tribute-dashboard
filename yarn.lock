@@ -11820,10 +11820,10 @@ tr46@^1.0.1:
   dependencies:
     punycode "^2.1.0"
 
-tribute-utils@0.0.1:
-  version "0.0.1"
-  resolved "https://registry.yarnpkg.com/tribute-utils/-/tribute-utils-0.0.1.tgz#df29d7936f1c2f0d77e1d1b5e1f419da8e59105a"
-  integrity sha512-Jr15BDxepbRf3Uf3VoQ6jXPeVVoAxIJfbXsCa1gzn9dGbF5qDL0lkoW0+LjB5VlXNihzgZBT9n1NDBgte1x+eA==
+tribute-utils@^0.0.4:
+  version "0.0.4"
+  resolved "https://registry.yarnpkg.com/tribute-utils/-/tribute-utils-0.0.4.tgz#bbfa0ef3466e28a41318e99107880c1e26d8ea17"
+  integrity sha512-wnMdjgT2kbt56UlKq86JNXBFpigKkjjoQr2NIIbYSXWehs51L1Qjvfa7d7RJ7L1zuN8AEhKO/w+dO3WaQenVbA==
   dependencies:
     babel-polyfill "^6.26.0"
     ethers "^4.0.39"
