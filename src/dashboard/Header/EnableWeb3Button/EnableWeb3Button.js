@@ -2,12 +2,12 @@ import React, { useContext } from 'react';
 import { ethers } from 'ethers';
 import { Button, Typography } from '@material-ui/core';
 import { createUseStyles } from 'react-jss';
+import Tribute from 'tribute-utils';
 import { Context } from '../../context';
 import { CONTRACTS } from '../../helpers/constants';
 
 import DAIabi from '../../../contracts/dai';
 import rDAIabi from '../../../contracts/rDai';
-import Tribute from '../../Tribute';
 import { Icon } from '../../general';
 
 const useStyles = createUseStyles({

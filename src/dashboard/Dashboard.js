@@ -1,5 +1,6 @@
 import React, { useEffect, useContext } from 'react';
 import { ethers } from 'ethers';
+import Tribute from 'tribute-utils';
 import { Context } from './context';
 import Footer from './Footer';
 import Header from './Header/Header';
@@ -10,7 +11,6 @@ import Settings from './Settings/Settings';
 
 import DAIabi from '../contracts/dai';
 import rDAIabi from '../contracts/rDai';
-import Tribute from './Tribute';
 
 import { TABS, CONTRACTS } from './helpers/constants';
 
@@ -72,7 +72,7 @@ export default function Dashboard() {
               walletProvider.getSigner()
             );
             const tribute = new Tribute(DAIContract, rDAIContract, address[0]);
-            const userDetails = await tribute.getInfo();
+            const userDetails = await tribute.getInfo(address[0]);
             // eslint-disable-next-line no-console
             console.log(userDetails);
             setContext(state => ({
