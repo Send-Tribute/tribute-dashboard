@@ -1,5 +1,6 @@
 import React, { useEffect, useContext } from 'react';
 import { ethers } from 'ethers';
+import Tribute from 'tribute-utils';
 import { Context } from './context';
 import Footer from './Footer';
 import Header from './Header/Header';
@@ -10,7 +11,6 @@ import Settings from './Settings/Settings';
 
 import DAIabi from '../contracts/dai';
 import rDAIabi from '../contracts/rDai';
-import Tribute from 'tribute-utils';
 
 import { TABS, CONTRACTS } from './helpers/constants';
 
