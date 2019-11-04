@@ -9,8 +9,8 @@ import Wallet from './Wallet/Wallet';
 import Receiving from './Receiving/Receiving';
 import Settings from './Settings/Settings';
 
-import DAIabi from '../contracts/dai';
-import rDAIabi from '../contracts/rDai';
+import DAIabi from './contracts/dai';
+import rDAIabi from './contracts/rDai';
 
 import { TABS, CONTRACTS } from './helpers/constants';
 
