@@ -1,5 +1,6 @@
-require('babel-polyfill')
+require('babel-polyfill');
 const ethers = require('ethers');
+
 const { bigNumberify, formatUnits } = ethers.utils;
 
 class Tribute {
@@ -35,26 +36,26 @@ class Tribute {
     const { recipients, proportions } = currentHat;
 
     // calculate proportions whole numbers
-    let portionWholeNum = proportions.map(portion => {
+    const portionWholeNum = proportions.map(portion => {
       return bigNumberify(portion)
         .mul(balance_BN)
         .div(this.PROPORTION_BASE);
     });
 
     // convert to object mapping
-    let recipientMap = {};
+    const recipientMap = {};
     recipients.forEach(
       (address, i) => (recipientMap[address.toLowerCase()] = portionWholeNum[i])
     );
 
-    let userBal = recipientMap[this.userAddress]
+    const userBal = recipientMap[this.userAddress]
       ? recipientMap[this.userAddress]
       : balance_BN;
 
     recipientMap[this.userAddress] = userBal.add(bigNumberify(amountToTribute));
 
     // remove addresses that have 0 flow
-    for (let [address, portion_BN] of Object.entries(recipientMap)) {
+    for (const [address, portion_BN] of Object.entries(recipientMap)) {
       if (portion_BN.eq(ethers.constants.Zero)) {
         delete recipientMap[address];
       }
@@ -73,11 +74,11 @@ class Tribute {
   }
 
   async getInfo() {
-    let decimals_rDAI = await this.rDAIContract.decimals();
+    const decimals_rDAI = await this.rDAIContract.decimals();
 
     // Balance
     const rDAIBalance_BN = await this.rDAIContract.balanceOf(this.userAddress);
-    let unclaimedBalance_BN = await this.rDAIContract.interestPayableOf(
+    const unclaimedBalance_BN = await this.rDAIContract.interestPayableOf(
       this.userAddress
     );
 
@@ -90,7 +91,7 @@ class Tribute {
     let unallocatedBalance;
     let portionWholeNum;
 
-    //check if hat is empty
+    // check if hat is empty
     if (recipients.length === 0) {
       unallocatedBalance = rDAIBalance_BN;
     } else {
@@ -102,15 +103,15 @@ class Tribute {
           .mul(rDAIBalance_BN)
           .div(this.PROPORTION_BASE);
       });
-      let userIdx = recipients.indexOf(this.userAddress.toLowerCase());
+      const userIdx = recipients.indexOf(this.userAddress.toLowerCase());
 
-      //check if user exists
+      // check if user exists
       if (userIdx < 0) {
         unallocatedBalance = ethers.constants.Zero;
       } else {
         unallocatedBalance = portionWholeNum[userIdx];
 
-        //remove user from portionWholeNum
+        // remove user from portionWholeNum
         recipients.splice(userIdx, 1); // remove user from recipients
         portionWholeNum.splice(userIdx, 1); // remove user from the proportions
       }
@@ -132,7 +133,7 @@ class Tribute {
   }
 
   async startFlow(recipientAddress, amount) {
-    let amount_BN = bigNumberify(amount);
+    const amount_BN = bigNumberify(amount);
 
     const decimals_rDAI = await this.rDAIContract.decimals();
 
@@ -148,26 +149,26 @@ class Tribute {
     const { recipients, proportions } = currentHat;
 
     // calculate proportions whole numbers
-    let portionWholeNum = proportions.map(portion => {
+    const portionWholeNum = proportions.map(portion => {
       return bigNumberify(portion)
         .mul(balance_BN)
         .div(this.PROPORTION_BASE);
     });
 
-    //turn recipients and proportions into map
+    // turn recipients and proportions into map
     // convert to object mapping
-    let recipientMap = {};
+    const recipientMap = {};
     recipients.forEach(
       (address, i) => (recipientMap[address.toLowerCase()] = portionWholeNum[i])
     );
 
-    //validate if hat !exist
+    // validate if hat !exist
     if (currentHat.hatID.eq(SELF_HAT_ID) || currentHat.hatID.isZero()) {
-      //if balance < amount
+      // if balance < amount
       if (balance_BN.lt(amount_BN)) throw 'insuffient balance';
     }
 
-    //validate if there are amounts left in user portion
+    // validate if there are amounts left in user portion
     if (!(this.userAddress in recipientMap)) throw 'insufficient balance left';
 
     let userBal = recipientMap[this.userAddress]
@@ -176,28 +177,28 @@ class Tribute {
     let recipientBal = recipientMap[recipientAddress.toLowerCase()]
       ? recipientMap[recipientAddress.toLowerCase()]
       : ethers.constants.Zero;
-    let sum = userBal.add(recipientBal);
+    const sum = userBal.add(recipientBal);
 
     if (sum.lt(amount_BN)) throw 'insufficent balance left';
 
-    //We have enough to update, continue and update values
+    // We have enough to update, continue and update values
 
-    //update values between user and recipient
+    // update values between user and recipient
     const amountNeeded = amount_BN.sub(recipientBal);
     userBal = userBal.sub(amountNeeded);
     recipientBal = recipientBal.add(amountNeeded);
 
-    //set values
+    // set values
     recipientMap[this.userAddress] = userBal;
     recipientMap[recipientAddress.toLowerCase()] = recipientBal;
 
     // remove addresses that have 0 flow
-    for (let [address, portion_BN] of Object.entries(recipientMap)) {
+    for (const [address, portion_BN] of Object.entries(recipientMap)) {
       if (portion_BN.eq(ethers.constants.Zero)) {
         delete recipientMap[address];
       }
     }
-    //update to new hat values
+    // update to new hat values
     await this.rDAIContract.createHat(
       Object.keys(recipientMap),
       Object.values(recipientMap),
@@ -222,15 +223,15 @@ class Tribute {
     const { recipients, proportions } = currentHat;
 
     // calculate proportions whole numbers
-    let portionWholeNum = proportions.map(portion => {
+    const portionWholeNum = proportions.map(portion => {
       return bigNumberify(portion)
         .mul(balance_BN)
         .div(this.PROPORTION_BASE);
     });
 
-    //turn recipients and proportions into map
+    // turn recipients and proportions into map
     // convert to object mapping
-    let recipientMap = {};
+    const recipientMap = {};
     recipients.forEach(
       (address, i) => (recipientMap[address.toLowerCase()] = portionWholeNum[i])
     );
@@ -243,26 +244,26 @@ class Tribute {
     if (!(addressToRemove.toLowerCase() in recipientMap))
       throw `address: ${addressToRemove} does not exist`;
 
-    let userBal = recipientMap[this.userAddress]
+    const userBal = recipientMap[this.userAddress]
       ? recipientMap[this.userAddress]
       : balance_BN;
-    let recipientBal = recipientMap[addressToRemove.toLowerCase()]
+    const recipientBal = recipientMap[addressToRemove.toLowerCase()]
       ? recipientMap[addressToRemove.toLowerCase()]
       : ethers.constants.Zero;
-    let sum = userBal.add(recipientBal);
+    const sum = userBal.add(recipientBal);
 
-    //update and set values between user and recipient
+    // update and set values between user and recipient
     recipientMap[this.userAddress] = userBal.add(recipientBal);
     recipientMap[addressToRemove.toLowerCase()] = ethers.constants.Zero;
 
     // remove addresses that have 0 flow
-    for (let [address, portion_BN] of Object.entries(recipientMap)) {
+    for (const [address, portion_BN] of Object.entries(recipientMap)) {
       if (portion_BN.eq(ethers.constants.Zero)) {
         delete recipientMap[address];
       }
     }
 
-    //update to new hat values
+    // update to new hat values
     await this.rDAIContract.createHat(
       Object.keys(recipientMap),
       Object.values(recipientMap),
@@ -273,14 +274,14 @@ class Tribute {
   async getUnclaimedAmount(address) {
     const decimals_rDAI = await this.rDAIContract.decimals();
     const response = await this.rDAIContract.interestPayableOf(address);
-    const output = formatUnits(response, decimals_rDAI)
+    const output = formatUnits(response, decimals_rDAI);
     return output;
   }
 
   async claimAmount(address) {
-    //this cashes out all rDAI in both interest
-    //and principal and sends it back to the user
-    //NOTE: this amount is not added to the receiving user's hat, it shows up in their rDAIBalance
+    // this cashes out all rDAI in both interest
+    // and principal and sends it back to the user
+    // NOTE: this amount is not added to the receiving user's hat, it shows up in their rDAIBalance
     await this.rDAIContract.payInterest(address);
   }
 }

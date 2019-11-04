@@ -1,6 +1,4 @@
-import React, { useContext, useState, useEffect } from 'react';
-import { Context } from '../context';
-import { ethers } from 'ethers';
+import React, { useContext, useState } from 'react';
 
 import {
   Typography,
@@ -12,11 +10,8 @@ import {
   Button
 } from '@material-ui/core';
 import { createUseStyles } from 'react-jss';
-import { Icon, CustomTable, SectionHeader, Scanner } from '../general';
-import { CONTRACTS } from '../helpers/constants';
-import DAIabi from '../../contracts/dai';
-import rDAIabi from '../../contracts/rDai';
-import Tribute from '../Tribute';
+import { Context } from '../context';
+import { Icon, SectionHeader, Scanner } from '../general';
 
 const useStyles = createUseStyles({
   container: {
@@ -33,7 +28,6 @@ const useStyles = createUseStyles({
     top: 3,
     height: 20
   },
-
   divider: {
     marginTop: 20
   },
@@ -44,10 +38,6 @@ const useStyles = createUseStyles({
     padding: 20,
     borderRadius: 10
   },
-  redeemButton: {
-    right: 0,
-    marginLeft: 20
-  },
   buttonIcon: {
     height: 25,
     paddingRight: 10
@@ -55,17 +45,13 @@ const useStyles = createUseStyles({
 });
 
 const Receiving = () => {
-  const [context, setContext] = useContext(Context);
+  const [context] = useContext(Context);
   const classes = useStyles();
   const { userDetails } = context;
   const [values, setValues] = useState({
     address: '',
     externalUserInterest: '(scan to load)'
   });
-
-  const handleChange = name => event => {
-    setValues({ ...values, [name]: event.target.value });
-  };
 
   const [open, setOpen] = useState(false);
   const handleOpen = () => {
@@ -90,7 +76,7 @@ const Receiving = () => {
         externalUserInterest: unclaimedTribute,
         address: trimmedAddress
       });
-      return
+      return;
     }
     setValues({
       ...values,
@@ -123,35 +109,35 @@ const Receiving = () => {
     );
   };
 
-  const getActiveInflows = () => {
-    return (
-      <Container className={classes.container}>
-        <SectionHeader text="Active Tributes" icon="faucetOn" />
-        <Container className={classes.contentContainer}>
-          <CustomTable
-            headings={['Sender', 'Tribute Amount']}
-            rows={[[1, 2], [1, 2], [1, 2]]}
-          />
-
-          <Divider className={classes.divider} />
-        </Container>
-      </Container>
-    );
-  };
-
-  const getInactiveInflows = () => {
-    return (
-      <Container className={classes.container}>
-        <SectionHeader text="Inactive Tributes" icon="faucetOff" />
-        <Container className={classes.contentContainer}>
-          <CustomTable
-            headings={['Sender', 'Tribute Amount']}
-            rows={[[1, 2], [1, 2], [1, 2]]}
-          />
-        </Container>
-      </Container>
-    );
-  };
+  // const getActiveInflows = () => {
+  //   return (
+  //     <Container className={classes.container}>
+  //       <SectionHeader text="Active Tributes" icon="faucetOn" />
+  //       <Container className={classes.contentContainer}>
+  //         <CustomTable
+  //           headings={['Sender', 'Tribute Amount']}
+  //           rows={[[1, 2], [1, 2], [1, 2]]}
+  //         />
+  //
+  //         <Divider className={classes.divider} />
+  //       </Container>
+  //     </Container>
+  //   );
+  // };
+  //
+  // const getInactiveInflows = () => {
+  //   return (
+  //     <Container className={classes.container}>
+  //       <SectionHeader text="Inactive Tributes" icon="faucetOff" />
+  //       <Container className={classes.contentContainer}>
+  //         <CustomTable
+  //           headings={['Sender', 'Tribute Amount']}
+  //           rows={[[1, 2], [1, 2], [1, 2]]}
+  //         />
+  //       </Container>
+  //     </Container>
+  //   );
+  // };
 
   const getClaimTribute = () => {
     return (
@@ -218,7 +204,8 @@ const Receiving = () => {
                     handleClose={handleClose}
                     setAddress={setAddress}
                     onError={error => {
-                      this.changeAlert('danger', error);
+                      // eslint-disable-next-line no-console
+                      console.log(error);
                     }}
                   />
                 </Modal>
