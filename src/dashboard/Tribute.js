@@ -39,12 +39,12 @@ class Tribute {
     //This is because there are no decimals
 
     return proportions.map(portion => {
-      console.log(portion.toString())
+      console.log("Portion: " + portion.toString())
 
       //obtain portion whole number
       let portion_BN = bigNumberify(portion).mul(balance_BN)
 
-      console.log(portion_BN.toString())
+      console.log("Portion BN: " + portion_BN.toString())
 
       //NOTE: This reduction loses precision 
       //Take Expanded Form and Reduce
@@ -66,6 +66,9 @@ class Tribute {
   async generate(amountToTransferString) {
 
     const DAI_DECIMALS = await this.get_DAI_DECIMALS();
+
+    //decimals length cannot be bigger than allowed DAI_DECIMALS
+    if (amountToTransferString.split('.')[1].length > DAI_DECIMALS) throw "Underflow Error"
 
     // approve DAI
     const amountToTransfer_BN = parseUnits(amountToTransferString, DAI_DECIMALS)
