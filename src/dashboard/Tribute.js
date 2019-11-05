@@ -35,19 +35,19 @@ class Tribute {
   }
 
   _calculateProportionWholeNumbers(proportions, balance_BN) {
-    return proportions.map(portion => {
-      //let p_num = 435975214.1594
-      //let p = parseUnits(p_num.toString(), 18)
-      //console.log("portion: " + p.toString())
-      //let b = parseUnits("12345.010132100000000000", 18)
-      //console.log("balance: " + b.toString())
+    //NOTE: All math is done in expanded notion in base 10.
+    //This is because there are no decimals
 
-      //portion by balance gives expanded form
-      //let portion_BN = p.mul(b)
+    return proportions.map(portion => {
       console.log(portion.toString())
+
+      //obtain portion whole number
       let portion_BN = bigNumberify(portion).mul(balance_BN)
+
       console.log(portion_BN.toString())
-      //take expanded form and reduce to proportion whole number
+
+      //NOTE: This reduction loses precision 
+      //Take Expanded Form and Reduce
       portion_BN = portion_BN.div(this.PROPORTION_BASE)
       console.log("portion whole: " + portion_BN.toString())
       return portion_BN
@@ -97,7 +97,7 @@ class Tribute {
       ? recipientMap[this.userAddress]
       : balance_BN;
 
-    //add the amount to existing balance in the proportion form
+    //add the amountToTransfer to existing balance in the proportion form
     recipientMap[this.userAddress] = userBal.add(amountToTransfer_BN);
     recipientMap = this._removeAddressesWithZeroFlow(recipientMap)
 
@@ -108,6 +108,7 @@ class Tribute {
     let newProportions = Object.values(recipientMap).map(
       value => {
         //14 allows 4 decimals of precision
+        console.log("before reduction: " + value)
         let val = value.div(bigNumberify(10).pow(14))
         console.log("reduced: " + val.toNumber())
         return val.toNumber()
