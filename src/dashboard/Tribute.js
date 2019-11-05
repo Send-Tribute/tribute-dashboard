@@ -39,12 +39,8 @@ class Tribute {
     //This is because there are no decimals
 
     return proportions.map(portion => {
-      console.log("Portion: " + portion.toString())
-
       //obtain portion whole number
       let portion_BN = bigNumberify(portion).mul(balance_BN)
-
-      console.log("Portion BN: " + portion_BN.toString())
 
       //NOTE: This reduction loses precision 
       //Take Expanded Form and Reduce
@@ -68,7 +64,8 @@ class Tribute {
     const DAI_DECIMALS = await this.get_DAI_DECIMALS();
 
     //decimals length cannot be bigger than allowed DAI_DECIMALS
-    if (amountToTransferString.split('.')[1].length > DAI_DECIMALS) throw "Underflow Error"
+    let decimalSize = amountToTransferString.split('.')[1].length
+    if (decimalSize > DAI_DECIMALS) throw "Underflow Error"
 
     // approve DAI
     const amountToTransfer_BN = parseUnits(amountToTransferString, DAI_DECIMALS)
@@ -110,9 +107,20 @@ class Tribute {
     let newRecipients = Object.keys(recipientMap)
     let newProportions = Object.values(recipientMap).map(
       value => {
+        let val = value;
         //14 allows 4 decimals of precision
-        console.log("before reduction: " + value)
-        let val = value.div(bigNumberify(10).pow(14))
+        console.log("before reduction: " + val)
+
+        //this can be a dynamic range, but must be smaller than the max proportion allowed
+        //value should be truncated by an additional power of 10 it's larger
+        let proportion = bigNumberify(this.PROPORTION_BASE)
+        console.log("BASE: " + proportion)
+        while(val.gt(proportion)) {
+          val = val.div(bigNumberify(10).pow(1)) 
+        }
+
+        //let val = val.div(bigNumberify(10).pow(14))
+
         console.log("reduced: " + val.toNumber())
         return val.toNumber()
       }
