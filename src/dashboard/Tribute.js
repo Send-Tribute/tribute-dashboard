@@ -133,7 +133,6 @@ class Tribute {
     const amountToFlow_BN = parseUnits(amountToFlowString, DAI_DECIMALS)
 
     let balance_BN = await this.rDAIContract.balanceOf(this.userAddress);
-    console.log("existing balance: " + balance_BN.toString())
 
     const currentHat = await this.rDAIContract.getHatByAddress(
       this.userAddress
@@ -169,15 +168,12 @@ class Tribute {
 
     if (sum.lt(amountToFlow_BN)) throw 'insufficent balance left';
 
-    //We have enough to update, continue and update values
+    //If we've reached this point we have enough to update, continue and update values
 
     //update values between user and recipient
     const amountToFlowNeeded = amountToFlow_BN.sub(recipientBal);
     userBal = userBal.sub(amountToFlowNeeded);
     recipientBal = recipientBal.add(amountToFlowNeeded);
-
-    console.log(userBal.toString())
-    console.log(recipientBal.toString())
 
     //set values
     recipientMap[this.userAddress] = userBal;
@@ -193,15 +189,13 @@ class Tribute {
     let newProportions = Object.values(recipientMap).map(
       value => { 
         let val = this._reduceToMaxPrecision(value)
+        //reduction of additional powers if the number matches the number
         if (value.eq(recipientBal)) {
           val = val.div(bigNumberify(10).pow(tensDiff))
         }
         return val.toNumber()
       }
     )
-
-    console.log("recipients: " + newRecipients)
-    console.log("proportions: " + newProportions)
 
     //update to new hat values
     await this.rDAIContract.createHat(

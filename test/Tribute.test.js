@@ -47,10 +47,8 @@ contract('TESTING', async (accounts) => {
 
       it.only("Test generate", async() => {
         let before = await tribute.getInfo(owner)
-        console.log(before)
         await tribute.generate(amountToTransfer)
         let after = await tribute.getInfo(owner)
-        console.log(after)
 
         let before_balance = new BigNumber(before.balance)
         let after_balance = new BigNumber(after.balance)
@@ -71,10 +69,8 @@ contract('TESTING', async (accounts) => {
 
       it.only("Test startFlow", async() => {
         let before = await tribute.getInfo(owner)
-        console.log(before)
         await tribute.startFlow(randomAccount, amountToFlow)
         let after = await tribute.getInfo(owner)
-        console.log(after)
 
         let before_unallocated = new BigNumber(before.unallocated_balance)
         let after_unallocated = new BigNumber(after.unallocated_balance)
@@ -86,7 +82,7 @@ contract('TESTING', async (accounts) => {
         )
       })
 
-      it("Test endFlow", async() => {
+      it.only("Test endFlow", async() => {
         let before = await tribute.getInfo(owner)
         await tribute.endFlow(randomAccount)
         let after = await tribute.getInfo(owner)
