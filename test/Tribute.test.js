@@ -5,7 +5,7 @@ const DAI_abi = require('../src/contracts/dai.json')
 const Tribute = require('../src/dashboard/Tribute')
 const rDAI_Kovan = "0xeA718E4602125407fAfcb721b7D760aD9652dfe7"
 const DAI_Kovan = "0xbF7A7169562078c96f0eC1A8aFD6aE50f12e5A99"
-const amountToTransfer = "50.012345678987654321"
+const amountToTransfer = "500.012345678987654321"
 const amountToFlow = 50
 
 contract('TESTING', async (accounts) => {

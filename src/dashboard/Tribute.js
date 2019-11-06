@@ -50,6 +50,18 @@ class Tribute {
     });
   }
 
+  _reduceToMaxPrecision(number) {
+    //this can be a dynamic range, but must be smaller than the max proportion allowed
+    //value should be truncated by an additional power of 10 it's larger
+    let val = number;
+    console.log("BASE: " + this.PROPORTION_BASE)
+    while(val.gt(this.PROPORTION_BASE)) {
+      val = val.div(bigNumberify(10).pow(1)) 
+    }
+    console.log("reduced: " + val.toNumber())
+    return val.toNumber()
+  }
+
   _removeAddressesWithZeroFlow(recipientMap) {
     for (let [address, portion_BN] of Object.entries(recipientMap)) {
       if (portion_BN.eq(ethers.constants.Zero)) {
@@ -103,27 +115,9 @@ class Tribute {
 
     console.log("new balance: " + recipientMap[this.userAddress].toString())
 
-    //I HAVE A NEW BALANCE BUT IT'S TOOOO LONG it needs to fit into uint32
     let newRecipients = Object.keys(recipientMap)
     let newProportions = Object.values(recipientMap).map(
-      value => {
-        let val = value;
-        //14 allows 4 decimals of precision
-        console.log("before reduction: " + val)
-
-        //this can be a dynamic range, but must be smaller than the max proportion allowed
-        //value should be truncated by an additional power of 10 it's larger
-        let proportion = bigNumberify(this.PROPORTION_BASE)
-        console.log("BASE: " + proportion)
-        while(val.gt(proportion)) {
-          val = val.div(bigNumberify(10).pow(1)) 
-        }
-
-        //let val = val.div(bigNumberify(10).pow(14))
-
-        console.log("reduced: " + val.toNumber())
-        return val.toNumber()
-      }
+      value => this._reduceToMaxPrecision(value)
     )
 
     console.log(newRecipients)
