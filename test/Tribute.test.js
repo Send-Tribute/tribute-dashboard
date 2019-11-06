@@ -6,7 +6,7 @@ const Tribute = require('../src/dashboard/Tribute')
 const rDAI_Kovan = "0xeA718E4602125407fAfcb721b7D760aD9652dfe7"
 const DAI_Kovan = "0xbF7A7169562078c96f0eC1A8aFD6aE50f12e5A99"
 const amountToTransfer = "500.012345678987654321"
-const amountToFlow = 50
+const amountToFlow = "50.012345678987654321"
 
 contract('TESTING', async (accounts) => {
 
@@ -69,10 +69,12 @@ contract('TESTING', async (accounts) => {
         )
       })
 
-      it("Test startFlow", async() => {
+      it.only("Test startFlow", async() => {
         let before = await tribute.getInfo(owner)
+        console.log(before)
         await tribute.startFlow(randomAccount, amountToFlow)
         let after = await tribute.getInfo(owner)
+        console.log(after)
 
         let before_unallocated = new BigNumber(before.unallocated_balance)
         let after_unallocated = new BigNumber(after.unallocated_balance)
