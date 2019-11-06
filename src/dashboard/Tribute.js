@@ -59,7 +59,7 @@ class Tribute {
       val = val.div(bigNumberify(10).pow(1)) 
     }
     console.log("reduced: " + val.toNumber())
-    return val.toNumber()
+    return val
   }
 
   _removeAddressesWithZeroFlow(recipientMap) {
@@ -113,7 +113,7 @@ class Tribute {
 
     let newRecipients = Object.keys(recipientMap)
     let newProportions = Object.values(recipientMap).map(
-      value => this._reduceToMaxPrecision(value)
+      value => (this._reduceToMaxPrecision(value)).toNumber()
     )
 
     await this.rDAIContract.mintWithNewHat(
@@ -179,25 +179,25 @@ class Tribute {
     console.log(userBal.toString())
     console.log(recipientBal.toString())
 
-    //we need to reduce by additional power of by the difference between the number of 10's digits
-    const balanceWholeNumSize = formatUnits(userBal, DAI_DECIMALS).split('.')[0].length
-    const amountToFlowWholeNumSize = formatUnits(recipientBal, DAI_DECIMALS).split('.')[0].length
-    let tensDiff = balanceWholeNumSize - amountToFlowWholeNumSize
-    recipientBal = recipientBal.div(bigNumberify(10).pow(tensDiff))
-    console.log("initial reduction: " )
-    console.log(userBal.toString())
-    console.log(recipientBal.toString())
-
-    //TODO: this reduction needs to go after the reduction below
-
     //set values
     recipientMap[this.userAddress] = userBal;
     recipientMap[recipientAddress.toLowerCase()] = recipientBal;
     recipientMap = this._removeAddressesWithZeroFlow(recipientMap); 
 
+    //we need to reduce by additional powers. The difference between the number of 10's digits
+    const balanceWholeNumSize = formatUnits(userBal, DAI_DECIMALS).split('.')[0].length
+    const amountToFlowWholeNumSize = formatUnits(recipientBal, DAI_DECIMALS).split('.')[0].length
+    let tensDiff = balanceWholeNumSize - amountToFlowWholeNumSize
+
     let newRecipients = Object.keys(recipientMap)
     let newProportions = Object.values(recipientMap).map(
-      value => this._reduceToMaxPrecision(value)
+      value => { 
+        let val = this._reduceToMaxPrecision(value)
+        if (value.eq(recipientBal)) {
+          val = val.div(bigNumberify(10).pow(tensDiff))
+        }
+        return val.toNumber()
+      }
     )
 
     console.log("recipients: " + newRecipients)
