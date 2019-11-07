@@ -45,7 +45,7 @@ contract('TESTING', async (accounts) => {
         assert.isOk(val.unclaimed_balance, "no unclaimed balance field")
       })
 
-      it.only("Test generate", async() => {
+      it("Test generate", async() => {
         let before = await tribute.getInfo(owner)
         await tribute.generate(amountToTransfer)
         let after = await tribute.getInfo(owner)
@@ -67,7 +67,7 @@ contract('TESTING', async (accounts) => {
         )
       })
 
-      it.only("Test startFlow", async() => {
+      it("Test startFlow", async() => {
         let before = await tribute.getInfo(owner)
         await tribute.startFlow(randomAccount, amountToFlow)
         let after = await tribute.getInfo(owner)
@@ -82,7 +82,7 @@ contract('TESTING', async (accounts) => {
         )
       })
 
-      it.only("Test endFlow", async() => {
+      it("Test endFlow", async() => {
         let before = await tribute.getInfo(owner)
         await tribute.endFlow(randomAccount)
         let after = await tribute.getInfo(owner)

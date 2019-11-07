@@ -45,7 +45,6 @@ class Tribute {
       //NOTE: This reduction loses precision 
       //Take Expanded Form and Reduce
       portion_BN = portion_BN.div(this.PROPORTION_BASE)
-      console.log("portion whole: " + portion_BN.toString())
       return portion_BN
     });
   }
@@ -54,11 +53,9 @@ class Tribute {
     //this can be a dynamic range, but must be smaller than the max proportion allowed
     //value should be truncated by an additional power of 10 it's larger
     let val = number;
-    console.log("BASE: " + this.PROPORTION_BASE)
     while(val.gt(this.PROPORTION_BASE)) {
       val = val.div(bigNumberify(10).pow(1)) 
     }
-    console.log("reduced: " + val.toNumber())
     return val
   }
 
@@ -134,7 +131,7 @@ class Tribute {
 
     let balance_BN = await this.rDAIContract.balanceOf(this.userAddress);
 
-    const currentHat = await this.rDAIContract.getHatByAddress(
+   const currentHat = await this.rDAIContract.getHatByAddress(
       this.userAddress
     );
 
@@ -206,7 +203,7 @@ class Tribute {
   }
 
   async endFlow(addressToRemove) {
-    const rDAI_DECIMALS = await this.get_rDAI_DECIMALS();
+    const DAI_DECIMALS = await this.get_DAI_DECIMALS();
 
     let balance_BN = await this.rDAIContract.balanceOf(this.userAddress);
 
@@ -242,15 +239,32 @@ class Tribute {
       : ethers.constants.Zero;
     let sum = userBal.add(recipientBal);
 
-    //update and set values between user and recipient
+    //set values
     recipientMap[this.userAddress] = userBal.add(recipientBal);
     recipientMap[addressToRemove.toLowerCase()] = ethers.constants.Zero;
     recipientMap = this._removeAddressesWithZeroFlow(recipientMap);
 
+    //we need to reduce by additional powers. The difference between the number of 10's digits
+    const balanceWholeNumSize = formatUnits(userBal, DAI_DECIMALS).split('.')[0].length
+    const amountToFlowWholeNumSize = formatUnits(recipientBal, DAI_DECIMALS).split('.')[0].length
+    let tensDiff = balanceWholeNumSize - amountToFlowWholeNumSize
+
+    let newRecipients = Object.keys(recipientMap)
+    let newProportions = Object.values(recipientMap).map(
+      value => { 
+        let val = this._reduceToMaxPrecision(value)
+        //reduction of additional powers if the number matches the number
+        if (value.eq(recipientBal)) {
+          val = val.div(bigNumberify(10).pow(tensDiff))
+        }
+        return val.toNumber()
+      }
+    )
+
     //update to new hat values
     await this.rDAIContract.createHat(
-      Object.keys(recipientMap),
-      Object.values(recipientMap),
+      newRecipients,
+      newProportions,
       true
     );
   }
@@ -269,9 +283,6 @@ class Tribute {
     const currentHat = await this.rDAIContract.getHatByAddress(
       address
     );
-
-    console.log("current hat")
-    console.log(currentHat)
 
     let { recipients, proportions } = currentHat;
     let unallocatedBalance;
