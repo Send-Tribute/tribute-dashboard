@@ -235,8 +235,8 @@ const Sending = () => {
   return (
     <div>
       {getActiveTributes()}
-      {getDiscoverTributes()}
       {getSendTributes()}
+      {getDiscoverTributes()}
     </div>
   );
 };
