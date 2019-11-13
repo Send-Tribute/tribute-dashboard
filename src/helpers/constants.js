@@ -67,15 +67,6 @@ export const DISCOVERABLE_PROVIDERS = {
     twitter: '@ethhub_io',
     website: 'https://ethhub.io/'
   },
-  ocd: {
-    name: 'One Click Dapp',
-    description: 'Turning smart contracts into easy-to-use dApps',
-    image: 'ocd',
-    tags: ['Tooling'],
-    address: '0x9492510BbCB93B6992d8b7Bb67888558E12DCac4',
-    twitter: '@pi0neerpat',
-    website: 'https://oneclickdapp.com'
-  },
   rdai: {
     name: 'rDAO',
     description: 'Programmable interest payments for everyone',

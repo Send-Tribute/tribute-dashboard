@@ -155,7 +155,7 @@ const Sending = () => {
 
   const getDiscoverTributes = () => (
     <Container className={classes.container}>
-      <SectionHeader text="Discover" icon="tributeButton" />
+      <SectionHeader text="Discover new projects" icon="tributeButton" />
       <Container className={classes.contentContainer}>
         <Grid container>
           {Object.keys(DISCOVERABLE_PROVIDERS).map(provider => (
