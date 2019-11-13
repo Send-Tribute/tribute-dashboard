@@ -214,7 +214,7 @@ const Wallet = () => {
 
           <Paper elevation={5} className={classes.unclaimedTributeContainer}>
             <Typography variant="body1">
-              You can withdraw your DAI at any time.
+              Convert back to DAI at any time.
             </Typography>
 
             <Button
