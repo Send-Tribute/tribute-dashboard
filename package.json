@@ -22,7 +22,7 @@
     "update-abis": "yarn update-rdai-abi; yarn update-cdai-abi; yarn update-dai-abi; yarn update-dai-strat-abi",
     "test": "echo \"Error: no test specified\"",
     "lint": "eslint ./src --fix",
-    "start": "parcel public/dashboard.html public/widget.html",
+    "start": "parcel public/dashboard.html",
     "ganache_fork": "ganache-cli -f $(node get_infura.js) -m \"$(node get_mnemonic.js)\"",
     "build": "parcel build public/dashboard.html public/widget.html --out-dir dist",
     "storybook": "start-storybook -p 6006",

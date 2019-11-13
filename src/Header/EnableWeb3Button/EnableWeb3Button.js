@@ -6,8 +6,8 @@ import Tribute from 'tribute-utils';
 import { Context } from '../../context';
 import { CONTRACTS } from '../../helpers/constants';
 
-import DAIabi from '../../../contracts/dai';
-import rDAIabi from '../../../contracts/rDai';
+import DAIabi from '../../contracts/dai';
+import rDAIabi from '../../contracts/rDai';
 import { Icon } from '../../general';
 
 const useStyles = createUseStyles({
