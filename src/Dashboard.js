@@ -60,14 +60,17 @@ export default function Dashboard() {
               window.web3.currentProvider
             );
 
+            const network = await walletProvider.getNetwork();
+            console.log(network.name);
+
             // connect to contracts on the network
             const rDAIContract = new ethers.Contract(
-              CONTRACTS.rtoken.kovan,
+              CONTRACTS.rtoken[network.name],
               rDAIabi,
               walletProvider.getSigner()
             );
             const DAIContract = new ethers.Contract(
-              CONTRACTS.dai.kovan,
+              CONTRACTS.dai[network.name],
               DAIabi,
               walletProvider.getSigner()
             );
