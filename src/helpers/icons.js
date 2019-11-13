@@ -28,6 +28,18 @@ import wyre from '../assets/wyre.png';
 import qr from '../assets/qr.png';
 import unicef from '../assets/unicef.jpeg';
 
+import altar from '../assets/altar.png';
+import blocks from '../assets/blocks.png';
+import bounty from '../assets/bounty.png';
+import brawl from '../assets/brawl.png';
+import cypher from '../assets/cypher.png';
+import ethhub from '../assets/ethhub.png';
+import fliff from '../assets/fliff.png';
+import rdai from '../assets/rdai.png';
+import thread from '../assets/thread.png';
+import voip from '../assets/voip.png';
+import blocktalk from '../assets/blocktalk.png';
+
 const ICONS = {
   faucetOn: {
     type: 'image',
@@ -137,6 +149,50 @@ const ICONS = {
   unicef: {
     type: 'image',
     src: unicef
+  },
+  altar: {
+    type: 'image',
+    src: altar
+  },
+  blocks: {
+    type: 'image',
+    src: blocks
+  },
+  bounty: {
+    type: 'image',
+    src: bounty
+  },
+  brawl: {
+    type: 'image',
+    src: brawl
+  },
+  cypher: {
+    type: 'image',
+    src: cypher
+  },
+  ethhub: {
+    type: 'image',
+    src: ethhub
+  },
+  fliff: {
+    type: 'image',
+    src: fliff
+  },
+  rdai: {
+    type: 'image',
+    src: rdai
+  },
+  thread: {
+    type: 'image',
+    src: thread
+  },
+  voip: {
+    type: 'image',
+    src: voip
+  },
+  blocktalk: {
+    type: 'image',
+    src: blocktalk
   }
 };
 
