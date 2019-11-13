@@ -122,6 +122,9 @@ const Sending = () => {
       }
     );
   }
+  if (activeTributeRows.length === 0) {
+    activeTributeRows = [['No active Tributes']];
+  }
 
   const handleChange = name => event => {
     setValues({ ...values, [name]: event.target.value });

@@ -21,9 +21,10 @@ const useStyles = createUseStyles({
   },
   media: {
     height: 160,
-    overflow: 'hidden'
+    overflow: 'hidden',
+    justifyContent: 'center'
   },
-  image: { width: '100%', height: '100%' },
+  image: { width: 'auto', height: '100%' },
   chipContainer: {
     marginTop: 5,
     display: 'flex',
@@ -85,10 +86,7 @@ const ProviderCard = ({ provider }) => {
           size="small"
           color="primary"
           onClick={() => {
-            window.open(
-              `https://kovan.etherscan.io/address/${address}`,
-              '_blank'
-            );
+            window.open(`https://etherscan.io/address/${address}`, '_blank');
           }}
         >
           {getShortAddress(address)}
