@@ -226,7 +226,7 @@ const Wallet = () => {
               style={{ margin: '10px 0 10px', backgroundColor: '#1b1c4c' }}
               className={classes.floatRightButton}
             >
-              Withdraw DAI
+              Convert back to DAI
             </Button>
           </Paper>
         </Container>
