@@ -12,7 +12,7 @@ import faucet_on from '../assets/faucet-on.png';
 import faucet_off from '../assets/faucet-off.png';
 import super_mariano from '../assets/super-mariano.jpeg';
 import defiant from '../assets/defiant.png';
-import one_click_dapp from '../assets/one-click-dapp.png';
+import one_click_dapp from '../assets/ocd.png';
 import receive_money from '../assets/receive-money.png';
 import ice_cubes from '../assets/ice-cubes.png';
 import waterwheel from '../assets/waterwheel.png';
@@ -26,7 +26,7 @@ import kyber from '../assets/kyber.png';
 import coinbase from '../assets/coinbase.png';
 import wyre from '../assets/wyre.png';
 import qr from '../assets/qr.png';
-import unicef from '../assets/unicef.jpeg';
+import unicef from '../assets/unicef.png';
 
 import altar from '../assets/altar.png';
 import blocks from '../assets/blocks.png';
