@@ -80,6 +80,11 @@ const Wallet = () => {
   const [context] = useContext(Context);
   const classes = useStyles();
   const { userDetails } = context;
+  let daiBalance = 0;
+  if (typeof userDetails !== 'undefined') {
+    daiBalance = userDetails.daiBalance;
+  }
+  daiBalance = Math.round(daiBalance * 100) / 100;
 
   const [values, setValues] = useState({
     address: '',
@@ -174,8 +179,10 @@ const Wallet = () => {
           <Paper elevation={5} className={classes.unclaimedTributeContainer}>
             <div>
               <Typography variant="body1">
-                Choose how much Tribute to generate :
+                Choose how much Tribute to generate
+                <br />
               </Typography>
+              <Typography variant="body2">(2 transactions)</Typography>
               <TextField
                 variant="outlined"
                 id="outlined-dense"
@@ -184,6 +191,10 @@ const Wallet = () => {
                 value={values.amount}
                 onChange={handleChange('amount')}
               />
+              <br />
+              <Typography variant="body2">
+                {daiBalance} DAI available
+              </Typography>
             </div>
             <div>
               <Button

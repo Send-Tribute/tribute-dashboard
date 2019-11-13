@@ -83,7 +83,8 @@ export default function Dashboard() {
               tribute,
               userDetails,
               isConnected: false,
-              provider: walletProvider
+              provider: walletProvider,
+              network
             }));
           }
         } catch (error) {

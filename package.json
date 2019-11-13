@@ -58,7 +58,7 @@
     "react-jss": "^10.0.0",
     "react-loading": "^2.0.3",
     "react-qr-reader": "^2.2.1",
-    "tribute-utils": "^0.0.4"
+    "tribute-utils": "^0.0.6"
   },
   "devDependencies": {
     "@storybook/addon-actions": "^5.2.1",
