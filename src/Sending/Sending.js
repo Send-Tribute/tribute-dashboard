@@ -122,6 +122,9 @@ const Sending = () => {
       }
     );
   }
+  if (activeTributeRows.length === 0) {
+    activeTributeRows = [['No active Tributes']];
+  }
 
   const handleChange = name => event => {
     setValues({ ...values, [name]: event.target.value });
@@ -155,7 +158,7 @@ const Sending = () => {
 
   const getDiscoverTributes = () => (
     <Container className={classes.container}>
-      <SectionHeader text="Discover" icon="tributeButton" />
+      <SectionHeader text="Discover new projects" icon="tributeButton" />
       <Container className={classes.contentContainer}>
         <Grid container>
           {Object.keys(DISCOVERABLE_PROVIDERS).map(provider => (
@@ -235,8 +238,8 @@ const Sending = () => {
   return (
     <div>
       {getActiveTributes()}
-      {getDiscoverTributes()}
       {getSendTributes()}
+      {getDiscoverTributes()}
     </div>
   );
 };

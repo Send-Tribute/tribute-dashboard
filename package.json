@@ -24,7 +24,7 @@
     "lint": "eslint ./src --fix",
     "start": "parcel public/dashboard.html",
     "ganache_fork": "ganache-cli -f $(node get_infura.js) -m \"$(node get_mnemonic.js)\"",
-    "build": "parcel build public/dashboard.html public/widget.html --out-dir dist",
+    "build": "parcel build public/dashboard.html --public-url ./",
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook",
     "deploy": "npm run build && surge ./dist https://tribute-dash1.surge.sh"
@@ -58,7 +58,7 @@
     "react-jss": "^10.0.0",
     "react-loading": "^2.0.3",
     "react-qr-reader": "^2.2.1",
-    "tribute-utils": "^0.0.4"
+    "tribute-utils": "^0.0.6"
   },
   "devDependencies": {
     "@storybook/addon-actions": "^5.2.1",

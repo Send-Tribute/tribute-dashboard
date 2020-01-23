@@ -11,19 +11,24 @@ import {
 import PropTypes from 'prop-types';
 import { createUseStyles } from 'react-jss';
 import Icon from '../Icon';
-import { getShortAddress } from '../../helpers/utils';
 
 const useStyles = createUseStyles({
   card: {
-    maxWidth: 345,
+    maxWidth: 250,
     margin: 10,
     justifyContent: 'center'
   },
   media: {
     height: 160,
-    overflow: 'hidden'
+    justifyContent: 'center'
   },
-  image: { width: '100%', height: '100%' },
+  image: {
+    height: 160,
+    width: 'auto',
+    display: 'block',
+    marginLeft: 'auto',
+    marginRight: 'auto'
+  },
   chipContainer: {
     marginTop: 5,
     display: 'flex',
@@ -37,7 +42,9 @@ const useStyles = createUseStyles({
     textTransform: 'none'
   },
   address: {
-    marginTop: 10
+    marginTop: 10,
+    paddingTop: 10,
+    overflowWrap: 'break-word'
   },
   description: {
     height: 50
@@ -66,7 +73,7 @@ const ProviderCard = ({ provider }) => {
             <Chip key={tag} label={tag} className={classes.chip} />
           ))}
         </div>
-        <div className={classes.address} style={{ paddingTop: 10 }}>
+        <div className={classes.address}>
           <Typography variant="caption">{address}</Typography>
         </div>
       </CardContent>
@@ -78,20 +85,17 @@ const ProviderCard = ({ provider }) => {
             window.open(website, '_blank');
           }}
         >
-          Visit
+          Website
         </Button>
         <Button
           className={classes.addressButton}
           size="small"
           color="primary"
           onClick={() => {
-            window.open(
-              `https://kovan.etherscan.io/address/${address}`,
-              '_blank'
-            );
+            window.open(`https://etherscan.io/address/${address}`, '_blank');
           }}
         >
-          {getShortAddress(address)}
+          Etherscan
         </Button>
       </CardActions>
     </Card>

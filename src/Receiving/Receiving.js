@@ -68,12 +68,11 @@ const Receiving = () => {
       trimmedAddress = address.substr(9, address.length - 1);
     }
     if (trimmedAddress.length > 41) {
-      const unclaimedTribute = await context.tribute.getUnclaimedAmount(
-        trimmedAddress
-      );
+      const externalUserDetails = await context.tribute.getInfo(trimmedAddress);
+      const { unclaimed_balance } = externalUserDetails;
       setValues({
         ...values,
-        externalUserInterest: unclaimedTribute,
+        externalUserInterest: unclaimed_balance,
         address: trimmedAddress
       });
       return;
@@ -223,9 +222,7 @@ const Receiving = () => {
 
             <div>
               <Button
-                onClick={() =>
-                  context.tribute.claimTributeOnBehalfOf(values.address)
-                }
+                onClick={() => context.tribute.claimAmount(values.address)}
                 variant="contained"
                 color="primary"
                 style={{ backgroundColor: '#1b1c4c' }}
