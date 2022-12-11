@@ -46,7 +46,7 @@
     "dotenv": "^8.2.0",
     "ethereumjs-abi": "^0.6.5",
     "ethers": "^4.0.37",
-    "express": "^4.17.1",
+    "express": "^4.17.3",
     "jimp": "^0.8.4",
     "node-jq": "^1.10.3",
     "prop-types": "^15.7.2",
